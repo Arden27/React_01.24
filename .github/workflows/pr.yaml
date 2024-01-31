@@ -1,0 +1,33 @@
+name: Check code with Eslint
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - edited
+    branches:
+      - master
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Use Node.js 18.13.0
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.13.0
+
+      - name: npm install
+        working-directory: ./
+        run: npm i --ignore-scripts
+
+      - name: Run Eslint
+        shell: bash
+        run: npm run lint
