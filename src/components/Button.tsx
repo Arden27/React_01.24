@@ -1,3 +1,5 @@
+import React from 'react'
+
 function getButtonStyles(format: string): string {
   const types = format ? format.split(' ') : []
 
@@ -6,7 +8,7 @@ function getButtonStyles(format: string): string {
   if (types.includes('sm')) {
     styles += 'h-[calc(theme(spacing.lg)+theme(spacing.3xs))] w-fit p-xs '
   }
-  
+
   if (types.includes('lg')) {
     styles +=
       'h-[calc(theme(spacing.lg)+theme(spacing.xs))] w-fit min-w-[calc(theme(spacing.3xl)+theme(spacing.2xl))] p-sm px-md '
@@ -31,11 +33,15 @@ interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type'> {
   type?: 'submit' | 'reset' | 'button'
 }
 
-export default function Button({ format, className, children, ...props }: ButtonProps) {
+function Button(
+  { format, className, children, ...props }: ButtonProps,
+  ref: React.Ref<HTMLButtonElement>
+) {
   const buttonStyles = getButtonStyles(format)
 
   return (
     <button
+      ref={ref}
       className={`relative flex items-center justify-center rounded-[2rem] font-btn text-sm uppercase text-text transition-colors duration-300 ease-in-out hover:bg-text
       hover:text-header active:top-[2px] active:opacity-90 
       ${buttonStyles}
@@ -45,3 +51,5 @@ export default function Button({ format, className, children, ...props }: Button
     </button>
   )
 }
+
+export default React.forwardRef(Button)
