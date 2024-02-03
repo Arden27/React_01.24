@@ -28,7 +28,7 @@ function App() {
       </select>
 
       <DropdownMenu onSelect={handleSort}>
-        <DropdownMenu.Button>Sortuj</DropdownMenu.Button>
+        <DropdownMenu.Button>Choose option</DropdownMenu.Button>
         <DropdownMenu.List
           className="absolute -right-2xs z-50 mt-3xs flex flex-col justify-center gap-3xs whitespace-nowrap rounded-[2rem] bg-bar
                   p-xs text-end font-btn text-sm shadow">
@@ -42,19 +42,14 @@ function App() {
         </DropdownMenu.List>
       </DropdownMenu>
 
-      <ChevronUp/>
-      <ChevronUp/>
-      <ChevronUp className='text-red-300'/>
-      <ChevronDown />
-
-      {/* <img src={chevronUpUrl} alt="Chevron Up" /> */}
-
       <SetQuantityGroup
         quantity={quantity}
         setQuantity={setQuantity}
         min={5}
         max={15}
-        className="relative flex h-[calc(theme(spacing.lg)+theme(spacing.xs))] items-center justify-items-center rounded-[2rem] border-2 border-text bg-bg3"
+        className="rounded-[2rem] border-2 border-text bg-bg3"
+        classNameButtons='text-lg my-3xs'
+        classNameInput='text-lg'
       />
 
       <Button format="lg border">Start quiz</Button>

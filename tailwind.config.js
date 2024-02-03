@@ -3,8 +3,6 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-
-      // Maciek - pozbądź się tego:
       screens: {
         "315px": "315px",
         "380px": "380px",
@@ -58,18 +56,6 @@ export default {
 
       boxShadow: {
         DEFAULT: "0px 4px 6px 0px rgb(0 0 0 / 0.2)",
-      },
-
-      // Maciek - Trzeba to do styli wrzucić
-      
-      keyframes: {
-        loading: {
-          "0%": { width: "0%" },
-          "100%": { width: "100%" },
-        },
-      },
-      animation: {
-        loading: "loading 1s infinite alternate",
       },
     },
   },
