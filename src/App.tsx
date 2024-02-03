@@ -12,21 +12,12 @@ function App() {
 
   const sortOptions = ['Od A do Z', 'Od Z do A', 'Od najniższej ceny', 'Od najwyższej ceny']
 
-  const handleSort = () => {
+  const handleSort = (value: string) => {
     return;
   }
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center">
-      <div className="flex flex-col text-green-300">Hello world</div>
-      <input type="number" />
-      <select name="exampleSelect" id="exampleSelect">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-        <option value="option4">Option 4</option>
-      </select>
-
       <DropdownMenu onSelect={handleSort}>
         <DropdownMenu.Button>Choose option</DropdownMenu.Button>
         <DropdownMenu.List
@@ -35,7 +26,9 @@ function App() {
           {sortOptions.map((option, index) => (
             <DropdownMenu.Item
               key={index}
-              className="!hover:bg-inherit w-full !justify-end border-transparent hover:text-bar">
+              className="!hover:bg-inherit w-full !justify-end border-transparent hover:text-bar"
+              onSelect={() => console.log('selected')}
+            >
               {option}
             </DropdownMenu.Item>
           ))}
