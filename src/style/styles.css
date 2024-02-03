@@ -1,0 +1,56 @@
+@layer base {
+  :root {
+    /* --- COLORS --- */
+
+    --color--Primary: hsl(33, 65%, 65%);
+    --color--Secondary: hsl(33, 55%, 70%);
+    --color--Text: hsl(30, 70%, 18%);
+    --color--Accent: #854d0e;
+    --color--Accent2: hsl(20, 50%, 65%);
+    --color--Warning: hsl(9, 50%, 50%);
+    --color--Bg: hsl(40, 80%, 76%);
+    --color--Bg2: hsl(30, 48%, 60%);
+    --color--Bg3: hsl(40, 100%, 86%);
+    --color--Header: hsl(34, 63%, 66%);
+    --color--Menu: hsl(34, 53%, 70%);
+    --color--AboutBox: hsl(28, 41%, 63%);
+    --color--Footer: hsl(28, 41%, 63%);
+
+    /* --- SPACING --- */
+
+    --spacing--xxxs: clamp(0.25rem, 0.23rem + 0.1vw, 0.31rem);
+    --spacing--xxs: clamp(0.5rem, 0.46rem + 0.21vw, 0.63rem);
+    --spacing--xs: clamp(0.75rem, 0.71rem + 0.21vw, 0.88rem);
+    --spacing--sm: clamp(1rem, 0.94rem + 0.31vw, 1.19rem);
+    --spacing--md: clamp(1.5rem, 1.4rem + 0.52vw, 1.81rem);
+    --spacing--lg: clamp(2rem, 1.88rem + 0.63vw, 2.38rem);
+    --spacing--xl: clamp(3rem, 2.81rem + 0.94vw, 3.56rem);
+    --spacing--xxl: clamp(4rem, 3.75rem + 1.25vw, 4.75rem);
+    --spacing--xxxl: clamp(6rem, 5.63rem + 1.88vw, 7.13rem);
+
+    /* --- FONT SIZE --- */
+
+    --fontSize--xs: clamp(0.67rem, 0.7rem + -0.04vw, 0.69rem);
+    --fontSize--sm: clamp(0.83rem, 0.81rem + 0.1vw, 0.89rem);
+    --fontSize--md: clamp(1rem, 0.94rem + 0.31vw, 1.19rem);
+    --fontSize--lg: clamp(1.2rem, 1.07rem + 0.64vw, 1.58rem);
+    --fontSize--xl: clamp(1.44rem, 1.22rem + 1.12vw, 2.11rem);
+    --fontSize--xxl: clamp(1.73rem, 1.37rem + 1.81vw, 2.81rem);
+    --fontSize--xxxl: clamp(2.07rem, 1.52rem + 2.79vw, 3.75rem);
+  }
+
+  :focus-visible {
+    @apply rounded-[2rem] outline outline-2 outline-offset-2 outline-accent;
+  }
+
+  /* --- FORMS --- */
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

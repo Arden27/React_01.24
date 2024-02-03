@@ -1,0 +1,34 @@
+@layer base {
+  @font-face {
+    font-family: "Satoshi";
+    src: url("/fonts/Satoshi-Regular.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Satoshi Bold";
+    src: url("/fonts/Satoshi-Bold.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Calistoga";
+    src: url("/fonts/Calistoga-Regular.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Josefin";
+    src: url("/fonts/Josefin.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Catamaran";
+    src: url("/fonts/Catamaran.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Nunito";
+    src: url("/fonts/Nunito.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "OpenSans Condensed Bold";
+    src: url("/fonts/OpenSans-Condensed-Bold.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "OpenSans Condensed Light";
+    src: url("/fonts/OpenSans-Condensed-Light.ttf") format("truetype");
+  }
+}
