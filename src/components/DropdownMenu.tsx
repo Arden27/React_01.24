@@ -65,7 +65,7 @@ export default function DropdownMenu({
         }
       }
     })
-  }, [children, currentSetSelected])
+  }, [])
 
   return (
     <DropdownContext.Provider value={{ selected: currentSelected, handleSelect }}>

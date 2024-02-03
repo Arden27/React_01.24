@@ -4,14 +4,16 @@
  * @param {Array} refs - An array of refs to elements that should not trigger the handler when clicked.
  * @param {function} handler - The function to trigger when a click outside the specified ref(s) occurs.
  */
-import { useEffect } from "react";
+import { useEffect, RefObject } from "react";
 
-export default function useOutsideClick(refs, handler) {
+type Handler = () => void;
+
+export default function useOutsideClick(refs: RefObject<HTMLElement>[], handler: Handler) {
     useEffect(() => {
         // Function to execute on document mousedown
-        const handleClickOutside = event => {
+        const handleClickOutside = (event: MouseEvent) => {
             // Checking if click was outside all refs
-            if (refs.every(ref => ref.current && !ref.current.contains(event.target))) {
+            if (refs.every(ref => ref.current && !ref.current.contains(event.target as Node))) {
                 handler();  // Call handler if click was outside
             }
         };
