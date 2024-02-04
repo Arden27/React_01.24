@@ -25,15 +25,15 @@ export default function CreateQuizScreen() {
         <h3 className="text-lg">questions</h3>
       </div>
 
-      {menuOptions.map((option) => (
-        <DropdownMenu onSelect={() => {}}>
+      {menuOptions.map((option, index) => (
+        <DropdownMenu onSelect={() => {}} key={`dropdown-${index}`}>
           <DropdownMenu.Button>{option.label}</DropdownMenu.Button>
           <DropdownMenu.List
             className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap
                   rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
-            {option.items.map((item) => (
+            {option.items.map((item, itemIndex) => (
               <DropdownMenu.Item
-                key={item}
+                key={`${option.label}-${item}-${itemIndex}`}
                 className="!hover:bg-inherit w-full !justify-end border-transparent hover:text-bar">
                 {item}
               </DropdownMenu.Item>
