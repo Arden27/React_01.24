@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import Button from './Button'
 
 interface SetQuantityGroupProps {
-  quantity: number
-  setQuantity: (quantity: number) => void
   min: number
   max: number
   className?: string
@@ -12,8 +10,6 @@ interface SetQuantityGroupProps {
 }
 
 export default function SetQuantityGroup({
-  quantity,
-  setQuantity,
   min,
   max,
   className,
@@ -21,6 +17,8 @@ export default function SetQuantityGroup({
   classNameButtons,
 
 }: SetQuantityGroupProps) {
+  const [quantity, setQuantity] = useState(5)
+
   return (
     <div className={`relative flex h-[calc(theme(spacing.lg)+theme(spacing.xs))] items-center justify-items-center ${className}`}>
       <SetQuantityButton

@@ -1,12 +1,9 @@
-import { useState } from 'react'
 import menuOptions from '@/data/menuOptions'
 import Button from '@/components/Button'
 import DropdownMenu from '@/components/DropdownMenu'
 import SetQuantityGroup from '@/components/SetQuantityGroup'
 
 export default function CreateQuizScreen() {
-  const [quantity, setQuantity] = useState(5)
-
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
       <h1 className="text-2xl font-bold">Create Quiz</h1>
@@ -14,8 +11,6 @@ export default function CreateQuizScreen() {
       <div className="flex items-center space-x-2">
         <h3 className="text-lg">with</h3>
         <SetQuantityGroup
-          quantity={quantity}
-          setQuantity={setQuantity}
           min={5}
           max={15}
           className="rounded-[2rem] border-2 border-text bg-bg3"
