@@ -37,7 +37,7 @@ interface ButtonProps extends Omit<React.HTMLProps<HTMLButtonElement>, 'type'> {
   type?: 'submit' | 'reset' | 'button'
 }
 
-function Button(
+function ButtonComponent(
   { format, className, children, ...props }: ButtonProps,
   ref: React.Ref<HTMLButtonElement>
 ) {
@@ -57,4 +57,5 @@ function Button(
   )
 }
 
-export default React.forwardRef(Button)
+const Button = React.forwardRef(ButtonComponent)
+export default Button
