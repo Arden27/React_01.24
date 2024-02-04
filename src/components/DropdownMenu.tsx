@@ -102,7 +102,7 @@ DropdownMenu.List = function DropdownList({ className, children }: DropdownListP
     <ul className={className}>
       {React.Children.map(children, (child, index) => {
         if (React.isValidElement<DropdownItemProps>(child) && child.type === DropdownMenu.Item) {
-          // Combine item-specific onSelect with global handleSelect
+          // Combine optional item-specific onSelect with global handleSelect
           const combinedOnSelect = (value: string) => {
             child.props.onSelect && child.props.onSelect(value)
             handleSelect && handleSelect(value)

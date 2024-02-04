@@ -42,21 +42,22 @@ function App() {
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center">
+      
       <SetQuantityGroup
         quantity={quantity}
         setQuantity={setQuantity}
         min={5}
         max={15}
         className="rounded-[2rem] border-2 border-text bg-bg3"
-        classNameButtons="text-lg my-3xs"
+        classNameButtons="text-lg"
         classNameInput="text-lg"
       />
 
       <DropdownMenu onSelect={() => {}}>
         <DropdownMenu.Button>Choose Catgory</DropdownMenu.Button>
         <DropdownMenu.List
-          className="absolute -right-2xs z-50 mt-3xs flex flex-col justify-center gap-3xs whitespace-nowrap rounded-[2rem] bg-bar
-                  p-xs text-end font-btn text-sm shadow">
+          className="absolute -right-2xs z-50 mt-3xs flex flex-col gap-3xs whitespace-nowrap rounded-[2rem] bg-bar
+                  p-xs text-end font-btn text-sm shadow max-h-64 overflow-y-auto">
           {categoryOptions.map((option) => (
             <DropdownMenu.Item
               key={option}
