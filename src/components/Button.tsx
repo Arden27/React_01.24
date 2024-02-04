@@ -14,9 +14,13 @@ function getButtonStyles(format: string): string {
       'h-[calc(theme(spacing.lg)+theme(spacing.xs))] w-fit min-w-[calc(theme(spacing.3xl)+theme(spacing.2xl))] p-sm px-md '
   }
 
+  if (types.includes('fill')) {
+    styles += 'bg-text text-bg3 '
+  }
+
   if (types.includes('round')) {
     styles +=
-      'h-md w-md justify-center rounded-[2rem] text-center font-btn leading-none hover:bg-text hover:text-bg3'
+      'h-md w-md justify-center rounded-[2rem] text-center font-btn leading-none hover:bg-text hover:text-bg3 '
   }
 
   if (types.includes('border')) {
@@ -44,8 +48,9 @@ function Button(
       ref={ref}
       className={`relative flex items-center justify-center rounded-[2rem] font-btn text-sm uppercase text-text transition-colors duration-300 ease-in-out hover:bg-text
       hover:text-header active:top-[2px] active:opacity-90 
-      ${buttonStyles}
-      ${className}`}
+      
+      ${className}
+      ${buttonStyles}`}
       {...props}>
       {children}
     </button>

@@ -41,23 +41,28 @@ function App() {
   const timeOptions = ['1m', '2m', '5m']
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center">
-      
-      <SetQuantityGroup
-        quantity={quantity}
-        setQuantity={setQuantity}
-        min={5}
-        max={15}
-        className="rounded-[2rem] border-2 border-text bg-bg3"
-        classNameButtons="text-lg"
-        classNameInput="text-lg"
-      />
+    <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
+      <h1 className="text-2xl font-bold">Create Quiz</h1>
+
+      <div className="flex items-center space-x-2">
+        <h3 className="text-lg">with</h3>
+        <SetQuantityGroup
+          quantity={quantity}
+          setQuantity={setQuantity}
+          min={5}
+          max={15}
+          className="rounded-[2rem] border-2 border-text bg-bg3"
+          classNameButtons="text-lg"
+          classNameInput="text-lg"
+        />
+        <h3 className="text-lg">questions</h3>
+      </div>
 
       <DropdownMenu onSelect={() => {}}>
         <DropdownMenu.Button>Choose Catgory</DropdownMenu.Button>
         <DropdownMenu.List
-          className="absolute -right-2xs z-50 mt-3xs flex flex-col gap-3xs whitespace-nowrap rounded-[2rem] bg-bar
-                  p-xs text-end font-btn text-sm shadow max-h-64 overflow-y-auto">
+          className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap
+                  rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
           {categoryOptions.map((option) => (
             <DropdownMenu.Item
               key={option}
@@ -113,8 +118,10 @@ function App() {
         </DropdownMenu.List>
       </DropdownMenu>
 
-      <Button format="lg border">Start quiz</Button>
-      <Button format="sm border">See my statistics</Button>
+      <Button format="lg border fill">Start quiz</Button>
+      <Button format="sm border" className="hover:bg-bg3 hover:text-text">
+        See my statistics
+      </Button>
     </main>
   )
 }
