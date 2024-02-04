@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Button from './Button'
 
 interface SetQuantityGroupProps {
@@ -91,26 +92,40 @@ interface InputQuantityProps {
 }
 
 function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuantityProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.round(Number(e.target.value))
+  const [inputValue, setInputValue] = useState(quantity.toString());
+
+  const handleBlur = () => {
+    let value = parseFloat(inputValue) || 0; // Use parseFloat and fallback to 0 if NaN
     if (value < min) {
-      setQuantity(min)
+      value = min;
     } else if (value > max) {
-      setQuantity(max)
-    } else {
-      setQuantity(value)
+      value = max;
     }
-  }
+    setQuantity(value);
+    setInputValue(value.toString()); // Update the inputValue state to the corrected value
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value); // Update the inputValue state immediately
+  };
+
+  useEffect(() => {
+    setInputValue(quantity.toString()); // Update the inputValue state when quantity prop changes
+  }, [quantity]);
 
   return (
     <input
       className={`h-lg w-lg rounded-[2rem] bg-transparent text-center font-btn ${className}`}
       type="number"
-      value={quantity.toString()}
+      value={inputValue}
       min={min}
       max={max}
       step="1"
       onChange={handleChange}
+      onBlur={handleBlur} // Call handleBlur on blur event
     />
-  )
+  );
 }
+
+

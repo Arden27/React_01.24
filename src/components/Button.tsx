@@ -15,7 +15,7 @@ function getButtonStyles(format: string): string {
   }
 
   if (types.includes('fill')) {
-    styles += 'bg-text text-bg3 '
+    styles += 'bg-text !text-bg3 !hover:text-header '
   }
 
   if (types.includes('round')) {
