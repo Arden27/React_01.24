@@ -50,22 +50,32 @@ export default function DropdownMenu({
   useOutsideClick([buttonRef, node], handleOutsideClick)
 
   useEffect(() => {
+    let labelSet = false
+    let defaultItemFound = false
+
     React.Children.forEach(children, (child) => {
-      if (React.isValidElement<DropdownButtonProps | DropdownListProps>(child)) {
-        if (child.type === DropdownMenu.Button) {
+      if (React.isValidElement<DropdownPlaceholderProps | DropdownListProps>(child)) {
+        if (child.type === DropdownMenu.Placeholder) {
           currentSetSelected(child.props.children as string)
+          labelSet = true
         } else if (child.type === DropdownMenu.List) {
           const listChild = React.Children.toArray(
             child.props.children
           ) as ReactElement<DropdownItemProps>[]
+
+          // Check for default item
           const defaultItem = listChild.find((item) => item.props.isDefault)
           if (defaultItem) {
             currentSetSelected(defaultItem.props.children as string)
+            defaultItemFound = true
+          } else if (!labelSet && !defaultItemFound && listChild.length > 0) {
+            // Fallback to first item if no default and no label
+            currentSetSelected(listChild[0].props.children as string)
           }
         }
       }
     })
-  }, [])
+  }, [children, currentSetSelected])
 
   return (
     <DropdownContext.Provider value={{ selected: currentSelected, handleSelect }}>
@@ -122,11 +132,18 @@ DropdownMenu.List = function DropdownList({ className, children }: DropdownListP
 interface DropdownItemProps {
   children: string
   onSelect?: (value: string) => void
-  className?: string
   isDefault?: boolean
+  className?: string
 }
 
-DropdownMenu.Item = function DropdownItem({ children, onSelect, className }: DropdownItemProps) {
+DropdownMenu.Item = function DropdownItem({
+  children,
+  onSelect,
+  isDefault,
+  className
+}: DropdownItemProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const dummy = isDefault
   return (
     <li onClick={() => onSelect && onSelect(children)}>
       <Button className={className} format="sm">
@@ -136,11 +153,11 @@ DropdownMenu.Item = function DropdownItem({ children, onSelect, className }: Dro
   )
 }
 
-interface DropdownButtonProps {
+interface DropdownPlaceholderProps {
   children: React.ReactNode
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-DropdownMenu.Button = function DropdownButton(_: DropdownButtonProps) {
+DropdownMenu.Placeholder = function DropdownPlaceholder(_: DropdownPlaceholderProps) {
   return <></>
 }

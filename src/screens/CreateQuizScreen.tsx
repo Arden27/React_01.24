@@ -22,7 +22,7 @@ export default function CreateQuizScreen() {
 
       {menuOptions.map((option, index) => (
         <DropdownMenu onSelect={() => {}} key={`dropdown-${index}`}>
-          <DropdownMenu.Button>{option.label}</DropdownMenu.Button>
+          <DropdownMenu.Placeholder>{option.label}</DropdownMenu.Placeholder>
           <DropdownMenu.List
             className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap
                   rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
