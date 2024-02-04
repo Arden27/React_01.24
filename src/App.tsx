@@ -1,9 +1,7 @@
 import CreateQuizScreen from '@/screens/CreateQuizScreen'
 
 function App() {
-  return (
-    <CreateQuizScreen />
-  )
+  return <CreateQuizScreen />
 }
 
 export default App

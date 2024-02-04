@@ -129,15 +129,12 @@ interface DropdownItemProps {
 DropdownMenu.Item = function DropdownItem({ children, onSelect, className }: DropdownItemProps) {
   return (
     <li onClick={() => onSelect && onSelect(children)}>
-      <Button
-        className={className}
-        format="sm"
-      >
+      <Button className={className} format="sm">
         {children}
       </Button>
     </li>
-  );
-};
+  )
+}
 
 interface DropdownButtonProps {
   children: React.ReactNode

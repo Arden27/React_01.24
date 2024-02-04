@@ -1,8 +1,7 @@
-@import "./styles" layer(base);
-@import "./fonts" layer(base);
-@import "./typography" layer(components);
+@import './styles' layer(base);
+@import './fonts' layer(base);
+@import './typography' layer(components);
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-

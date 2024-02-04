@@ -5,8 +5,8 @@ interface SetQuantityGroupProps {
   min: number
   max: number
   className?: string
-  classNameInput? : string,
-  classNameButtons? : string,
+  classNameInput?: string
+  classNameButtons?: string
 }
 
 export default function SetQuantityGroup({
@@ -14,13 +14,13 @@ export default function SetQuantityGroup({
   max,
   className,
   classNameInput,
-  classNameButtons,
-
+  classNameButtons
 }: SetQuantityGroupProps) {
   const [quantity, setQuantity] = useState(5)
 
   return (
-    <div className={`relative flex h-[calc(theme(spacing.lg)+theme(spacing.xs))] items-center justify-items-center ${className}`}>
+    <div
+      className={`relative flex h-[calc(theme(spacing.lg)+theme(spacing.xs))] items-center justify-items-center ${className}`}>
       <SetQuantityButton
         quantity={quantity}
         setQuantity={setQuantity}
@@ -90,27 +90,27 @@ interface InputQuantityProps {
 }
 
 function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuantityProps) {
-  const [inputValue, setInputValue] = useState(quantity.toString());
+  const [inputValue, setInputValue] = useState(quantity.toString())
 
   const handleBlur = () => {
-    let value = parseFloat(inputValue) || 0; // Use parseFloat and fallback to 0 if NaN
+    let value = parseFloat(inputValue) || 0 // Use parseFloat and fallback to 0 if NaN
     if (value < min) {
-      value = min;
+      value = min
     } else if (value > max) {
-      value = max;
+      value = max
     }
-    setQuantity(value);
-    setInputValue(value.toString()); // Update the inputValue state to the corrected value
-  };
+    setQuantity(value)
+    setInputValue(value.toString()) // Update the inputValue state to the corrected value
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value); // Update the inputValue state immediately
-  };
+    const value = e.target.value
+    setInputValue(value) // Update the inputValue state immediately
+  }
 
   useEffect(() => {
-    setInputValue(quantity.toString()); // Update the inputValue state when quantity prop changes
-  }, [quantity]);
+    setInputValue(quantity.toString()) // Update the inputValue state when quantity prop changes
+  }, [quantity])
 
   return (
     <input
@@ -123,7 +123,5 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
       onChange={handleChange}
       onBlur={handleBlur} // Call handleBlur on blur event
     />
-  );
+  )
 }
-
-
