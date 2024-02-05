@@ -1,0 +1,47 @@
+@layer base {
+  :root {
+    --text-flow: 1em;
+  }
+
+  body {
+    @apply text-md text-text;
+  }
+
+  h1,
+  h2,
+  h3,
+  .h1,
+  .h2,
+  .h3 {
+    @apply font-serif font-semibold leading-tight;
+
+    text-wrap: balance;
+  }
+
+  h1,
+  .h1 {
+    --text-flow: 3em;
+
+    @apply text-xl;
+  }
+
+  h2,
+  .h2 {
+    --text-flow: 2.5em;
+
+    @apply text-lg;
+  }
+
+  h3,
+  .h3 {
+    --text-flow: 1em;
+
+    @apply text-md;
+  }
+  h4,
+  .h4 {
+    --text-flow: 0em;
+
+    @apply text-md;
+  }
+}
