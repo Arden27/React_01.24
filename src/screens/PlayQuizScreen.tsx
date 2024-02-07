@@ -12,7 +12,7 @@ export default function PlayQuizScreen({ setIsPlaying }: PlayQuizScreenProps) {
         <h3>Question</h3>
         <h3 className='text-center'>3 of 15</h3>
       </div>
-      <h2 className="w-2/3">
+      <h2 className="w-2/3 text-center">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi consequatur perferendis
         minus eligendi fugit doloribus velit ad! Error quam quae earum, itaque nisi velit laborum
         quis sapiente odit ducimus aliquam.
