@@ -1,18 +1,10 @@
-import { Dispatch, SetStateAction } from 'react'
+import { SetIsPlayingProps } from './sharedTypes'
 import menuOptions from '@/data/menuOptions'
 import Button from '@/components/Button'
 import DropdownMenu from '@/components/DropdownMenu'
 import SetQuantityGroup from '@/components/SetQuantityGroup'
 
-// interface CreateQuizScreenProps {
-//   setIsPlaying: (value: boolean | ((prevState: boolean) => boolean)) => void;
-// }
-
-interface CreateQuizScreenProps {
-  setIsPlaying: Dispatch<SetStateAction<boolean>>
-}
-
-export default function CreateQuizScreen({ setIsPlaying }: CreateQuizScreenProps) {
+export default function CreateQuizScreen({ setIsPlaying }: SetIsPlayingProps) {
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
       <h1 className="text-2xl font-bold">Create Quiz</h1>

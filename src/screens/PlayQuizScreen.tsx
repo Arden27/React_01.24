@@ -1,11 +1,7 @@
-import { Dispatch, SetStateAction } from 'react'
+import { SetIsPlayingProps } from './sharedTypes'
 import Button from '@/components/Button'
 
-interface PlayQuizScreenProps {
-  setIsPlaying: Dispatch<SetStateAction<boolean>>
-}
-
-export default function PlayQuizScreen({ setIsPlaying }: PlayQuizScreenProps) {
+export default function PlayQuizScreen({ setIsPlaying }: SetIsPlayingProps) {
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
       <div className=''>
