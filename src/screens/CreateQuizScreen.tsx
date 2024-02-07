@@ -1,9 +1,18 @@
+import { Dispatch, SetStateAction } from 'react'
 import menuOptions from '@/data/menuOptions'
 import Button from '@/components/Button'
 import DropdownMenu from '@/components/DropdownMenu'
 import SetQuantityGroup from '@/components/SetQuantityGroup'
 
-export default function CreateQuizScreen() {
+// interface CreateQuizScreenProps {
+//   setIsPlaying: (value: boolean | ((prevState: boolean) => boolean)) => void;
+// }
+
+interface CreateQuizScreenProps {
+  setIsPlaying: Dispatch<SetStateAction<boolean>>
+}
+
+export default function CreateQuizScreen({ setIsPlaying }: CreateQuizScreenProps) {
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
       <h1 className="text-2xl font-bold">Create Quiz</h1>
@@ -37,7 +46,9 @@ export default function CreateQuizScreen() {
         </DropdownMenu>
       ))}
 
-      <Button format="lg border fill">Start quiz</Button>
+      <Button format="lg border fill" onClick={() => setIsPlaying(true)}>
+        Start quiz
+      </Button>
       <Button format="sm border">See my statistics</Button>
     </main>
   )
