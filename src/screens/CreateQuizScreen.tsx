@@ -1,12 +1,12 @@
-import { SetIsPlayingProps } from './sharedTypes'
+import { SetQuizStateProps } from './sharedTypes'
 import menuOptions from '@/data/menuOptions'
 import Button from '@/components/Button'
 import DropdownMenu from '@/components/DropdownMenu'
 import SetQuantityGroup from '@/components/SetQuantityGroup'
 
-export default function CreateQuizScreen({ setIsPlaying }: SetIsPlayingProps) {
+export default function CreateQuizScreen({ setQuizState }: SetQuizStateProps) {
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
+    <>
       <h1 className="text-2xl font-bold">Create Quiz</h1>
 
       <div className="flex items-center space-x-2">
@@ -38,10 +38,10 @@ export default function CreateQuizScreen({ setIsPlaying }: SetIsPlayingProps) {
         </DropdownMenu>
       ))}
 
-      <Button format="lg border fill" onClick={() => setIsPlaying(true)}>
+      <Button format="lg border fill" onClick={() => setQuizState('play')}>
         Start quiz
       </Button>
       <Button format="sm border">See my statistics</Button>
-    </main>
+    </>
   )
 }
