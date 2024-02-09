@@ -8,7 +8,7 @@ import { useEffect, RefObject } from 'react'
 
 type Handler = () => void
 
-export default function useOutsideClick(refs: RefObject<HTMLElement>[], handler: Handler) {
+export function useOutsideClick(refs: RefObject<HTMLElement>[], handler: Handler) {
   useEffect(() => {
     // Function to execute on document mousedown
     const handleClickOutside = (event: MouseEvent) => {
@@ -18,10 +18,8 @@ export default function useOutsideClick(refs: RefObject<HTMLElement>[], handler:
       }
     }
 
-    // Adding mousedown event listener
     document.addEventListener('mousedown', handleClickOutside)
 
-    // Cleanup - removing mousedown event listener
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }

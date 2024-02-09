@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import CreateQuizScreen from '@/screens/CreateQuizScreen'
-import ResultScreen from './screens/ResultScreen'
-import PlayQuizScreen from './screens/PlayQuizScreen'
+import { CreateQuizScreen } from '@/screens/CreateQuizScreen'
+import { ResultScreen } from './screens/ResultScreen'
+import { PlayQuizScreen } from './screens/PlayQuizScreen'
 
 type QuizState = 'create' | 'play' | 'result'
 

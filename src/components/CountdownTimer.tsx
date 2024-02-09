@@ -5,7 +5,7 @@ type CountdownTimerProps = {
   className?: string
 }
 
-export default function CountdownTimer({ initialTime, className }: CountdownTimerProps) {
+export function CountdownTimer({ initialTime, className }: CountdownTimerProps) {
   const [timer, setTimer] = useState<number>(initialTime)
 
   useEffect(() => {

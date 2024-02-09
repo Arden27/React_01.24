@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Button from './Button'
+import { Button } from './Button'
 
 interface SetQuantityGroupProps {
   min: number
@@ -9,7 +9,7 @@ interface SetQuantityGroupProps {
   classNameButtons?: string
 }
 
-export default function SetQuantityGroup({
+export function SetQuantityGroup({
   min,
   max,
   className,

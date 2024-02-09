@@ -1,8 +1,8 @@
 import { SetQuizStateProps } from './sharedTypes'
-import Button from '@/components/Button'
-import CountdownTimer from '@/components/CountdownTimer'
+import { Button } from '@/components/Button'
+import { CountdownTimer } from '@/components/CountdownTimer'
 
-export default function PlayQuizScreen({ setQuizState }: SetQuizStateProps) {
+export function PlayQuizScreen({ setQuizState }: SetQuizStateProps) {
   return (
     <div className="relative m-lg flex max-w-2xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
       <CountdownTimer

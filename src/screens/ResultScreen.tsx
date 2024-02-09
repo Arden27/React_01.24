@@ -1,8 +1,8 @@
-import Button from '@/components/Button'
+import { Button } from '@/components/Button'
 import { SetQuizStateProps } from './sharedTypes'
 import RestartIcon from '@/assets/svg/restart.svg?react'
 
-export default function ResultScreen({ setQuizState }: SetQuizStateProps) {
+export function ResultScreen({ setQuizState }: SetQuizStateProps) {
   return (
     <div className="relative m-lg flex flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
       <h3 className="flex-start slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl">
@@ -27,7 +27,7 @@ export default function ResultScreen({ setQuizState }: SetQuizStateProps) {
       text-text">
               3 / 15
             </h3>
-            <div className="p-sm text-md">78%</div>
+            <div className="p-xs text-md">78%</div>
           </div>
         </div>
       </div>
@@ -52,11 +52,8 @@ export default function ResultScreen({ setQuizState }: SetQuizStateProps) {
         </div>
 
         <div className="flex h-full flex-col items-end justify-end gap-xs">
-          <Button
-            format="sm border"
-            onClick={() => setQuizState('play')}
-            className="relative ">
-            <div className="relative gap-3xs flex h-full w-full flex-row items-center justify-center">
+          <Button format="sm border" onClick={() => setQuizState('play')} className="relative ">
+            <div className="relative flex h-full w-full flex-row items-center justify-center gap-3xs">
               <RestartIcon className="h-md w-md" />
               Restart
             </div>

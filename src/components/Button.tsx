@@ -58,4 +58,4 @@ function ButtonComponent(
 }
 
 const Button = React.forwardRef(ButtonComponent)
-export default Button
+export { Button }
