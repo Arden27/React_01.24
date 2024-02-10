@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext, useEffect, ReactElement } from 'react'
-import Button from '@/components/Button'
-import useOutsideClick from '@/hooks/useOutsideClick'
+import { Button } from '@/components/Button'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 
 import ChevronUp from '@/assets/svg/chevron-up.svg?react'
 import ChevronDown from '@/assets/svg/chevron-down.svg?react'
@@ -19,7 +19,7 @@ interface DropdownContextType {
 
 const DropdownContext = React.createContext<DropdownContextType>({})
 
-export default function DropdownMenu({
+export function DropdownMenu({
   children,
   onSelect,
   selected,

@@ -1,10 +1,10 @@
 import { SetQuizStateProps } from './sharedTypes'
 import menuOptions from '@/data/menuOptions'
-import Button from '@/components/Button'
-import DropdownMenu from '@/components/DropdownMenu'
-import SetQuantityGroup from '@/components/SetQuantityGroup'
+import { Button } from '@/components/Button'
+import { DropdownMenu } from '@/components/DropdownMenu'
+import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 
-export default function CreateQuizScreen({ setQuizState }: SetQuizStateProps) {
+export function CreateQuizScreen({ setQuizState }: SetQuizStateProps) {
   return (
     <>
       <h1 className="text-2xl font-bold">Create Quiz</h1>
