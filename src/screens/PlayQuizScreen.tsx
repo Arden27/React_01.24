@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { CountdownTimer } from '@/components/CountdownTimer'
 
-export function PlayQuizScreen({ }) {
+export function PlayQuizScreen({}) {
+  const navigate = useNavigate()
+
   return (
     <div className="relative m-lg flex max-w-2xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
       <CountdownTimer
@@ -16,7 +19,11 @@ export function PlayQuizScreen({ }) {
         minus eligendi fugit doloribus velit ad! Error quam quae earum, itaque nisi velit laborum
         quis sapiente odit ducimus aliquam.
       </h2>
-      <div className="flex flex-col gap-2" onClick={() => {}}>
+      <div
+        className="flex flex-col gap-2"
+        onClick={() => {
+          navigate('/result')
+        }}>
         <div className="flex flex-row gap-2">
           <Button format="lg border" className="bg-bg">
             Answer 1
@@ -37,7 +44,7 @@ export function PlayQuizScreen({ }) {
       <Button
         format="sm border"
         className=" hover:bg-red-700 hover:text-bg"
-        onClick={() => {}}>
+        onClick={() => navigate('/')}>
         End Quiz
       </Button>
     </div>

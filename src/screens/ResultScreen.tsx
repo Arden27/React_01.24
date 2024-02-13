@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import RestartIcon from '@/assets/svg/restart.svg?react'
 
 export function ResultScreen({}) {
+  const navigate = useNavigate()
+
   return (
     <div className="relative m-lg flex flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
       <h3 className="flex-start slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl">
@@ -51,13 +54,13 @@ export function ResultScreen({}) {
         </div>
 
         <div className="flex h-full flex-col items-end justify-end gap-xs">
-          <Button format="sm border" onClick={() => {}} className="relative ">
+          <Button format="sm border" onClick={() => navigate('/play')} className="relative ">
             <div className="relative flex h-full w-full flex-row items-center justify-center gap-3xs">
               <RestartIcon className="h-md w-md" />
               Restart
             </div>
           </Button>
-          <Button format="lg border" className="bg-bg" onClick={() => {}}>
+          <Button format="lg border" className="bg-bg" onClick={() => navigate('/')}>
             Choose another quiz
           </Button>
         </div>

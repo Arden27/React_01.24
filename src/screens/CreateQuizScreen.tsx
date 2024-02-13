@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom'
 import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 
 export function CreateQuizScreen({}) {
+  const navigate = useNavigate()
+
   return (
     <>
       <h1 className="text-2xl font-bold">Create Quiz</h1>
@@ -37,10 +40,12 @@ export function CreateQuizScreen({}) {
         </DropdownMenu>
       ))}
 
-      <Button format="lg border fill" onClick={() => {}}>
+      <Button format="lg border fill" onClick={() => navigate('/play')}>
         Start quiz
       </Button>
-      <Button format="sm border">See my statistics</Button>
+      <Button format="sm border" onClick={() => navigate('/statistics')}>
+        See my statistics
+      </Button>
     </>
   )
 }
