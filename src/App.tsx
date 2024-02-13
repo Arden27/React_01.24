@@ -1,22 +1,27 @@
-import { useState } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { CreateQuizScreen } from '@/screens/CreateQuizScreen'
 import { ResultScreen } from './screens/ResultScreen'
 import { PlayQuizScreen } from './screens/PlayQuizScreen'
 
-type QuizState = 'create' | 'play' | 'result'
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <CreateQuizScreen />
+  },
+  {
+    path: '/play',
+    element: <PlayQuizScreen />
+  },
+  {
+    path: '/result',
+    element: <ResultScreen />
+  }
+])
 
 function App() {
-  const [quizState, setQuizState] = useState<QuizState>('create')
-
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
-      {quizState === 'play' ? (
-        <PlayQuizScreen setQuizState={setQuizState} />
-      ) : quizState === 'create' ? (
-        <CreateQuizScreen setQuizState={setQuizState} />
-      ) : (
-        <ResultScreen setQuizState={setQuizState} />
-      )}
+      <RouterProvider router={router}/>
     </main>
   )
 }

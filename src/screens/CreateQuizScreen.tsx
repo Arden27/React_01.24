@@ -1,10 +1,9 @@
-import { SetQuizStateProps } from './sharedTypes'
 import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 
-export function CreateQuizScreen({ setQuizState }: SetQuizStateProps) {
+export function CreateQuizScreen({}) {
   return (
     <>
       <h1 className="text-2xl font-bold">Create Quiz</h1>
@@ -38,7 +37,7 @@ export function CreateQuizScreen({ setQuizState }: SetQuizStateProps) {
         </DropdownMenu>
       ))}
 
-      <Button format="lg border fill" onClick={() => setQuizState('play')}>
+      <Button format="lg border fill" onClick={() => {}}>
         Start quiz
       </Button>
       <Button format="sm border">See my statistics</Button>
