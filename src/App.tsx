@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { CreateQuizScreen } from '@/screens/CreateQuizScreen'
-import { ResultScreen } from './screens/ResultScreen'
-import { PlayQuizScreen } from './screens/PlayQuizScreen'
+import { ResultScreen } from '@/screens/ResultScreen'
+import { PlayQuizScreen } from '@/screens/PlayQuizScreen'
+import { StatisticsScreen } from '@/screens/StatisticsScreen'
 
 const router = createBrowserRouter([
   {
@@ -15,13 +16,17 @@ const router = createBrowserRouter([
   {
     path: '/result',
     element: <ResultScreen />
+  },
+  {
+    path: '/statistics',
+    element: <StatisticsScreen />
   }
 ])
 
 function App() {
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </main>
   )
 }
