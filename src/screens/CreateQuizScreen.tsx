@@ -8,7 +8,7 @@ export function CreateQuizScreen({}) {
   const navigate = useNavigate()
 
   return (
-    <>
+    <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
       <h1 className="text-2xl font-bold">Create Quiz</h1>
 
       <div className="flex items-center space-x-2">
@@ -46,6 +46,6 @@ export function CreateQuizScreen({}) {
       <Button format="sm border" onClick={() => navigate('/statistics')}>
         See my statistics
       </Button>
-    </>
+    </div>
   )
 }

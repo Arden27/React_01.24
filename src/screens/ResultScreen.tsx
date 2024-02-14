@@ -6,10 +6,7 @@ export function ResultScreen({}) {
   const navigate = useNavigate()
 
   return (
-    <div className="relative m-lg flex flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
-      <h3 className="flex-start slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl">
-        00:12
-      </h3>
+    <div className="relative max-w-xl m-lg flex flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
       <h1>Results</h1>
       <h2 className="text-center">Thank you for completing this quiz. Here are your results</h2>
       <div className="flex flex-row gap-sm">
