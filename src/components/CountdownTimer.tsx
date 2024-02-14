@@ -18,7 +18,6 @@ export function CountdownTimer({ initialTime, className }: CountdownTimerProps) 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      
       setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0))
     }, 1000)
 

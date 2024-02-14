@@ -1,3 +1,3 @@
-export function StatisticsScreen({}) {
+export function StatisticsScreen() {
   return <p>Stats</p>
 }

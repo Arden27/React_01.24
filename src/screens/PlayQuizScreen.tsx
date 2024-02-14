@@ -1,26 +1,30 @@
 import { useRef, useState } from 'react'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/navigation/router'
 import { Button } from '@/components/Button'
 import { CountdownTimer } from '@/components/CountdownTimer'
 
-export function PlayQuizScreen({}) {
-  const modalRef = useRef(null)
+export function PlayQuizScreen() {
   const navigate = useNavigate()
+  const modalRef = useRef(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const showDialog = () => setIsDialogOpen(true)
-  const closeDialog = () => setIsDialogOpen(false)
-  const confirmEndQuiz = () => {
-    closeDialog()
-    navigate('/')
+  const showDialog = () => {
+    setIsDialogOpen(true)
   }
 
-  const handleOutsideClick = () => {
+  const closeDialog = () => {
     setIsDialogOpen(false)
   }
 
-  useOutsideClick([modalRef], handleOutsideClick)
+  const confirmEndQuiz = () => {
+    navigate(ROUTES.root, { replace: true })
+  }
+
+  useOutsideClick([modalRef], () => {
+    setIsDialogOpen(false)
+  })
 
   return (
     <>
@@ -44,7 +48,7 @@ export function PlayQuizScreen({}) {
           <div
             className="flex flex-col gap-2"
             onClick={() => {
-              navigate('/result')
+              navigate(ROUTES.result, { replace: true })
             }}>
             <div className="flex flex-row gap-2">
               <Button format="lg border" className="bg-bg">
