@@ -5,7 +5,7 @@ import { ResultScreen } from '@/screens/ResultScreen'
 import { PlayQuizScreen } from '@/screens/PlayQuizScreen'
 import { StatisticsScreen } from '@/screens/StatisticsScreen'
 
-enum ROUTES {
+export enum ROUTES {
   root = '/',
   play = '/play',
   result = '/result',

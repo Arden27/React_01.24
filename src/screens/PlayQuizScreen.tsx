@@ -81,7 +81,7 @@ export function PlayQuizScreen({}) {
             <h2>Are you sure?</h2>
             <h3>Progress will be lost...</h3>
           </div>
-          <div className="flex w-full flex-row-reverse items-center justify-around gap-4">
+          <div className="flex w-full flex-row items-center justify-around gap-4">
             <Button format="lg fill" onClick={confirmEndQuiz}>
               Yes, End Quiz
             </Button>
