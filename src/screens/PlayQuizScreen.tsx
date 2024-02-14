@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { CountdownTimer } from '@/components/CountdownTimer'
 
 export function PlayQuizScreen({}) {
+  const modalRef = useRef(null)
   const navigate = useNavigate()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -13,6 +15,12 @@ export function PlayQuizScreen({}) {
     closeDialog()
     navigate('/')
   }
+
+  const handleOutsideClick = () => {
+    setIsDialogOpen(false)
+  }
+
+  useOutsideClick([modalRef], handleOutsideClick)
 
   return (
     <>
@@ -66,6 +74,7 @@ export function PlayQuizScreen({}) {
 
       <dialog
         open={isDialogOpen}
+        ref={modalRef}
         className="fixed inset-x-0 inset-y-0 mx-auto my-auto items-center justify-center bg-transparent transition">
         <div className="flex max-w-lg flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
           <div className="flex flex-col gap-2 text-center">
