@@ -43,11 +43,11 @@ export function PlayQuizScreen() {
               <span className="align-middle text-xl">3</span>/15
             </h1>
           </div>
-          <h2 className="text-center">
+          <p className="text-center text-lg">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi consequatur
             perferendis minus eligendi fugit doloribus velit ad! Error quam quae earum, itaque nisi
             velit laborum quis sapiente odit ducimus aliquam.
-          </h2>
+          </p>
           <div
             className="flex flex-col gap-2"
             onClick={() => {

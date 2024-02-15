@@ -28,7 +28,7 @@ export function StatisticsScreen() {
             <SetQuantityGroup
               min={1}
               max={256}
-              className="relative rounded-[2rem] border-2 border-text bg-bg3"
+              className="relative rounded-[2rem] border-2 border-text bg-gradient-to-r from-bg3 to-bg2"
               classNameButtons="text-lg"
               classNameInput="text-lg"
               initialState={cardCount}
@@ -44,7 +44,7 @@ export function StatisticsScreen() {
             <SetQuantityGroup
               min={1}
               max={256}
-              className="relative rounded-[2rem] border-2 border-text bg-bg3"
+              className="relative rounded-[2rem] border-2 border-text bg-gradient-to-r from-bg3 to-bg2"
               classNameButtons="text-lg"
               classNameInput="text-lg"
               initialState={gapSize}
@@ -61,9 +61,9 @@ export function StatisticsScreen() {
               min={-10.0}
               max={1}
               step={0.0001}
-              className="relative w-48 rounded-[2rem] border-2 border-text bg-bg3"
+              className="relative w-48 rounded-[2rem] border-2 border-text bg-gradient-to-r from-bg3 to-bg2"
               classNameButtons="text-lg"
-              classNameInput="text-lg w-3xl"
+              classNameInput="text-lg w-32"
               initialState={scalingGap}
               setExternalQuantity={setScalingGap}
             />
