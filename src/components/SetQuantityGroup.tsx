@@ -1,26 +1,28 @@
-import { useEffect, useState, Dispatch, SetStateAction } from 'react'
-import { Button } from './Button'
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import { Button } from './Button';
 
 interface SetQuantityGroupProps {
-  min: number
-  max: number
-  className?: string
-  classNameInput?: string
-  classNameButtons?: string
-  initialState?: any,
+  min: number;
+  max: number;
+  step?: number; // New step property
+  className?: string;
+  classNameInput?: string;
+  classNameButtons?: string;
+  initialState?: number; // Changed type from any to number
   setExternalQuantity?: Dispatch<SetStateAction<number>>;
 }
 
 export function SetQuantityGroup({
   min,
   max,
+  step = 1, // Default value for step
   className,
   classNameInput,
   classNameButtons,
   initialState,
   setExternalQuantity
 }: SetQuantityGroupProps) {
-  const [quantity, setQuantity] = useState(initialState || 1)
+  const [quantity, setQuantity] = useState(initialState || min);
 
   useEffect(() => {
     if (setExternalQuantity) {
@@ -36,6 +38,7 @@ export function SetQuantityGroup({
         setQuantity={setQuantity}
         direction="minus"
         limit={min}
+        step={step}
         className={classNameButtons}
       />
 
@@ -44,6 +47,7 @@ export function SetQuantityGroup({
         setQuantity={setQuantity}
         min={min}
         max={max}
+        step={step}
         className={classNameInput}
       />
 
@@ -52,18 +56,20 @@ export function SetQuantityGroup({
         setQuantity={setQuantity}
         direction="plus"
         limit={max}
+        step={step}
         className={classNameButtons}
       />
     </div>
-  )
+  );
 }
 
 interface SetQuantityButtonProps {
-  quantity: number
-  setQuantity: (quantity: number) => void
-  direction: 'plus' | 'minus'
-  limit: number
-  className?: string
+  quantity: number;
+  setQuantity: (quantity: number) => void;
+  direction: 'plus' | 'minus';
+  limit: number;
+  step: number; // New step property
+  className?: string;
 }
 
 function SetQuantityButton({
@@ -71,15 +77,16 @@ function SetQuantityButton({
   setQuantity,
   direction,
   limit,
+  step,
   className
 }: SetQuantityButtonProps) {
   const handleClick = () => {
     if (direction === 'plus' && quantity < limit) {
-      setQuantity(Math.round(quantity + 1))
+      setQuantity(quantity + step);
     } else if (direction === 'minus' && quantity > limit) {
-      setQuantity(Math.round(quantity - 1))
+      setQuantity(quantity - step);
     }
-  }
+  };
 
   return (
     <Button
@@ -88,39 +95,40 @@ function SetQuantityButton({
       onClick={handleClick}>
       {direction === 'plus' ? '+' : '-'}
     </Button>
-  )
+  );
 }
 
 interface InputQuantityProps {
-  quantity: number
-  setQuantity: (quantity: number) => void
-  min: number
-  max: number
-  className?: string
+  quantity: number;
+  setQuantity: (quantity: number) => void;
+  min: number;
+  max: number;
+  step: number; // New step property
+  className?: string;
 }
 
-function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuantityProps) {
-  const [inputValue, setInputValue] = useState(quantity.toString())
+function InputQuantity({ quantity, setQuantity, min, max, step, className }: InputQuantityProps) {
+  const [inputValue, setInputValue] = useState(quantity.toString());
 
   const handleBlur = () => {
-    let value = parseFloat(inputValue) || 0 // Use parseFloat and fallback to 0 if NaN
+    let value = parseFloat(inputValue) || min; // Changed fallback to min if NaN
     if (value < min) {
-      value = min
+      value = min;
     } else if (value > max) {
-      value = max
+      value = max;
     }
-    setQuantity(value)
-    setInputValue(value.toString()) // Update the inputValue state to the corrected value
-  }
+    setQuantity(value);
+    setInputValue(value.toString());
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setInputValue(value) // Update the inputValue state immediately
-  }
+    const value = e.target.value;
+    setInputValue(value);
+  };
 
   useEffect(() => {
-    setInputValue(quantity.toString()) // Update the inputValue state when quantity prop changes
-  }, [quantity])
+    setInputValue(quantity.toString());
+  }, [quantity]);
 
   return (
     <input
@@ -129,9 +137,9 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
       value={inputValue}
       min={min}
       max={max}
-      step="1"
+      step={step}
       onChange={handleChange}
-      onBlur={handleBlur} // Call handleBlur on blur event
+      onBlur={handleBlur}
     />
-  )
+  );
 }

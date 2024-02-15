@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SetQuantityGroup } from '@/components/SetQuantityGroup';
 
 export function StatisticsScreen() {
-  const [cardCount, setCardCount] = useState(32);
-  const [gapSize, setGapSize] = useState(3);
-  const [scalingGap, setScalingGap] = useState(0.02); // State for scaling gap
+  const [cardCount, setCardCount] = useState(64);
+  const [gapSize, setGapSize] = useState(1);
+  const [scalingGap, setScalingGap] = useState(0.0015); // State for scaling gap
   const [isHovered, setIsHovered] = useState(true);
 
   const getColor = (index: number) => {
@@ -19,7 +19,7 @@ export function StatisticsScreen() {
   };
 
   return (
-    <div className="m-sm flex h-screen w-screen flex-col items-start justify-start gap-sm">
+    <div className="ml-lg mt-xs flex h-screen w-screen flex-col items-start justify-start gap-sm">
       <div className="relative flex flex-row gap-sm">
         {/* SetQuantityGroup for Number of Cards */}
         <div className="flex flex-col items-center">
@@ -58,12 +58,12 @@ export function StatisticsScreen() {
           <h3 className="text-center">Scaling Gap: </h3>
           <div className="flex">
             <SetQuantityGroup
-              min={0.01}
+              min={-10.0000000}
               max={1}
-              step={0.01}
-              className="relative rounded-[2rem] border-2 border-text bg-bg3"
+              step={0.0001}
+              className="relative rounded-[2rem] border-2 border-text bg-bg3 w-48"
               classNameButtons="text-lg"
-              classNameInput="text-lg"
+              classNameInput="text-lg w-32"
               initialState={scalingGap}
               setExternalQuantity={setScalingGap}
             />
@@ -73,7 +73,7 @@ export function StatisticsScreen() {
 
       {/* Card Display Section */}
       <div
-        className="group relative flex h-[500px] w-[300px] max-w-xl flex-col items-center justify-center gap-lg rounded-[2rem] border-solid border-text bg-red-300 transition duration-500 ease-in-out"
+        className="group relative flex h-[500px] w-[300px] max-w-xl flex-col items-center justify-center gap-lg rounded-[2rem] border-solid border-text bg-gradient-to-r from-bg3 to-bg2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(false)}
         onMouseLeave={() => setIsHovered(true)}
       >
