@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/navigation/router'
 
 type CountdownTimerProps = {
   initialTime: number
@@ -7,6 +9,12 @@ type CountdownTimerProps = {
 
 export function CountdownTimer({ initialTime, className }: CountdownTimerProps) {
   const [timer, setTimer] = useState<number>(initialTime)
+
+  const navigate = useNavigate()
+
+  if (timer === 0) {
+    navigate(ROUTES.result)
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
