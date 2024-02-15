@@ -38,7 +38,10 @@ export function PlayQuizScreen() {
             initialTime={42}
           />
           <div className="flex flex-col gap-2xs text-center">
-            <h3>Question 3 of 15</h3>
+            
+            <h1 className='text-sm'>Question&nbsp;
+              <span className="align-middle text-xl">3</span>/15
+            </h1>
           </div>
           <h2 className="text-center">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi consequatur
@@ -85,12 +88,12 @@ export function PlayQuizScreen() {
             <h2>Are you sure?</h2>
             <h3>Progress will be lost...</h3>
           </div>
-          <div className="flex w-full flex-row items-center justify-around gap-4">
-            <Button format="lg fill" onClick={confirmEndQuiz}>
-              Yes, End Quiz
+          <div className="flex w-full flex-row-reverse items-center justify-around gap-4">
+            <Button format="sm" onClick={confirmEndQuiz}>
+              Confirm
             </Button>
-            <Button format="sm " onClick={closeDialog}>
-              No, Continue
+            <Button format="lg fill" onClick={closeDialog}>
+              Cancel
             </Button>
           </div>
         </div>

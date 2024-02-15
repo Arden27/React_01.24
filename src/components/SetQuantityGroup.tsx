@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import { Button } from './Button'
 
 interface SetQuantityGroupProps {
@@ -7,6 +7,8 @@ interface SetQuantityGroupProps {
   className?: string
   classNameInput?: string
   classNameButtons?: string
+  initialState?: any,
+  setExternalQuantity?: Dispatch<SetStateAction<number>>;
 }
 
 export function SetQuantityGroup({
@@ -14,9 +16,17 @@ export function SetQuantityGroup({
   max,
   className,
   classNameInput,
-  classNameButtons
+  classNameButtons,
+  initialState,
+  setExternalQuantity
 }: SetQuantityGroupProps) {
-  const [quantity, setQuantity] = useState(5)
+  const [quantity, setQuantity] = useState(initialState || 1)
+
+  useEffect(() => {
+    if (setExternalQuantity) {
+      setExternalQuantity(quantity);
+    }
+  }, [quantity, setExternalQuantity]);
 
   return (
     <div
