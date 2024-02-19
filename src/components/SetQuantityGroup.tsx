@@ -21,7 +21,10 @@ export function SetQuantityGroup({
 
   return (
     <div
-      className={`relative flex h-[calc(theme(spacing.lg)+theme(spacing.xs))] items-center justify-items-center ${className}`}>
+      className={twMerge(
+        `relative flex h-[calc(theme(spacing.lg)+theme(spacing.xs))] items-center justify-items-center`,
+        className
+      )}>
       <SetQuantityButton
         quantity={quantity}
         setQuantity={setQuantity}
@@ -75,7 +78,7 @@ function SetQuantityButton({
   return (
     <Button
       format="round"
-      className={`${direction === 'plus' ? 'mx-3xs' : 'mx-3xs'} ${className}`}
+      className={twMerge(direction === 'plus' ? 'mx-3xs' : 'mx-3xs', className)}
       onClick={handleClick}>
       {direction === 'plus' ? '+' : '-'}
     </Button>
@@ -122,7 +125,7 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
       max={max}
       step="1"
       onChange={handleChange}
-      onBlur={handleBlur} // Call handleBlur on blur event
+      onBlur={handleBlur}
     />
   )
 }
