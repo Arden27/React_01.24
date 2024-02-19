@@ -63,7 +63,7 @@ export function StatisticsScreen() {
               step={0.0001}
               className="relative w-48 rounded-[2rem] border-2 border-text bg-gradient-to-r from-bg3 to-bg2"
               classNameButtons="text-lg"
-              classNameInput="text-lg w-32"
+              classNameInput="text-lg w-3xl"
               initialState={scalingGap}
               setExternalQuantity={setScalingGap}
             />
@@ -73,13 +73,13 @@ export function StatisticsScreen() {
 
       {/* Card Display Section */}
       <div
-        className="group relative flex h-[500px] w-[300px] max-w-xl flex-col items-center justify-center gap-lg rounded-[2rem] border-solid border-text bg-gradient-to-r from-bg3 to-bg2 shadow-lg transition duration-500 ease-in-out"
+        className="group relative flex h-[500px] w-[300px] max-w-xl flex-col items-center justify-center gap-lg rounded-[2rem] border-solid border-text bg-gradient-to-r from-bg3 to-bg2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(false)}
         onMouseLeave={() => setIsHovered(true)}>
         {Array.from({ length: cardCount }, (_, index) => (
           <div
             key={index}
-            className="absolute flex h-full w-full max-w-xl flex-col items-center justify-center gap-lg rounded-[2rem] shadow-lg transition duration-500 ease-in-out"
+            className="absolute flex h-full w-full max-w-xl flex-col items-center justify-center gap-lg rounded-[2rem] transition duration-500 ease-in-out shadow-md"
             style={{
               zIndex: -10 - index * 1,
               backgroundColor: getColor(index),

@@ -4,9 +4,14 @@ import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
+import { twMerge } from 'tailwind-merge'
 
 export function CreateQuizScreen() {
   const navigate = useNavigate()
+
+  const className = ['bg-red-300']
+  const className2 = ['bg-blue-300']
+  
 
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -41,8 +46,11 @@ export function CreateQuizScreen() {
         </DropdownMenu>
       ))}
 
-      <Button format="lg border fill" onClick={() => navigate(ROUTES.play)}>
+      <Button format="lg fill border" className='' onClick={() => navigate(ROUTES.play)}>
         Start quiz
+      </Button>
+      <Button format="lg fill border" className={twMerge("bg-white", className, className2)}>
+        Test
       </Button>
       <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
         See my statistics
