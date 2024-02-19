@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button } from './Button'
+import { twMerge } from 'tailwind-merge'
 
 interface SetQuantityGroupProps {
   min: number
@@ -114,7 +115,7 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
 
   return (
     <input
-      className={`h-lg w-lg rounded-[2rem] bg-transparent text-center font-btn ${className}`}
+      className={twMerge(`h-lg w-lg rounded-[2rem] bg-transparent text-center font-btn`, className)}
       type="number"
       value={inputValue}
       min={min}

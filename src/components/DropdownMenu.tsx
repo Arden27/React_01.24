@@ -81,7 +81,7 @@ export function DropdownMenu({
     <DropdownContext.Provider value={{ selected: currentSelected, handleSelect }}>
       <div className="relative cursor-pointer text-end" ref={node}>
         <Button
-          className={`whitespace-nowrap hover:text-bg2 ${isOpen ? 'bg-text !text-bg2' : ''}`}
+          className={`whitespace-nowrap hover:text-bg2 ${isOpen ? 'bg-text text-bg2' : ''}`}
           format="sm"
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}>

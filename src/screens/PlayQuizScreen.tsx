@@ -69,7 +69,7 @@ export function PlayQuizScreen() {
           </div>
           <Button
             format="sm border"
-            className="opacity-80 hover:bg-red-700 hover:text-bg hover:opacity-100"
+            className="opacity-80 hover:opacity-100"
             onClick={showDialog}>
             End Quiz
           </Button>
