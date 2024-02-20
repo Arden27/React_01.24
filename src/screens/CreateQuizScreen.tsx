@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
 import menuOptions from '@/data/menuOptions'
@@ -5,8 +6,50 @@ import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 
+interface Category {
+  id: number
+  name: string
+}
+
 export function CreateQuizScreen() {
   const navigate = useNavigate()
+  const [categories, setCategories] = useState<Category[]>()
+  const initialLoad = useRef(true)
+  const [quizSettings, setQuizSettings] = useState({
+    category: null,
+    difficulty: null,
+    type: null,
+    time: null
+  })
+
+  useEffect(() => {
+    if (initialLoad.current) {
+      initialLoad.current = false
+      fetch('https://opentdb.com/api_category.php')
+        .then((response) => response.json())
+        .then((data) => {
+          setCategories(data.trivia_categories)
+          console.log('loaded')
+        })
+    } else {
+      console.log('second load')
+    }
+  }, [])
+
+  const handleSelect = (label: string, selectedItem: string) => {
+    setQuizSettings(prevSettings => ({
+      ...prevSettings,
+      [label.toLowerCase()]: selectedItem
+    }));
+  };
+  
+  const menuOptionsWithCategories = [
+    categories && {
+      label: 'Category',
+      items: categories.map((category) => category.name),
+    },
+    ...menuOptions
+  ];
 
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -24,9 +67,14 @@ export function CreateQuizScreen() {
         <h3 className="text-lg">questions</h3>
       </div>
 
-      {menuOptions.map((option, index) => (
-        <DropdownMenu onSelect={() => {}} key={`dropdown-${index}`}>
-          <DropdownMenu.Placeholder>{option.label}</DropdownMenu.Placeholder>
+      {menuOptionsWithCategories.map((option, index) => (
+        option && 
+        <DropdownMenu 
+        onSelect={(selectedItem) => handleSelect(option.label, selectedItem)} 
+        key={`dropdown-${index}`}
+        selected={quizSettings[option.label.toLowerCase()]}
+        >
+          <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
           <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
             {option.items.map((item, itemIndex) => (
               <DropdownMenu.Item
@@ -45,6 +93,7 @@ export function CreateQuizScreen() {
       <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
         See my statistics
       </Button>
+      <div>{JSON.stringify(quizSettings)}</div>
     </div>
   )
 }
