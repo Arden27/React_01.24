@@ -49,7 +49,12 @@ export function DropdownMenu({
 
   useOutsideClick([buttonRef, node], handleOutsideClick)
 
+  const [initialValueSet, setInitialValueSet] = useState(false)
+
   useEffect(() => {
+    if (initialValueSet) {
+      return // Skip the effect if the initial value is already set
+    }
     let labelSet = false
     let defaultItemFound = false
 
@@ -75,7 +80,8 @@ export function DropdownMenu({
         }
       }
     })
-  }, [children, currentSetSelected])
+    setInitialValueSet(true) // Mark the
+  }, [children, currentSetSelected, initialValueSet])
 
   return (
     <DropdownContext.Provider value={{ selected: currentSelected, handleSelect }}>
