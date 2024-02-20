@@ -17,7 +17,7 @@ interface Category {
 export function CreateQuizScreen() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const quizSettings = useSelector((state: RootState) => state.quiz) // Specify RootState type
+  const quizSettings = useSelector((state: RootState) => state.quiz as QuizState)
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
@@ -28,6 +28,10 @@ export function CreateQuizScreen() {
         .then((response) => response.json())
         .then((data) => {
           setCategories(data.trivia_categories)
+          console.log('data:')
+          console.log(data)
+          console.log('data.trivia_categories:')
+          console.log(data.trivia_categories)
           console.log('loaded')
         })
     } else {
@@ -36,7 +40,7 @@ export function CreateQuizScreen() {
   }, [])
 
   const handleSelect = (label: string, selectedItem: string) => {
-    switch (label.toLowerCase()) {
+    switch (label) {
       case 'category':
         dispatch(setCategory(selectedItem))
         break
@@ -60,11 +64,19 @@ export function CreateQuizScreen() {
 
   const menuOptionsWithCategories = [
     categories && {
-      label: 'Category',
-      items: categories.map((category) => category.name)
+      label: 'category',
+      items: categories.map((category) => {
+        return {
+          name: category.name,
+          id: category.id
+        }
+      })
     },
     ...menuOptions
   ]
+
+  console.log('menuOptionsWithCategories')
+  console.log(menuOptionsWithCategories)
 
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -90,14 +102,14 @@ export function CreateQuizScreen() {
             <DropdownMenu
               onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
               key={`dropdown-${index}`}
-              selected={quizSettings[option.label.toLowerCase() as keyof QuizState] as string}>
+              selected={quizSettings[option.label as keyof QuizState] as string}>
               <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
               <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
                 {option.items.map((item, itemIndex) => (
                   <DropdownMenu.Item
                     key={`${option.label}-${item}-${itemIndex}`}
                     className="w-full justify-end border-transparent hover:text-bar">
-                    {item}
+                    {item.name}
                   </DropdownMenu.Item>
                 ))}
               </DropdownMenu.List>
@@ -112,6 +124,7 @@ export function CreateQuizScreen() {
         See my statistics
       </Button>
       <div>{JSON.stringify(quizSettings)}</div>
+      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category}` : ''}${quizSettings.difficulty ? `&difficulty=${quizSettings.difficulty}` : ''}${quizSettings.type ? `&type=${quizSettings.type}` : ''}`}</p>
     </div>
   )
 }

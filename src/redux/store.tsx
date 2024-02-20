@@ -2,11 +2,11 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 export interface QuizState {
-  numberOfQuestions: number;
-  category: string | null;
-  difficulty: string | null;
-  type: string | null;
-  time: string | null;
+  numberOfQuestions: number
+  category: string | null
+  difficulty: string | null
+  type: string | null
+  time: string | null
 }
 
 const initialState: QuizState = {
@@ -15,9 +15,8 @@ const initialState: QuizState = {
   difficulty: null,
   type: null,
   time: null
-};
+}
 
-// Create a slice for quiz settings
 const quizSlice = createSlice({
   name: 'quiz',
   initialState,
@@ -40,11 +39,9 @@ const quizSlice = createSlice({
   }
 })
 
-// Export actions
 export const { setNumberOfQuestions, setCategory, setDifficulty, setType, setTime } =
   quizSlice.actions
 
-// Configure the Redux store
 const store = configureStore({
   reducer: {
     quiz: quizSlice.reducer

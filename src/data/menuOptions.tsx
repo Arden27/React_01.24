@@ -1,16 +1,29 @@
 const menuOptions = [
   {
-    label: 'Difficulty',
-    items: ['Any Difficulty', 'Easy', 'Medium', 'Hard'],
+    label: 'difficulty',
+    items: [
+      { name: 'Any Difficulty', id: 'any' },
+      { name: 'Easy', id: 'easy' },
+      { name: 'Medium', id: 'medium' },
+      { name: 'Hard', id: 'hard' }
+    ],
   },
   {
-    label: 'Type',
-    items: ['Any Type', 'Multiple Choice', 'True / False'],
+    label: 'type',
+    items: [
+      { name: 'Any Type', id: 'any' },
+      { name: 'Multiple Choice', id: 'multiple' },
+      { name: 'True / False', id: 'boolean' }
+    ],
   },
   {
-    label: 'Time',
-    items: ['1m', '2m', '5m'],
+    label: 'time',
+    items: [
+      { name: '1m', id: '1' },
+      { name: '2m', id: '2' },
+      { name: '5m', id: '5' }
+    ],
   }
-]
+];
 
 export default menuOptions
