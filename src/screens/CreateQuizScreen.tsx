@@ -7,6 +7,7 @@ import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 import { setCategory, setDifficulty, setType, setTime, setNumberOfQuestions } from '@/redux/store'
+import { RootState, QuizState } from '@/redux/store'
 
 interface Category {
   id: number
@@ -16,7 +17,7 @@ interface Category {
 export function CreateQuizScreen() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const quizSettings = useSelector((state) => state.quiz)
+  const quizSettings = useSelector((state: RootState) => state.quiz) // Specify RootState type
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
@@ -29,6 +30,8 @@ export function CreateQuizScreen() {
           setCategories(data.trivia_categories)
           console.log('loaded')
         })
+    } else {
+      console.log('another load')
     }
   }, [])
 
@@ -51,7 +54,7 @@ export function CreateQuizScreen() {
     }
   }
 
-  const handleSetQuantity = (quantity) => {
+  const handleSetQuantity = (quantity: number) => {
     dispatch(setNumberOfQuestions(quantity))
   }
 
@@ -87,7 +90,7 @@ export function CreateQuizScreen() {
             <DropdownMenu
               onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
               key={`dropdown-${index}`}
-              selected={quizSettings[option.label.toLowerCase()]}>
+              selected={quizSettings[option.label.toLowerCase() as keyof QuizState] as string}>
               <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
               <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
                 {option.items.map((item, itemIndex) => (

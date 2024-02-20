@@ -1,14 +1,21 @@
 // store.js
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 
-// Initial state for the quiz
-const initialState = {
+export interface QuizState {
+  numberOfQuestions: number;
+  category: string | null;
+  difficulty: string | null;
+  type: string | null;
+  time: string | null;
+}
+
+const initialState: QuizState = {
   numberOfQuestions: 5,
   category: null,
   difficulty: null,
   type: null,
   time: null
-}
+};
 
 // Create a slice for quiz settings
 const quizSlice = createSlice({
@@ -44,4 +51,5 @@ const store = configureStore({
   }
 })
 
+export type RootState = ReturnType<typeof store.getState>
 export default store
