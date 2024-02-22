@@ -6,7 +6,7 @@ import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
-import { setCategory, setDifficulty, setType, setTime, setNumberOfQuestions } from '@/redux/store'
+import { setCategory, setDifficulty, setType, setTime, setNumberOfQuestions, setQuestions } from '@/redux/store'
 import { RootState, QuizState } from '@/redux/store'
 
 interface Category {
@@ -21,6 +21,21 @@ export function CreateQuizScreen() {
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
+  const questions = useSelector((state: RootState) => state.quiz.questions)
+
+  // const [questions, setQuestions] = useState('test')
+
+  const getQuestions = () => {
+    console.log('fetching')
+    fetch(
+      `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(setQuestions(data.results))
+      })
+  }
+
   useEffect(() => {
     if (initialLoad.current) {
       initialLoad.current = false
@@ -28,18 +43,11 @@ export function CreateQuizScreen() {
         .then((response) => response.json())
         .then((data) => {
           setCategories(data.trivia_categories)
-          console.log('data:')
-          console.log(data)
-          console.log('data.trivia_categories:')
-          console.log(data.trivia_categories)
-          console.log('loaded')
         })
-    } else {
-      console.log('another load')
     }
   }, [])
 
-  // temporary workaround function to find according to the selected option id for API call, TODO - upgrade DropdownMenu function to be able to return additional data 
+  // temporary workaround function to find according to the selected option id for API call, TODO - upgrade DropdownMenu function to be able to return additional data
   const findID = (category: string, name: string) => {
     for (const optionsObject of menuOptionsWithCategories) {
       if (optionsObject.label === category) {
@@ -88,9 +96,6 @@ export function CreateQuizScreen() {
     ...menuOptions
   ]
 
-  console.log('menuOptionsWithCategories')
-  console.log(menuOptionsWithCategories)
-
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
       <h1 className="text-2xl font-bold">Create Quiz</h1>
@@ -136,8 +141,12 @@ export function CreateQuizScreen() {
       <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
         See my statistics
       </Button>
-      <div>{JSON.stringify(quizSettings)}</div>
-      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type ? `&type=${quizSettings.type.id}` : ''}`}</p>
+      {/* <div>{JSON.stringify(quizSettings)}</div>
+      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`}</p> */}
+      <Button onClick={getQuestions} format="sm fill border">Get questions</Button>
+      <div className='w-4/5'>
+        {JSON.stringify(questions)}
+      </div>
     </div>
   )
 }
