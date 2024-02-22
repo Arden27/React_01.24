@@ -3,9 +3,9 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 export interface QuizState {
   numberOfQuestions: number
-  category: string | null
-  difficulty: string | null
-  type: string | null
+  category: {name: string, id: number} | null
+  difficulty: {name: string, id: string} | null
+  type: {name: string, id: string} | null
   time: string | null
 }
 

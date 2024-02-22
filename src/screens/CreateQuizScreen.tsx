@@ -39,19 +39,32 @@ export function CreateQuizScreen() {
     }
   }, [])
 
+  // temporary workaround function to find according to the selected option id for API call, TODO - upgrade DropdownMenu function to be able to return additional data 
+  const findID = (category: string, name: string) => {
+    for (const optionsObject of menuOptionsWithCategories) {
+      if (optionsObject.label === category) {
+        for (const item of optionsObject.items) {
+          if (item.name === name) {
+            return item.id
+          }
+        }
+      }
+    }
+  }
+
   const handleSelect = (label: string, selectedItem: string) => {
     switch (label) {
       case 'category':
-        dispatch(setCategory(selectedItem))
+        dispatch(setCategory({ name: selectedItem, id: findID(label, selectedItem) }))
         break
       case 'difficulty':
-        dispatch(setDifficulty(selectedItem))
+        dispatch(setDifficulty({ name: selectedItem, id: findID(label, selectedItem) }))
         break
       case 'type':
-        dispatch(setType(selectedItem))
+        dispatch(setType({ name: selectedItem, id: findID(label, selectedItem) }))
         break
       case 'time':
-        dispatch(setTime(selectedItem))
+        dispatch(setTime(parseInt(selectedItem)))
         break
       default:
         break
@@ -124,7 +137,7 @@ export function CreateQuizScreen() {
         See my statistics
       </Button>
       <div>{JSON.stringify(quizSettings)}</div>
-      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category}` : ''}${quizSettings.difficulty ? `&difficulty=${quizSettings.difficulty}` : ''}${quizSettings.type ? `&type=${quizSettings.type}` : ''}`}</p>
+      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type ? `&type=${quizSettings.type.id}` : ''}`}</p>
     </div>
   )
 }
