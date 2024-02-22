@@ -4,11 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
 import { Button } from '@/components/Button'
 import { CountdownTimer } from '@/components/CountdownTimer'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
   const modalRef = useRef(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const questions = useSelector((state: RootState) => state.quiz.questions)
+
+  const dispatch = useDispatch()
 
   const showDialog = () => {
     setIsDialogOpen(true)
@@ -40,11 +45,7 @@ export function PlayQuizScreen() {
           <div className="flex flex-col gap-2xs text-center">
             <h3>Question 3 of 15</h3>
           </div>
-          <h2 className="text-center">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi consequatur
-            perferendis minus eligendi fugit doloribus velit ad! Error quam quae earum, itaque nisi
-            velit laborum quis sapiente odit ducimus aliquam.
-          </h2>
+          <h2 className="text-center">{questions[0].question}</h2>
           <div
             className="flex flex-col gap-2"
             onClick={() => {
@@ -52,25 +53,22 @@ export function PlayQuizScreen() {
             }}>
             <div className="flex flex-row gap-2">
               <Button format="lg border" className="bg-bg">
-                Answer 1
+                {questions[0].incorrect_answers[0]}
               </Button>
               <Button format="lg border" className="bg-bg">
-                Answer 2
+                {questions[0].incorrect_answers[1]}
               </Button>
             </div>
             <div className="flex flex-row gap-2">
               <Button format="lg border" className="bg-bg">
-                Answer 3
+                {questions[0].correct_answer}
               </Button>
               <Button format="lg border" className="bg-bg">
-                Answer 4
+                {questions[0].incorrect_answers[2]}
               </Button>
             </div>
           </div>
-          <Button
-            format="sm border"
-            className="opacity-80 hover:opacity-100"
-            onClick={showDialog}>
+          <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={showDialog}>
             End Quiz
           </Button>
         </div>
