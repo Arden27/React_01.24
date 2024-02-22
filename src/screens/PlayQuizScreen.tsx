@@ -1,3 +1,4 @@
+import he from 'he'
 import { useRef, useState } from 'react'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useNavigate } from 'react-router-dom'
@@ -45,7 +46,7 @@ export function PlayQuizScreen() {
           <div className="flex flex-col gap-2xs text-center">
             <h3>Question 3 of 15</h3>
           </div>
-          <h2 className="text-center">{questions[0].question}</h2>
+          <h2 className="text-center">{he.decode(questions[0].question)}</h2>
           <div
             className="flex flex-col gap-2"
             onClick={() => {
