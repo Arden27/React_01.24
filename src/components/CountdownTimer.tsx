@@ -27,7 +27,7 @@ export function CountdownTimer({ initialTime, className }: CountdownTimerProps) 
     }, 1000)
 
     return () => {
-      dispatch(setTimeSpent(timerRef.current))
+      dispatch(setTimeSpent(initialTime - timerRef.current))
       clearInterval(interval)
     }
   }, [dispatch])
