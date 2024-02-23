@@ -43,13 +43,17 @@ const quizSlice = createSlice({
     setQuestions: (state, action) => {
       state.questions = action.payload
     },
-    addCorrectAnsver: (state) => {
+    addCorrectAnswer: (state) => {
       state.correctAnswers++
-    }
+    },
+    resetCorrectAnswers: (state) => {
+      state.correctAnswers = 0
+    },
+    resetSettings: () => initialState
   }
 })
 
-export const { setNumberOfQuestions, setCategory, setDifficulty, setType, setTime, setQuestions, addCorrectAnsver } =
+export const { setNumberOfQuestions, setCategory, setDifficulty, setType, setTime, setQuestions, addCorrectAnswer, resetCorrectAnswers, resetSettings } =
   quizSlice.actions
 
 const store = configureStore({
