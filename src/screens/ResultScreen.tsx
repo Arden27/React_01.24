@@ -33,7 +33,7 @@ export function ResultScreen() {
   const handleRestart = async () => {
     // Check for network connectivity
     if (!navigator.onLine) {
-      setModalMessage("No Internet")
+      setModalMessage('No Internet')
       toggleModal() // Show dialog immediately if offline
       return
     }
@@ -101,13 +101,20 @@ export function ResultScreen() {
             <h3 className="text-lg">Quiz Settings</h3>
             <ul className="ml-sm [&>*>span]:font-btn [&>*]:p-3xs">
               <li>
-                Category: <span>{currentQuizSettings.category ? currentQuizSettings.category.name : "Any"}</span>
+                Category:{' '}
+                <span>
+                  {currentQuizSettings.category ? currentQuizSettings.category.name : 'Any'}
+                </span>
               </li>
               <li>
-                Difficulty: <span>{currentQuizSettings.difficulty ? currentQuizSettings.difficulty.name : "Any"}</span>
+                Difficulty:{' '}
+                <span>
+                  {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.name : 'Any'}
+                </span>
               </li>
               <li>
-                Type: <span>{currentQuizSettings.type ? currentQuizSettings.type.name : "Any"}</span>
+                Type:{' '}
+                <span>{currentQuizSettings.type ? currentQuizSettings.type.name : 'Any'}</span>
               </li>
               <li>
                 Time: <span>{currentQuizSettings.time} min</span>
@@ -122,9 +129,12 @@ export function ResultScreen() {
                 Restart
               </div>
             </Button>
-            <Button format="lg border" className="bg-bg" onClick={() => {
-              dispatch(resetSettings())
-              navigate(ROUTES.root)
+            <Button
+              format="lg border"
+              className="bg-bg"
+              onClick={() => {
+                dispatch(resetSettings())
+                navigate(ROUTES.root)
               }}>
               Choose another quiz
             </Button>

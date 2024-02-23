@@ -26,7 +26,7 @@ export function PlayQuizScreen() {
       const currentAnswers = [...questions[currentQuestion].incorrect_answers, currentCorrectAnswer]
       setShuffledAnswers(shuffleArray(currentAnswers))
     }
-  }, [questions, currentQuestion])
+  }, [questions, currentQuestion, currentCorrectAnswer])
 
   useEffect(() => {
     if (questions.length === 0) {
@@ -57,7 +57,7 @@ export function PlayQuizScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const toggleDialog = () => {
-    setIsModalOpen(prev => !prev)
+    setIsModalOpen((prev) => !prev)
   }
 
   const confirmEndQuiz = () => {
@@ -147,7 +147,10 @@ export function PlayQuizScreen() {
             )}
           </div>
 
-          <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleDialog}>
+          <Button
+            format="sm border"
+            className="opacity-80 hover:opacity-100"
+            onClick={toggleDialog}>
             End Quiz
           </Button>
         </div>

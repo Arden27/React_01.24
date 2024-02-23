@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Button } from './Button';
-import { twMerge } from 'tailwind-merge';
+import { useEffect, useState } from 'react'
+import { Button } from './Button'
+import { twMerge } from 'tailwind-merge'
 
 interface SetQuantityGroupProps {
-  min: number;
-  max: number;
-  value?: number;
-  onChange?: (quantity: number) => void;
-  className?: string;
-  classNameInput?: string;
-  classNameButtons?: string;
+  min: number
+  max: number
+  value?: number
+  onChange?: (quantity: number) => void
+  className?: string
+  classNameInput?: string
+  classNameButtons?: string
 }
 
 export function SetQuantityGroup({
@@ -19,12 +19,12 @@ export function SetQuantityGroup({
   onChange,
   className,
   classNameInput,
-  classNameButtons,
+  classNameButtons
 }: SetQuantityGroupProps) {
-  const [internalQuantity, setInternalQuantity] = useState(5);
-  const isControlled = value !== undefined && onChange !== undefined;
-  const quantity = isControlled ? value : internalQuantity;
-  const setQuantity = isControlled ? onChange : setInternalQuantity;
+  const [internalQuantity, setInternalQuantity] = useState(5)
+  const isControlled = value !== undefined && onChange !== undefined
+  const quantity = isControlled ? value : internalQuantity
+  const setQuantity = isControlled ? onChange : setInternalQuantity
 
   return (
     <div
@@ -56,15 +56,15 @@ export function SetQuantityGroup({
         className={classNameButtons}
       />
     </div>
-  );
+  )
 }
 
 interface SetQuantityButtonProps {
-  quantity: number;
-  setQuantity: (quantity: number) => void;
-  direction: 'plus' | 'minus';
-  limit: number;
-  className?: string;
+  quantity: number
+  setQuantity: (quantity: number) => void
+  direction: 'plus' | 'minus'
+  limit: number
+  className?: string
 }
 
 function SetQuantityButton({
@@ -72,17 +72,17 @@ function SetQuantityButton({
   setQuantity,
   direction,
   limit,
-  className,
+  className
 }: SetQuantityButtonProps) {
   const handleClick = () => {
-    let newQuantity = quantity;
+    let newQuantity = quantity
     if (direction === 'plus' && quantity < limit) {
-      newQuantity = Math.round(quantity + 1);
+      newQuantity = Math.round(quantity + 1)
     } else if (direction === 'minus' && quantity > limit) {
-      newQuantity = Math.round(quantity - 1);
+      newQuantity = Math.round(quantity - 1)
     }
-    setQuantity(newQuantity);
-  };
+    setQuantity(newQuantity)
+  }
 
   return (
     <Button
@@ -91,38 +91,38 @@ function SetQuantityButton({
       onClick={handleClick}>
       {direction === 'plus' ? '+' : '-'}
     </Button>
-  );
+  )
 }
 
 interface InputQuantityProps {
-  quantity: number;
-  setQuantity: (quantity: number) => void;
-  min: number;
-  max: number;
-  className?: string;
+  quantity: number
+  setQuantity: (quantity: number) => void
+  min: number
+  max: number
+  className?: string
 }
 
 function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuantityProps) {
-  const [inputValue, setInputValue] = useState(quantity.toString());
+  const [inputValue, setInputValue] = useState(quantity.toString())
 
   const handleBlur = () => {
-    let value = parseFloat(inputValue) || 0;
+    let value = parseFloat(inputValue) || 0
     if (value < min) {
-      value = min;
+      value = min
     } else if (value > max) {
-      value = max;
+      value = max
     }
-    setQuantity(value);
-    setInputValue(value.toString());
-  };
+    setQuantity(value)
+    setInputValue(value.toString())
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+    setInputValue(e.target.value)
+  }
 
   useEffect(() => {
-    setInputValue(quantity.toString());
-  }, [quantity]);
+    setInputValue(quantity.toString())
+  }, [quantity])
 
   return (
     <input
@@ -135,5 +135,5 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
       onChange={handleChange}
       onBlur={handleBlur}
     />
-  );
+  )
 }

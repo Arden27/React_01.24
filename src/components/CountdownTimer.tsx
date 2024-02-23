@@ -30,7 +30,7 @@ export function CountdownTimer({ initialTime, className }: CountdownTimerProps) 
       dispatch(setTimeSpent(initialTime - timerRef.current))
       clearInterval(interval)
     }
-  }, [dispatch])
+  }, [dispatch, initialTime])
 
   if (timer === 0) {
     navigate(ROUTES.result)

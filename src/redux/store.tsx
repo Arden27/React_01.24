@@ -3,11 +3,12 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 export interface QuizState {
   numberOfQuestions: number
-  category: {name: string, id: number} | null
-  difficulty: {name: string, id: string} | null
-  type: {name: string, id: string} | null
+  category: { name: string; id: number } | null
+  difficulty: { name: string; id: string } | null
+  type: { name: string; id: string } | null
   time: number
   timeSpent: number
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   questions: any[]
   correctAnswers: number
 }
@@ -58,8 +59,18 @@ const quizSlice = createSlice({
   }
 })
 
-export const { setNumberOfQuestions, setCategory, setDifficulty, setType, setTime, setQuestions, setTimeSpent, addCorrectAnswer, resetCorrectAnswers, resetSettings } =
-  quizSlice.actions
+export const {
+  setNumberOfQuestions,
+  setCategory,
+  setDifficulty,
+  setType,
+  setTime,
+  setQuestions,
+  setTimeSpent,
+  addCorrectAnswer,
+  resetCorrectAnswers,
+  resetSettings
+} = quizSlice.actions
 
 const store = configureStore({
   reducer: {

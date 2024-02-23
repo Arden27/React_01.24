@@ -80,20 +80,47 @@ export function CreateQuizScreen() {
     }
   }
 
+  // another temporary workaround to shut up TS, TODO: refactor DropdownMenu to fix this
+  const isKeyOfQuizState = (key: keyof QuizState): key is keyof QuizState => {
+    return [
+      'numberOfQuestions',
+      'category',
+      'difficulty',
+      'type',
+      'time',
+      'questions',
+      'correctAnswers',
+      'timeSpent'
+    ].includes(key)
+  }
+
   const handleSelect = (label: string, selectedItem: string) => {
     switch (label) {
-      case 'category':
-        dispatch(setCategory({ name: selectedItem, id: findID(label, selectedItem) }))
+      case 'category': {
+        const category = findID(label, selectedItem)
+        if (typeof category === 'number') {
+          dispatch(setCategory({ name: selectedItem, id: category }))
+        }
         break
-      case 'difficulty':
-        dispatch(setDifficulty({ name: selectedItem, id: findID(label, selectedItem) }))
+      }
+      case 'difficulty': {
+        const difficulty = findID(label, selectedItem)
+        if (typeof difficulty === 'string') {
+          dispatch(setDifficulty({ name: selectedItem, id: difficulty }))
+        }
         break
-      case 'type':
-        dispatch(setType({ name: selectedItem, id: findID(label, selectedItem) }))
+      }
+      case 'type': {
+        const type = findID(label, selectedItem)
+        if (typeof type === 'string') {
+          dispatch(setType({ name: selectedItem, id: type }))
+        }
         break
-      case 'time':
+      }
+      case 'time': {
         dispatch(setTime(parseInt(selectedItem)))
         break
+      }
       default:
         break
     }
@@ -110,7 +137,7 @@ export function CreateQuizScreen() {
       toggleModal() // Show dialog immediately if offline
       return
     }
-    
+
     let responseReceived = false
 
     // Start a timer for 2 seconds
@@ -150,13 +177,13 @@ export function CreateQuizScreen() {
           <h3 className="text-lg">questions</h3>
         </div>
 
-        {menuOptionsWithCategories.map(
-          (option, index) =>
-            option && (
+        {menuOptionsWithCategories.map((option, index) => {
+          if (option && isKeyOfQuizState(option.label as keyof QuizState)) {
+            return (
               <DropdownMenu
                 onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
                 key={`dropdown-${index}`}
-                selected={quizSettings[option.label as keyof QuizState] as string}>
+                selected={quizSettings[option.label as keyof QuizState]}>
                 <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
                 <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
                   {option.items.map((item, itemIndex) => (
@@ -169,7 +196,9 @@ export function CreateQuizScreen() {
                 </DropdownMenu.List>
               </DropdownMenu>
             )
-        )}
+          }
+          return null
+        })}
 
         <Button format="lg border fill" className="" onClick={handleStartQuiz}>
           Start quiz

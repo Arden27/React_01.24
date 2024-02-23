@@ -8,7 +8,8 @@ import ChevronDown from '@/assets/svg/chevron-down.svg?react'
 interface DropdownMenuProps {
   children: React.ReactNode
   onSelect: (value: string) => void
-  selected?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selected?: any
   setSelected?: (value: string) => void
 }
 
