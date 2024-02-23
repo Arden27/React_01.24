@@ -3,11 +3,12 @@ import { Button } from '@/components/Button'
 import RestartIcon from '@/assets/svg/restart.svg?react'
 import { ROUTES } from '@/navigation/router'
 import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
 
 export function ResultScreen() {
   const navigate = useNavigate()
-  const correctAnswers = useSelector(state => state.quiz.correctAnswers)
-  const numberOfQuestions = useSelector(state => state.quiz.numberOfQuestions)
+  const correctAnswers = useSelector((state: RootState) => state.quiz.correctAnswers)
+  const numberOfQuestions = useSelector((state: RootState) => state.quiz.numberOfQuestions)
 
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">

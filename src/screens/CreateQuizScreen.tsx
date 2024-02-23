@@ -7,6 +7,7 @@ import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { fetchQuestions } from '@/utils/fetchQuestions'
 import mockQuestions from '@/data/mockQuestions'
 import {
   setCategory,
@@ -110,21 +111,6 @@ export function CreateQuizScreen() {
     dispatch(setNumberOfQuestions(quantity))
   }
 
-  const getQuestions = async () => {
-    console.log('fetching')
-    try {
-      const response = await fetch(
-        `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
-      )
-      const data = await response.json()
-      dispatch(setQuestions(data.results))
-      return true
-    } catch (error) {
-      console.error('Error fetching questions:', error)
-      return false
-    }
-  }
-
   const handleStartQuiz = async () => {
     let responseReceived = false
 
@@ -135,7 +121,7 @@ export function CreateQuizScreen() {
       }
     }, 2000)
 
-    const success = await getQuestions()
+    const success = await fetchQuestions(quizSettings, dispatch)
     responseReceived = true
 
     // Clear the timer as we received the response
@@ -189,15 +175,10 @@ export function CreateQuizScreen() {
         <Button format="lg border fill" className="" onClick={handleStartQuiz}>
           Start quiz
         </Button>
+
         <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
           See my statistics
         </Button>
-        {/* <div>{JSON.stringify(quizSettings)}</div>
-      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`}</p>
-      <Button onClick={getQuestions} format="sm fill border">Get questions</Button>
-      <div className='w-4/5'>
-        {JSON.stringify(questions)}
-      </div> */}
       </div>
 
       <dialog
