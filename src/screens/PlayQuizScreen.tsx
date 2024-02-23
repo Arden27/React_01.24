@@ -13,8 +13,7 @@ export function PlayQuizScreen() {
   const modalRef = useRef(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const questions = useSelector((state: RootState) => state.quiz.questions)
-  console.log('questions')
-  console.log(questions)
+  const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([])
 
   const numberOfQuestions = questions.length
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -22,10 +21,40 @@ export function PlayQuizScreen() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (questions.length === 0) {
-      navigate(ROUTES.root, { replace: true });
+    if (questions.length > 0 && currentQuestion < questions.length) {
+      const currentAnswers = [
+        ...questions[currentQuestion].incorrect_answers,
+        questions[currentQuestion].correct_answer
+      ]
+      setShuffledAnswers(shuffleArray(currentAnswers))
     }
-  }, [questions, navigate]);
+  }, [questions, currentQuestion])
+
+  useEffect(() => {
+    if (questions.length === 0) {
+      navigate(ROUTES.root, { replace: true })
+    }
+  }, [questions, navigate])
+
+  const shuffleArray = (array: string[]): string[] => {
+    let currentIndex = array.length
+    let temporaryValue
+    let randomIndex
+
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+
+    return array
+  }
 
   const showDialog = () => {
     setIsDialogOpen(true)
@@ -44,9 +73,9 @@ export function PlayQuizScreen() {
   })
 
   if (questions.length === 0) {
-    return null; // TODO add some fallback UI
+    return null // TODO add some fallback UI
   }
-  
+
   return (
     <>
       <div
@@ -59,31 +88,51 @@ export function PlayQuizScreen() {
             initialTime={42}
           />
           <div className="flex flex-col gap-2xs text-center">
-            <h3>Question {currentQuestion + 1} of {numberOfQuestions}</h3>
+            <h3>
+              Question {currentQuestion + 1} of {numberOfQuestions}
+            </h3>
           </div>
           <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
+
           <div
             className="flex flex-col gap-2"
             onClick={() => {
-              navigate(ROUTES.result, { replace: true })
+              if (currentQuestion === numberOfQuestions - 1) {
+                navigate(ROUTES.result, { replace: true })
+              } else {
+                setCurrentQuestion((prev) => prev + 1)
+              }
             }}>
-            <div className="flex flex-row gap-2">
-              <Button format="lg border" className="bg-bg">
-                {questions[0].incorrect_answers[0]}
-              </Button>
-              <Button format="lg border" className="bg-bg">
-                {questions[0].incorrect_answers[1]}
-              </Button>
-            </div>
-            <div className="flex flex-row gap-2">
-              <Button format="lg border" className="bg-bg">
-                {questions[0].correct_answer}
-              </Button>
-              <Button format="lg border" className="bg-bg">
-                {questions[0].incorrect_answers[2]}
-              </Button>
-            </div>
+            {shuffledAnswers.length === 2 && (
+              <div className="flex flex-row gap-2">
+                {shuffledAnswers.map((answer, index) => (
+                  <Button key={index} format="lg border" className="bg-bg">
+                    {answer}
+                  </Button>
+                ))}
+              </div>
+            )}
+
+            {shuffledAnswers.length === 4 && (
+              <>
+                <div className="flex flex-row gap-2">
+                  {shuffledAnswers.slice(0, 2).map((answer, index) => (
+                    <Button key={index} format="lg border" className="bg-bg">
+                      {answer}
+                    </Button>
+                  ))}
+                </div>
+                <div className="flex flex-row gap-2">
+                  {shuffledAnswers.slice(2, 4).map((answer, index) => (
+                    <Button key={index} format="lg border" className="bg-bg">
+                      {answer}
+                    </Button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
+          
           <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={showDialog}>
             End Quiz
           </Button>
