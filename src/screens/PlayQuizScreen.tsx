@@ -1,5 +1,5 @@
 import he from 'he'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
@@ -13,8 +13,19 @@ export function PlayQuizScreen() {
   const modalRef = useRef(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const questions = useSelector((state: RootState) => state.quiz.questions)
+  console.log('questions')
+  console.log(questions)
+
+  const numberOfQuestions = questions.length
+  const [currentQuestion, setCurrentQuestion] = useState(0)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (questions.length === 0) {
+      navigate(ROUTES.root, { replace: true });
+    }
+  }, [questions, navigate]);
 
   const showDialog = () => {
     setIsDialogOpen(true)
@@ -32,6 +43,10 @@ export function PlayQuizScreen() {
     setIsDialogOpen(false)
   })
 
+  if (questions.length === 0) {
+    return null; // TODO add some fallback UI
+  }
+  
   return (
     <>
       <div
@@ -44,9 +59,9 @@ export function PlayQuizScreen() {
             initialTime={42}
           />
           <div className="flex flex-col gap-2xs text-center">
-            <h3>Question 3 of 15</h3>
+            <h3>Question {currentQuestion + 1} of {numberOfQuestions}</h3>
           </div>
-          <h2 className="text-center">{he.decode(questions[0].question)}</h2>
+          <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
           <div
             className="flex flex-col gap-2"
             onClick={() => {
