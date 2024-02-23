@@ -98,16 +98,16 @@ export function ResultScreen() {
             <h3 className="text-lg">Quiz Settings</h3>
             <ul className="ml-sm [&>*>span]:font-btn [&>*]:p-3xs">
               <li>
-                Category: <span>Any</span>
+                Category: <span>{currentQuizSettings.category ? currentQuizSettings.category.name : "Any"}</span>
               </li>
               <li>
-                Difficulty: <span>Hard</span>
+                Difficulty: <span>{currentQuizSettings.difficulty ? currentQuizSettings.difficulty.name : "Any"}</span>
               </li>
               <li>
-                Type: <span>Multiple Choice</span>
+                Type: <span>{currentQuizSettings.type ? currentQuizSettings.type.name : "Any"}</span>
               </li>
               <li>
-                Time: <span>2M</span>
+                Time: <span>{currentQuizSettings.time} min</span>
               </li>
             </ul>
           </div>

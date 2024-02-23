@@ -6,7 +6,7 @@ export interface QuizState {
   category: {name: string, id: number} | null
   difficulty: {name: string, id: string} | null
   type: {name: string, id: string} | null
-  time: string | null
+  time: string
   questions: any[]
   correctAnswers: number
 }
@@ -16,7 +16,7 @@ const initialState: QuizState = {
   category: null,
   difficulty: null,
   type: null,
-  time: null,
+  time: '1',
   questions: [],
   correctAnswers: 0
 }
