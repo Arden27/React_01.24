@@ -103,6 +103,12 @@ export function CreateQuizScreen() {
   }
 
   const handleStartQuiz = async () => {
+    // Check for network connectivity
+    if (!navigator.onLine) {
+      toggleModal() // Show dialog immediately if offline
+      return
+    }
+    
     let responseReceived = false
 
     // Start a timer for 2 seconds
