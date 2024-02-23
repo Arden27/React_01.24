@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, setQuestions, resetCorrectAnswers, resetSettings } from '@/redux/store'
 import { fetchQuestions } from '@/utils/fetchQuestions'
 import mockQuestions from '@/data/mockQuestions'
+import { formatTime } from '@/utils/formatTime'
 
 export function ResultScreen() {
   const dispatch = useDispatch()
@@ -76,7 +77,7 @@ export function ResultScreen() {
             className="!hover:text-header relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
       text-text ">
             <h2>Time</h2>
-            <h3>00:42</h3>
+            <h3>{formatTime(currentQuizSettings.timeSpent)}</h3>
           </div>
           <div
             className="relative flex flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-text p-md text-center font-btn text-sm uppercase
