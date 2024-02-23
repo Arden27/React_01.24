@@ -21,19 +21,32 @@ export function CreateQuizScreen() {
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
-  const questions = useSelector((state: RootState) => state.quiz.questions)
-
-  // const [questions, setQuestions] = useState('test')
-
-  const getQuestions = () => {
-    console.log('fetching')
-    fetch(
-      `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(setQuestions(data.results))
+  const menuOptionsWithCategories = [
+    categories && {
+      label: 'category',
+      items: categories.map((category) => {
+        return {
+          name: category.name,
+          id: category.id
+        }
       })
+    },
+    ...menuOptions
+  ]
+
+  const getQuestions = async () => {
+    console.log('fetching');
+    try {
+      const response = await fetch(
+        `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
+      );
+      const data = await response.json();
+      dispatch(setQuestions(data.results));
+      return true;
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+      return false;
+    }
   }
 
   useEffect(() => {
@@ -83,18 +96,14 @@ export function CreateQuizScreen() {
     dispatch(setNumberOfQuestions(quantity))
   }
 
-  const menuOptionsWithCategories = [
-    categories && {
-      label: 'category',
-      items: categories.map((category) => {
-        return {
-          name: category.name,
-          id: category.id
-        }
-      })
-    },
-    ...menuOptions
-  ]
+  const handleStartQuiz = async () => {
+    const success = await getQuestions();
+    if (success) {
+      navigate(ROUTES.play);
+    } else {
+      // TODO: Handle the error case
+    }
+  }
 
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -135,18 +144,18 @@ export function CreateQuizScreen() {
           )
       )}
 
-      <Button format="lg border fill" className="" onClick={() => navigate(ROUTES.play)}>
+      <Button format="lg border fill" className="" onClick={handleStartQuiz}>
         Start quiz
       </Button>
       <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
         See my statistics
       </Button>
       {/* <div>{JSON.stringify(quizSettings)}</div>
-      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`}</p> */}
+      <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`}</p>
       <Button onClick={getQuestions} format="sm fill border">Get questions</Button>
       <div className='w-4/5'>
         {JSON.stringify(questions)}
-      </div>
+      </div> */}
     </div>
   )
 }
