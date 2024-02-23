@@ -6,7 +6,16 @@ import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
-import { setCategory, setDifficulty, setType, setTime, setNumberOfQuestions, setQuestions } from '@/redux/store'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
+import mockQuestions from '@/data/mockQuestions'
+import {
+  setCategory,
+  setDifficulty,
+  setType,
+  setTime,
+  setNumberOfQuestions,
+  setQuestions
+} from '@/redux/store'
 import { RootState, QuizState } from '@/redux/store'
 
 interface Category {
@@ -21,6 +30,26 @@ export function CreateQuizScreen() {
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
+  const modalRef = useRef(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const showDialog = () => {
+    setIsDialogOpen(true)
+  }
+
+  const closeDialog = () => {
+    setIsDialogOpen(false)
+  }
+
+  const confirmEndQuiz = () => {
+    dispatch(setQuestions(mockQuestions))
+    navigate(ROUTES.play)
+  }
+
+  useOutsideClick([modalRef], () => {
+    setIsDialogOpen(false)
+  })
+
   const menuOptionsWithCategories = [
     categories && {
       label: 'category',
@@ -33,21 +62,6 @@ export function CreateQuizScreen() {
     },
     ...menuOptions
   ]
-
-  const getQuestions = async () => {
-    console.log('fetching');
-    try {
-      const response = await fetch(
-        `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
-      );
-      const data = await response.json();
-      dispatch(setQuestions(data.results));
-      return true;
-    } catch (error) {
-      console.error('Error fetching questions:', error);
-      return false;
-    }
-  }
 
   useEffect(() => {
     if (initialLoad.current) {
@@ -96,66 +110,115 @@ export function CreateQuizScreen() {
     dispatch(setNumberOfQuestions(quantity))
   }
 
+  const getQuestions = async () => {
+    console.log('fetching')
+    try {
+      const response = await fetch(
+        `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
+      )
+      const data = await response.json()
+      dispatch(setQuestions(data.results))
+      return true
+    } catch (error) {
+      console.error('Error fetching questions:', error)
+      return false
+    }
+  }
+
   const handleStartQuiz = async () => {
-    const success = await getQuestions();
+    let responseReceived = false
+
+    // Start a timer for 2 seconds
+    const timer = setTimeout(() => {
+      if (!responseReceived) {
+        showDialog()
+      }
+    }, 2000)
+
+    const success = await getQuestions()
+    responseReceived = true
+
+    // Clear the timer as we received the response
+    clearTimeout(timer)
+
     if (success) {
-      navigate(ROUTES.play);
-    } else {
-      // TODO: Handle the error case
+      navigate(ROUTES.play)
     }
   }
 
   return (
-    <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
-      <h1 className="text-2xl font-bold">Create Quiz</h1>
+    <>
+      <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
+        <h1 className="text-2xl font-bold">Create Quiz</h1>
 
-      <div className="flex items-center space-x-2">
-        <h3 className="text-lg">with</h3>
-        <SetQuantityGroup
-          min={5}
-          max={15}
-          value={quizSettings.numberOfQuestions}
-          onChange={handleSetQuantity}
-          className="rounded-[2rem] border-2 border-text bg-bg3"
-          classNameButtons="text-md"
-          classNameInput="text-lg"
-        />
-        <h3 className="text-lg">questions</h3>
-      </div>
+        <div className="flex items-center space-x-2">
+          <h3 className="text-lg">with</h3>
+          <SetQuantityGroup
+            min={5}
+            max={15}
+            value={quizSettings.numberOfQuestions}
+            onChange={handleSetQuantity}
+            className="rounded-[2rem] border-2 border-text bg-bg3"
+            classNameButtons="text-md"
+            classNameInput="text-lg"
+          />
+          <h3 className="text-lg">questions</h3>
+        </div>
 
-      {menuOptionsWithCategories.map(
-        (option, index) =>
-          option && (
-            <DropdownMenu
-              onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
-              key={`dropdown-${index}`}
-              selected={quizSettings[option.label as keyof QuizState] as string}>
-              <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
-              <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
-                {option.items.map((item, itemIndex) => (
-                  <DropdownMenu.Item
-                    key={`${option.label}-${item}-${itemIndex}`}
-                    className="w-full justify-end border-transparent hover:text-bar">
-                    {item.name}
-                  </DropdownMenu.Item>
-                ))}
-              </DropdownMenu.List>
-            </DropdownMenu>
-          )
-      )}
+        {menuOptionsWithCategories.map(
+          (option, index) =>
+            option && (
+              <DropdownMenu
+                onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
+                key={`dropdown-${index}`}
+                selected={quizSettings[option.label as keyof QuizState] as string}>
+                <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
+                <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
+                  {option.items.map((item, itemIndex) => (
+                    <DropdownMenu.Item
+                      key={`${option.label}-${item}-${itemIndex}`}
+                      className="w-full justify-end border-transparent hover:text-bar">
+                      {item.name}
+                    </DropdownMenu.Item>
+                  ))}
+                </DropdownMenu.List>
+              </DropdownMenu>
+            )
+        )}
 
-      <Button format="lg border fill" className="" onClick={handleStartQuiz}>
-        Start quiz
-      </Button>
-      <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
-        See my statistics
-      </Button>
-      {/* <div>{JSON.stringify(quizSettings)}</div>
+        <Button format="lg border fill" className="" onClick={handleStartQuiz}>
+          Start quiz
+        </Button>
+        <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
+          See my statistics
+        </Button>
+        {/* <div>{JSON.stringify(quizSettings)}</div>
       <p>{`https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`}</p>
       <Button onClick={getQuestions} format="sm fill border">Get questions</Button>
       <div className='w-4/5'>
         {JSON.stringify(questions)}
       </div> */}
-    </div>
+      </div>
+
+      <dialog
+        open={isDialogOpen}
+        ref={modalRef}
+        className="fixed inset-x-0 inset-y-0 mx-auto my-auto items-center justify-center bg-transparent transition">
+        <div className="flex max-w-lg flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
+          <div className="flex flex-col gap-2 text-center">
+            <h2>Server is down</h2>
+            <h3>Want to start with mocking questions?</h3>
+          </div>
+          <div className="flex w-full flex-row items-center justify-around gap-4">
+            <Button format="lg fill" onClick={confirmEndQuiz}>
+              Mock me!
+            </Button>
+            <Button format="sm " onClick={closeDialog}>
+              No, Thanks
+            </Button>
+          </div>
+        </div>
+      </dialog>
+    </>
   )
 }

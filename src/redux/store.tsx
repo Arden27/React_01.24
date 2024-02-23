@@ -8,6 +8,7 @@ export interface QuizState {
   type: {name: string, id: string} | null
   time: string | null
   questions: any[]
+  correctAnswers: number
 }
 
 const initialState: QuizState = {
@@ -16,7 +17,8 @@ const initialState: QuizState = {
   difficulty: null,
   type: null,
   time: null,
-  questions: []
+  questions: [],
+  correctAnswers: 0
 }
 
 const quizSlice = createSlice({
@@ -40,11 +42,14 @@ const quizSlice = createSlice({
     },
     setQuestions: (state, action) => {
       state.questions = action.payload
+    },
+    addCorrectAnsver: (state) => {
+      state.correctAnswers++
     }
   }
 })
 
-export const { setNumberOfQuestions, setCategory, setDifficulty, setType, setTime, setQuestions } =
+export const { setNumberOfQuestions, setCategory, setDifficulty, setType, setTime, setQuestions, addCorrectAnsver } =
   quizSlice.actions
 
 const store = configureStore({

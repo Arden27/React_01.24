@@ -6,7 +6,7 @@ import { ROUTES } from '@/navigation/router'
 import { Button } from '@/components/Button'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/redux/store'
+import { RootState, addCorrectAnsver } from '@/redux/store'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
@@ -17,15 +17,14 @@ export function PlayQuizScreen() {
 
   const numberOfQuestions = questions.length
   const [currentQuestion, setCurrentQuestion] = useState(0)
+  const currentCorrectAnswer =
+    questions.length > 0 && he.decode(questions[currentQuestion].correct_answer)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (questions.length > 0 && currentQuestion < questions.length) {
-      const currentAnswers = [
-        ...questions[currentQuestion].incorrect_answers,
-        questions[currentQuestion].correct_answer
-      ]
+      const currentAnswers = [...questions[currentQuestion].incorrect_answers, currentCorrectAnswer]
       setShuffledAnswers(shuffleArray(currentAnswers))
     }
   }, [questions, currentQuestion])
@@ -96,20 +95,36 @@ export function PlayQuizScreen() {
 
           <div
             className="flex flex-col gap-2"
-            onClick={() => {
-              if (currentQuestion === numberOfQuestions - 1) {
-                navigate(ROUTES.result, { replace: true })
-              } else {
-                setCurrentQuestion((prev) => prev + 1)
+            onClick={(e) => {
+              const target = e.target as HTMLElement
+              if (target.tagName === 'BUTTON') {
+                const answer = target.textContent || ''
+                const decodedAnswer = he.decode(answer)
+
+                if (decodedAnswer === currentCorrectAnswer) {
+                  dispatch(addCorrectAnsver())
+                }
+
+                if (currentQuestion === numberOfQuestions - 1) {
+                  navigate(ROUTES.result, { replace: true })
+                } else {
+                  setCurrentQuestion((prev) => prev + 1)
+                }
               }
             }}>
             {shuffledAnswers.length === 2 && (
               <div className="flex flex-row gap-2">
-                {shuffledAnswers.map((answer, index) => (
-                  <Button key={index} format="lg border" className="bg-bg">
-                    {answer}
-                  </Button>
-                ))}
+                {shuffledAnswers.map((answer, index) => {
+                  answer = he.decode(answer)
+                  return (
+                    <Button
+                      key={index}
+                      format="lg border"
+                      className={`${answer === currentCorrectAnswer ? 'bg-green-300' : 'bg-bg'}`}>
+                      {answer}
+                    </Button>
+                  )
+                })}
               </div>
             )}
 
@@ -117,14 +132,20 @@ export function PlayQuizScreen() {
               <>
                 <div className="flex flex-row gap-2">
                   {shuffledAnswers.slice(0, 2).map((answer, index) => (
-                    <Button key={index} format="lg border" className="bg-bg">
+                    <Button
+                      key={index}
+                      format="lg border"
+                      className={`${answer === currentCorrectAnswer ? 'bg-green-300' : 'bg-bg'}`}>
                       {answer}
                     </Button>
                   ))}
                 </div>
                 <div className="flex flex-row gap-2">
                   {shuffledAnswers.slice(2, 4).map((answer, index) => (
-                    <Button key={index} format="lg border" className="bg-bg">
+                    <Button
+                      key={index}
+                      format="lg border"
+                      className={`${answer === currentCorrectAnswer ? 'bg-green-300' : 'bg-bg'}`}>
                       {answer}
                     </Button>
                   ))}
@@ -132,7 +153,7 @@ export function PlayQuizScreen() {
               </>
             )}
           </div>
-          
+
           <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={showDialog}>
             End Quiz
           </Button>

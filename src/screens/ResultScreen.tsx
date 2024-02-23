@@ -2,9 +2,12 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import RestartIcon from '@/assets/svg/restart.svg?react'
 import { ROUTES } from '@/navigation/router'
+import { useSelector } from 'react-redux'
 
 export function ResultScreen() {
   const navigate = useNavigate()
+  const correctAnswers = useSelector(state => state.quiz.correctAnswers)
+  const numberOfQuestions = useSelector(state => state.quiz.numberOfQuestions)
 
   return (
     <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -25,7 +28,7 @@ export function ResultScreen() {
             <h3
               className="!hover:text-header  relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-xs font-btn text-xl uppercase
       text-text">
-              3 / 15
+              {correctAnswers} / {numberOfQuestions}
             </h3>
             <div className="p-xs text-md">78%</div>
           </div>
