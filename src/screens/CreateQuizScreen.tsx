@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ROUTES } from '@/navigation/router'
 import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
+import { Modal } from '@/components/Modal'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { fetchQuestions } from '@/utils/fetchQuestions'
 import mockQuestions from '@/data/mockQuestions'
 import {
@@ -31,25 +31,16 @@ export function CreateQuizScreen() {
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
-  const modalRef = useRef(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const showDialog = () => {
-    setIsDialogOpen(true)
+  const toggleModal = () => {
+    setIsDialogOpen((prev) => !prev)
   }
 
-  const closeDialog = () => {
-    setIsDialogOpen(false)
-  }
-
-  const confirmEndQuiz = () => {
+  const mockStart = () => {
     dispatch(setQuestions(mockQuestions))
     navigate(ROUTES.play)
   }
-
-  useOutsideClick([modalRef], () => {
-    setIsDialogOpen(false)
-  })
 
   const menuOptionsWithCategories = [
     categories && {
@@ -117,7 +108,7 @@ export function CreateQuizScreen() {
     // Start a timer for 2 seconds
     const timer = setTimeout(() => {
       if (!responseReceived) {
-        showDialog()
+        toggleModal()
       }
     }, 2000)
 
@@ -181,25 +172,15 @@ export function CreateQuizScreen() {
         </Button>
       </div>
 
-      <dialog
-        open={isDialogOpen}
-        ref={modalRef}
-        className="fixed inset-x-0 inset-y-0 mx-auto my-auto items-center justify-center bg-transparent transition">
-        <div className="flex max-w-lg flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
-          <div className="flex flex-col gap-2 text-center">
-            <h2>Server is down</h2>
-            <h3>Want to start with mocking questions?</h3>
-          </div>
-          <div className="flex w-full flex-row items-center justify-around gap-4">
-            <Button format="lg fill" onClick={confirmEndQuiz}>
-              Mock me!
-            </Button>
-            <Button format="sm " onClick={closeDialog}>
-              No, Thanks
-            </Button>
-          </div>
-        </div>
-      </dialog>
+      <Modal
+        isOpen={isDialogOpen}
+        toggleDialog={toggleModal}
+        confirmAction={mockStart}
+        message="Server is down"
+        additionalMessage="Use mock questions?"
+        confirmButtonMessage="Yes, Mock Me!"
+        cancelButtonMessage="No, Thanks"
+      />
     </>
   )
 }

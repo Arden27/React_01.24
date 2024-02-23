@@ -1,28 +1,28 @@
 const mockQuestions = [
   {
-    question: "Who let the dog's out",
+    question: "Who let the dog's out?",
     correct_answer: "Who",
     incorrect_answers: ['You', 'Hoo', "khoo"]
   },
   {
-    question: "Who let the dog's out",
+    question: "Who let the dog's out?",
     correct_answer: "Who",
-    incorrect_answers: ['You', 'Hoo', "khoo"]
+    incorrect_answers: ['You', 'Hoo', "Woof"]
   },
   {
-    question: "Who let the dog's out",
+    question: "Who let the dog's out?",
     correct_answer: "Who",
-    incorrect_answers: ['You', 'Hoo', "khoo"]
+    incorrect_answers: ['You', 'Hoo', "Woof"]
   },
   {
-    question: "Who let the dog's out",
+    question: "Who let the dog's out?",
     correct_answer: "Who",
-    incorrect_answers: ['You', 'Hoo', "khoo"]
+    incorrect_answers: ['You', 'Hoo', "Woof"]
   },
   {
-    question: "Who let the dog's out",
+    question: "Who let the dog's out?",
     correct_answer: "Who",
-    incorrect_answers: ['You', 'Hoo', "khoo"]
+    incorrect_answers: ['You', 'Hoo', "Woof"]
   },
 ]
 

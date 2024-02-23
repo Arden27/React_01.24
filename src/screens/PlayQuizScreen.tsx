@@ -1,17 +1,15 @@
 import he from 'he'
-import { useEffect, useRef, useState } from 'react'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
 import { Button } from '@/components/Button'
+import { Modal } from '@/components/Modal'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState, addCorrectAnsver } from '@/redux/store'
+import { RootState, addCorrectAnswer } from '@/redux/store'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
-  const modalRef = useRef(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const questions = useSelector((state: RootState) => state.quiz.questions)
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([])
 
@@ -55,21 +53,15 @@ export function PlayQuizScreen() {
     return array
   }
 
-  const showDialog = () => {
-    setIsDialogOpen(true)
-  }
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const closeDialog = () => {
-    setIsDialogOpen(false)
+  const toggleDialog = () => {
+    setIsDialogOpen(prev => !prev)
   }
 
   const confirmEndQuiz = () => {
     navigate(ROUTES.root, { replace: true })
   }
-
-  useOutsideClick([modalRef], () => {
-    setIsDialogOpen(false)
-  })
 
   if (questions.length === 0) {
     return null // TODO add some fallback UI
@@ -102,7 +94,7 @@ export function PlayQuizScreen() {
                 const decodedAnswer = he.decode(answer)
 
                 if (decodedAnswer === currentCorrectAnswer) {
-                  dispatch(addCorrectAnsver())
+                  dispatch(addCorrectAnswer())
                 }
 
                 if (currentQuestion === numberOfQuestions - 1) {
@@ -154,31 +146,21 @@ export function PlayQuizScreen() {
             )}
           </div>
 
-          <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={showDialog}>
+          <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleDialog}>
             End Quiz
           </Button>
         </div>
       </div>
 
-      <dialog
-        open={isDialogOpen}
-        ref={modalRef}
-        className="fixed inset-x-0 inset-y-0 mx-auto my-auto items-center justify-center bg-transparent transition">
-        <div className="flex max-w-lg flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
-          <div className="flex flex-col gap-2 text-center">
-            <h2>Are you sure?</h2>
-            <h3>Progress will be lost...</h3>
-          </div>
-          <div className="flex w-full flex-row items-center justify-around gap-4">
-            <Button format="lg fill" onClick={confirmEndQuiz}>
-              Yes, End Quiz
-            </Button>
-            <Button format="sm " onClick={closeDialog}>
-              No, Continue
-            </Button>
-          </div>
-        </div>
-      </dialog>
+      <Modal
+        isOpen={isDialogOpen}
+        toggleDialog={toggleDialog}
+        confirmAction={confirmEndQuiz}
+        message="Are you sure?"
+        additionalMessage="Progress will be lost..."
+        confirmButtonMessage="Yes, End Quiz"
+        cancelButtonMessage="No, Continue"
+      />
     </>
   )
 }
