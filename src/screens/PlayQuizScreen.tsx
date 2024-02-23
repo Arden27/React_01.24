@@ -13,6 +13,7 @@ export function PlayQuizScreen() {
   const questions = useSelector((state: RootState) => state.quiz.questions)
   const time = useSelector((state: RootState) => state.quiz.time)
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([])
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
 
   const numberOfQuestions = questions.length
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -54,6 +55,40 @@ export function PlayQuizScreen() {
     return array
   }
 
+  const handleAnswerClick = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLElement
+    if (target.tagName === 'BUTTON') {
+      const answer = target.textContent || ''
+      const decodedAnswer = he.decode(answer)
+
+      if (decodedAnswer === currentCorrectAnswer) {
+        dispatch(addCorrectAnswer())
+      }
+
+      setSelectedAnswer(decodedAnswer)
+
+      setTimeout(() => {
+        setSelectedAnswer(null)
+        if (currentQuestion === numberOfQuestions - 1) {
+          navigate(ROUTES.result, { replace: true })
+        } else {
+          setCurrentQuestion((prev) => prev + 1)
+        }
+      }, 500)
+    }
+  }
+
+  const getAnswerButtonClass = (answer: string): string => {
+    const decodedAnswer = he.decode(answer)
+    if (selectedAnswer && decodedAnswer === currentCorrectAnswer) {
+      return 'bg-green-300 hover:bg-green-300 text-text hover:text-text'
+    } else if (selectedAnswer === decodedAnswer && decodedAnswer !== currentCorrectAnswer) {
+      return 'bg-red-300 hover:bg-red-300 text-text hover:text-text'
+    } else {
+      return 'bg-bg'
+    }
+  }
+
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const toggleDialog = () => {
@@ -86,34 +121,13 @@ export function PlayQuizScreen() {
           </div>
           <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
 
-          <div
-            className="flex flex-col gap-2"
-            onClick={(e) => {
-              const target = e.target as HTMLElement
-              if (target.tagName === 'BUTTON') {
-                const answer = target.textContent || ''
-                const decodedAnswer = he.decode(answer)
-
-                if (decodedAnswer === currentCorrectAnswer) {
-                  dispatch(addCorrectAnswer())
-                }
-
-                if (currentQuestion === numberOfQuestions - 1) {
-                  navigate(ROUTES.result, { replace: true })
-                } else {
-                  setCurrentQuestion((prev) => prev + 1)
-                }
-              }
-            }}>
+          <div className="flex flex-col gap-2" onClick={handleAnswerClick}>
             {shuffledAnswers.length === 2 && (
               <div className="flex flex-row gap-2">
                 {shuffledAnswers.map((answer, index) => {
                   answer = he.decode(answer)
                   return (
-                    <Button
-                      key={index}
-                      format="lg border"
-                      className={`${answer === currentCorrectAnswer ? 'bg-green-300' : 'bg-bg'}`}>
+                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
                       {answer}
                     </Button>
                   )
@@ -125,20 +139,14 @@ export function PlayQuizScreen() {
               <>
                 <div className="flex flex-row gap-2">
                   {shuffledAnswers.slice(0, 2).map((answer, index) => (
-                    <Button
-                      key={index}
-                      format="lg border"
-                      className={`${answer === currentCorrectAnswer ? 'bg-green-300' : 'bg-bg'}`}>
+                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
                       {answer}
                     </Button>
                   ))}
                 </div>
                 <div className="flex flex-row gap-2">
                   {shuffledAnswers.slice(2, 4).map((answer, index) => (
-                    <Button
-                      key={index}
-                      format="lg border"
-                      className={`${answer === currentCorrectAnswer ? 'bg-green-300' : 'bg-bg'}`}>
+                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
                       {answer}
                     </Button>
                   ))}
