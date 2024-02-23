@@ -16,10 +16,11 @@ export function ResultScreen() {
   const correctAnswers = useSelector((state: RootState) => state.quiz.correctAnswers)
   const numberOfQuestions = useSelector((state: RootState) => state.quiz.numberOfQuestions)
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState('Server is not responding')
 
   const toggleModal = () => {
-    setIsDialogOpen((prev) => !prev)
+    setIsModalOpen((prev) => !prev)
   }
 
   const mockRestart = () => {
@@ -31,6 +32,7 @@ export function ResultScreen() {
   const handleRestart = async () => {
     // Check for network connectivity
     if (!navigator.onLine) {
+      setModalMessage("No Internet")
       toggleModal() // Show dialog immediately if offline
       return
     }
@@ -130,10 +132,10 @@ export function ResultScreen() {
       </div>
 
       <Modal
-        isOpen={isDialogOpen}
+        isOpen={isModalOpen}
         toggleDialog={toggleModal}
         confirmAction={mockRestart}
-        message="Server is down"
+        message={modalMessage}
         additionalMessage="Use mock questions?"
         confirmButtonMessage="Yes, Mock Me!"
         cancelButtonMessage="No, Thanks"
