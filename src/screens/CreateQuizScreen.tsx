@@ -85,23 +85,17 @@ export function CreateQuizScreen() {
     switch (label) {
       case 'category': {
         const category = findID(label, selectedItem)
-        if (typeof category === 'number') {
-          dispatch(setCategory({ name: selectedItem, id: category }))
-        }
+        dispatch(setCategory({ name: selectedItem, id: category }))
         break
       }
       case 'difficulty': {
         const difficulty = findID(label, selectedItem)
-        if (typeof difficulty === 'string') {
-          dispatch(setDifficulty({ name: selectedItem, id: difficulty }))
-        }
+        dispatch(setDifficulty({ name: selectedItem, id: difficulty }))
         break
       }
       case 'type': {
         const type = findID(label, selectedItem)
-        if (typeof type === 'string') {
-          dispatch(setType({ name: selectedItem, id: type }))
-        }
+        dispatch(setType({ name: selectedItem, id: type }))
         break
       }
       case 'time': {
