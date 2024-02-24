@@ -1,4 +1,3 @@
-// store.js
 import { configureStore } from '@reduxjs/toolkit'
 import { settingsReducer } from './slices/settings'
 import { gameReducer } from './slices/game'

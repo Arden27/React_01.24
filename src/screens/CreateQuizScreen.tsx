@@ -81,20 +81,6 @@ export function CreateQuizScreen() {
     }
   }
 
-  // another temporary workaround to shut up TS, TODO: refactor DropdownMenu to fix this
-  const isKeyOfQuizState = (key: keyof QuizSettings): key is keyof QuizSettings => {
-    return [
-      'numberOfQuestions',
-      'category',
-      'difficulty',
-      'type',
-      'time',
-      'questions',
-      'correctAnswers',
-      'timeSpent'
-    ].includes(key)
-  }
-
   const handleSelect = (label: string, selectedItem: string) => {
     switch (label) {
       case 'category': {
@@ -178,28 +164,23 @@ export function CreateQuizScreen() {
           <h3 className="text-lg">questions</h3>
         </div>
 
-        {menuOptionsWithCategories.map((option, index) => {
-          if (option && isKeyOfQuizState(option.label as keyof QuizSettings)) {
-            return (
-              <DropdownMenu
-                onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
-                key={`dropdown-${index}`}
-                selected={quizSettings[option.label as keyof QuizSettings]}>
-                <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
-                <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
-                  {option.items.map((item, itemIndex) => (
-                    <DropdownMenu.Item
-                      key={`${option.label}-${item}-${itemIndex}`}
-                      className="w-full justify-end border-transparent hover:text-bar">
-                      {item.name}
-                    </DropdownMenu.Item>
-                  ))}
-                </DropdownMenu.List>
-              </DropdownMenu>
-            )
-          }
-          return null
-        })}
+        {menuOptionsWithCategories.map((option, index) => (
+          <DropdownMenu
+            onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
+            key={`dropdown-${index}`}
+            selected={quizSettings[option.label as keyof QuizSettings]}>
+            <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
+            <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
+              {option.items.map((item, itemIndex) => (
+                <DropdownMenu.Item
+                  key={`${option.label}-${item}-${itemIndex}`}
+                  className="w-full justify-end border-transparent hover:text-bar">
+                  {item.name}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.List>
+          </DropdownMenu>
+        ))}
 
         <Button format="lg border fill" className="" onClick={handleStartQuiz}>
           Start quiz

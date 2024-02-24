@@ -1,4 +1,3 @@
-// store.js
 import { createSlice } from '@reduxjs/toolkit'
 import { QuizSettings } from '../types'
 
