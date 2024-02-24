@@ -8,7 +8,8 @@ import ChevronDown from '@/assets/svg/chevron-down.svg?react'
 interface DropdownMenuProps {
   children: React.ReactNode
   onSelect: (value: string) => void
-  selected?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selected?: any
   setSelected?: (value: string) => void
 }
 
@@ -49,7 +50,12 @@ export function DropdownMenu({
 
   useOutsideClick([buttonRef, node], handleOutsideClick)
 
+  const [initialValueSet, setInitialValueSet] = useState(false)
+
   useEffect(() => {
+    if (initialValueSet) {
+      return // Skip the effect if the initial value is already set
+    }
     let labelSet = false
     let defaultItemFound = false
 
@@ -75,13 +81,14 @@ export function DropdownMenu({
         }
       }
     })
-  }, [children, currentSetSelected])
+    setInitialValueSet(true) // Mark the
+  }, [children, currentSetSelected, initialValueSet])
 
   return (
     <DropdownContext.Provider value={{ selected: currentSelected, handleSelect }}>
       <div className="relative cursor-pointer text-end" ref={node}>
         <Button
-          className={`whitespace-nowrap hover:text-bg2 ${isOpen ? 'bg-text !text-bg2' : ''}`}
+          className={`whitespace-nowrap hover:text-bg2 ${isOpen ? 'bg-text text-bg2' : ''}`}
           format="sm"
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}>

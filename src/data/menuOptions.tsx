@@ -1,49 +1,28 @@
 const menuOptions = [
   {
-    label: 'Choose Category',
+    label: 'difficulty',
     items: [
-      'Any Category',
-      'General Knowledge',
-      'Entertainment: Books',
-      'Entertainment: Film',
-      'Entertainment: Music',
-      'Entertainment: Musicals & Theatres',
-      'Entertainment: Television',
-      'Entertainment: Video Games',
-      'Entertainment: Board Games',
-      'Science & Nature',
-      'Science: Computers',
-      'Science: Mathematics',
-      'Mythology',
-      'Sports',
-      'Geography',
-      'History',
-      'Politics',
-      'Art',
-      'Celebrities',
-      'Animals',
-      'Vehicles',
-      'Entertainment: Comics',
-      'Science: Gadgets',
-      'Entertainment: Japanese Anime & Manga',
-      'Entertainment: Cartoon & Animations'
-    ],
-    onSelect: () => {}
+      { name: 'Any Difficulty', id: 'any' },
+      { name: 'Easy', id: 'easy' },
+      { name: 'Medium', id: 'medium' },
+      { name: 'Hard', id: 'hard' }
+    ]
   },
   {
-    label: 'Choose Difficulty',
-    items: ['Any Difficulty', 'Easy', 'Medium', 'Hard'],
-    onSelect: () => {}
+    label: 'type',
+    items: [
+      { name: 'Any Type', id: 'any' },
+      { name: 'Multiple Choice', id: 'multiple' },
+      { name: 'True / False', id: 'boolean' }
+    ]
   },
   {
-    label: 'Choose Type',
-    items: ['Any Type', 'Multiple Choice', 'True / False'],
-    onSelect: () => {}
-  },
-  {
-    label: 'Choose Time',
-    items: ['1m', '2m', '5m'],
-    onSelect: () => {}
+    label: 'time',
+    items: [
+      { name: '1m', id: '1' },
+      { name: '2m', id: '2' },
+      { name: '5m', id: '5' }
+    ]
   }
 ]
 

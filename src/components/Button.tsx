@@ -1,4 +1,5 @@
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 function getButtonStyles(format: string): string {
   const types = format ? format.split(' ') : []
@@ -15,7 +16,7 @@ function getButtonStyles(format: string): string {
   }
 
   if (types.includes('fill')) {
-    styles += 'bg-text !text-bg3 !hover:text-header '
+    styles += 'bg-text text-bg3 hover:text-header '
   }
 
   if (types.includes('round')) {
@@ -46,11 +47,11 @@ function ButtonComponent(
   return (
     <button
       ref={ref}
-      className={`relative flex items-center justify-center rounded-[2rem] font-btn text-sm uppercase text-text transition-colors duration-300 ease-in-out hover:bg-text
-      hover:text-header active:top-[2px] active:opacity-90 
-      
-      ${className}
-      ${buttonStyles}`}
+      className={twMerge(
+        'relative flex items-center justify-center rounded-[2rem] font-btn text-sm uppercase text-text transition-colors duration-300 ease-in-out hover:bg-text hover:text-header active:top-[2px] active:opacity-90 ',
+        buttonStyles,
+        className
+      )}
       {...props}>
       {children}
     </button>
