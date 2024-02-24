@@ -14,10 +14,11 @@ import {
   setDifficulty,
   setType,
   setTime,
-  setNumberOfQuestions,
-  setQuestions
-} from '@/redux/store'
-import { RootState, QuizState } from '@/redux/store'
+  setNumberOfQuestions
+} from '@/redux/slices/settings'
+import { setQuestions } from '@/redux/slices/game'
+import { RootState } from '@/redux/store'
+import { QuizSettings } from '@/redux/types'
 
 interface Category {
   id: number
@@ -27,7 +28,7 @@ interface Category {
 export function CreateQuizScreen() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const quizSettings = useSelector((state: RootState) => state.quiz as QuizState)
+  const quizSettings = useSelector((state: RootState) => state.settings as QuizSettings)
   const [categories, setCategories] = useState<Category[]>([])
   const initialLoad = useRef(true)
 
@@ -81,7 +82,7 @@ export function CreateQuizScreen() {
   }
 
   // another temporary workaround to shut up TS, TODO: refactor DropdownMenu to fix this
-  const isKeyOfQuizState = (key: keyof QuizState): key is keyof QuizState => {
+  const isKeyOfQuizState = (key: keyof QuizSettings): key is keyof QuizSettings => {
     return [
       'numberOfQuestions',
       'category',
@@ -178,12 +179,12 @@ export function CreateQuizScreen() {
         </div>
 
         {menuOptionsWithCategories.map((option, index) => {
-          if (option && isKeyOfQuizState(option.label as keyof QuizState)) {
+          if (option && isKeyOfQuizState(option.label as keyof QuizSettings)) {
             return (
               <DropdownMenu
                 onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
                 key={`dropdown-${index}`}
-                selected={quizSettings[option.label as keyof QuizState]}>
+                selected={quizSettings[option.label as keyof QuizSettings]}>
                 <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
                 <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
                   {option.items.map((item, itemIndex) => (

@@ -5,7 +5,9 @@ import { Modal } from '@/components/Modal'
 import RestartIcon from '@/assets/svg/restart.svg?react'
 import { ROUTES } from '@/navigation/router'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState, setQuestions, resetCorrectAnswers, resetSettings } from '@/redux/store'
+import { setQuestions, resetCorrectAnswers } from '@/redux/slices/game'
+import { resetSettings } from '@/redux/slices/settings'
+import { RootState } from '@/redux/store'
 import { fetchQuestions } from '@/utils/fetchQuestions'
 import mockQuestions from '@/data/mockQuestions'
 import { formatTime } from '@/utils/formatTime'
@@ -13,9 +15,10 @@ import { formatTime } from '@/utils/formatTime'
 export function ResultScreen() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const currentQuizSettings = useSelector((state: RootState) => state.quiz)
-  const correctAnswers = useSelector((state: RootState) => state.quiz.correctAnswers)
-  const numberOfQuestions = useSelector((state: RootState) => state.quiz.numberOfQuestions)
+  const currentQuizSettings = useSelector((state: RootState) => state.settings)
+  const timeSpent = useSelector((state: RootState) => state.game.timeSpent)
+  const correctAnswers = useSelector((state: RootState) => state.game.correctAnswers)
+  const numberOfQuestions = useSelector((state: RootState) => state.settings.numberOfQuestions)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('Server is not responding')
@@ -77,7 +80,7 @@ export function ResultScreen() {
             className="!hover:text-header relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
       text-text ">
             <h2>Time</h2>
-            <h3>{formatTime(currentQuizSettings.timeSpent)}</h3>
+            <h3>{formatTime(timeSpent)}</h3>
           </div>
           <div
             className="relative flex flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-text p-md text-center font-btn text-sm uppercase

@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux'
-import { setQuestions } from '@/redux/store'
-import { QuizState } from '@/redux/store' // Import QuizState if it's not already imported
+import { setQuestions } from '@/redux/slices/game'
+import { QuizSettings } from '@/redux/types'
 
-export const fetchQuestions = async (quizSettings: QuizState, dispatch: Dispatch) => {
+export const fetchQuestions = async (quizSettings: QuizSettings, dispatch: Dispatch) => {
   console.log('fetching')
   try {
     const response = await fetch(

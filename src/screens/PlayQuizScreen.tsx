@@ -6,12 +6,13 @@ import { Button } from '@/components/Button'
 import { Modal } from '@/components/Modal'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState, addCorrectAnswer } from '@/redux/store'
+import { addCorrectAnswer } from '@/redux/slices/game'
+import { RootState } from '@/redux/store'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
-  const questions = useSelector((state: RootState) => state.quiz.questions)
-  const time = useSelector((state: RootState) => state.quiz.time)
+  const questions = useSelector((state: RootState) => state.game.questions)
+  const time = useSelector((state: RootState) => state.settings.time)
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([])
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
 
