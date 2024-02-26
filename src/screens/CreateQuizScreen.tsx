@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ROUTES } from '@/navigation/router'
@@ -18,7 +18,7 @@ import {
 import { setQuestions } from '@/redux/slices/game'
 import { RootState } from '@/redux/store'
 import { QuizSettings } from '@/redux/types'
-import { useLazyFetchQuestionsQuery } from '@/redux/api/questionsApi'
+import { useLazyFetchQuestionsQuery, useFetchCategoriesQuery } from '@/redux/api/questionsApi'
 
 interface Category {
   id: number
@@ -30,10 +30,13 @@ export function CreateQuizScreen() {
   const dispatch = useDispatch()
   const quizSettings = useSelector((state: RootState) => state.settings as QuizSettings)
   const [categories, setCategories] = useState<Category[]>([])
-  const initialLoad = useRef(true)
-
   const [modalMessage, setModalMessage] = useState('Server is not responding')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const {data} = useFetchCategoriesQuery()
+
+  useEffect(() => {
+    data && setCategories(data)
+  }, [data])
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev)
@@ -56,17 +59,6 @@ export function CreateQuizScreen() {
     },
     ...menuOptions
   ]
-
-  useEffect(() => {
-    if (initialLoad.current) {
-      initialLoad.current = false
-      fetch('https://opentdb.com/api_category.php')
-        .then((response) => response.json())
-        .then((data) => {
-          setCategories(data.trivia_categories)
-        })
-    }
-  }, [])
 
   // temporary workaround function to find according to the selected option id for API call, TODO - upgrade DropdownMenu function to be able to return additional data
   const findID = (category: string, name: string) => {
@@ -111,7 +103,6 @@ export function CreateQuizScreen() {
     dispatch(setNumberOfQuestions(quantity))
   }
 
-  
   const [showLoading, setShowLoading] = useState(false)
   const [fetchQuestions] = useLazyFetchQuestionsQuery()
 
@@ -150,8 +141,6 @@ export function CreateQuizScreen() {
     }
   }
 
-  
-
   return (
     <>
       <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -189,7 +178,6 @@ export function CreateQuizScreen() {
           </DropdownMenu>
         ))}
 
-        
         <Button format="border fill lg" className="" onClick={handleStartQuiz}>
           {showLoading ? 'loading...' : 'Start Quiz'}
         </Button>
@@ -197,7 +185,6 @@ export function CreateQuizScreen() {
         <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
           See my statistics
         </Button>
-
       </div>
 
       <Modal
