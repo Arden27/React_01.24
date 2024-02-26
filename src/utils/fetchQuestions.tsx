@@ -9,6 +9,9 @@ export const fetchQuestions = async (quizSettings: QuizSettings, dispatch: Dispa
       `https://opentdb.com/api.php?amount=${quizSettings.numberOfQuestions}${quizSettings.category ? `&category=${quizSettings.category.id}` : ''}${quizSettings.difficulty && quizSettings.difficulty.id !== 'any' ? `&difficulty=${quizSettings.difficulty.id}` : ''}${quizSettings.type && quizSettings.type.id !== 'any' ? `&type=${quizSettings.type.id}` : ''}`
     )
     const data = await response.json()
+    console.log('data')
+    console.log('=========')
+    console.log(data)
     dispatch(setQuestions(data.results))
     return true
   } catch (error) {

@@ -7,7 +7,6 @@ import { Button } from '@/components/Button'
 import { Modal } from '@/components/Modal'
 import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
-import { fetchQuestions } from '@/utils/fetchQuestions'
 import mockQuestions from '@/data/mockQuestions'
 import {
   setCategory,
@@ -19,6 +18,7 @@ import {
 import { setQuestions } from '@/redux/slices/game'
 import { RootState } from '@/redux/store'
 import { QuizSettings } from '@/redux/types'
+import { useLazyFetchQuestionsQuery } from '@/redux/api/questionsApi'
 
 interface Category {
   id: number
@@ -111,33 +111,46 @@ export function CreateQuizScreen() {
     dispatch(setNumberOfQuestions(quantity))
   }
 
+  
+  const [showLoading, setShowLoading] = useState(false)
+  const [fetchQuestions] = useLazyFetchQuestionsQuery()
+
   const handleStartQuiz = async () => {
-    // Check for network connectivity
     if (!navigator.onLine) {
-      setModalMessage('No Internet')
-      toggleModal() // Show dialog immediately if offline
+      setModalMessage('No Internet Connection')
+      toggleModal()
       return
     }
 
-    let responseReceived = false
+    setShowLoading(true)
+    try {
+      let responseReceived = false
+      const timer = setTimeout(() => {
+        if (!responseReceived) {
+          toggleModal()
+        }
+      }, 2000)
 
-    // Start a timer for 2 seconds
-    const timer = setTimeout(() => {
-      if (!responseReceived) {
-        toggleModal()
+      const data = await fetchQuestions(quizSettings).unwrap()
+
+      responseReceived = true
+      clearTimeout(timer)
+
+      if (data.results) {
+        dispatch(setQuestions(data.results))
+        navigate(ROUTES.play)
       }
-    }, 2000)
-
-    const success = await fetchQuestions(quizSettings, dispatch)
-    responseReceived = true
-
-    // Clear the timer as we received the response
-    clearTimeout(timer)
-
-    if (success) {
-      navigate(ROUTES.play)
+    } catch (error) {
+      // Handle any errors here
+      console.error('Failed to fetch questions:', error)
+      setModalMessage('Error fetching questions')
+      toggleModal()
+    } finally {
+      setShowLoading(false)
     }
   }
+
+  
 
   return (
     <>
@@ -176,13 +189,15 @@ export function CreateQuizScreen() {
           </DropdownMenu>
         ))}
 
-        <Button format="lg border fill" className="" onClick={handleStartQuiz}>
-          Start quiz
+        
+        <Button format="border fill lg" className="" onClick={handleStartQuiz}>
+          {showLoading ? 'loading...' : 'Start Quiz'}
         </Button>
 
         <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
           See my statistics
         </Button>
+
       </div>
 
       <Modal
