@@ -26,7 +26,7 @@ const gameSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(resetSettings, () => initialState);
+    builder.addCase(resetSettings, () => initialState)
   }
 })
 

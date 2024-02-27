@@ -72,6 +72,7 @@ export function PlayQuizScreen() {
       setTimeout(() => {
         setSelectedAnswer(null)
         if (currentQuestion === numberOfQuestions - 1) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           dispatch(updateStats() as any) // TODO fix any
           navigate(ROUTES.result, { replace: true })
         } else {

@@ -43,7 +43,7 @@ const statsSlice = createSlice({
 
       // Update categories
       for (const category in categories) {
-        if (state.totalAnsweredCategories.hasOwnProperty(category)) {
+        if (Object.prototype.hasOwnProperty.call(state.totalAnsweredCategories, category)) {
           state.totalAnsweredCategories[category] += categories[category]
         } else {
           state.totalAnsweredCategories[category] = categories[category]
@@ -52,7 +52,7 @@ const statsSlice = createSlice({
 
       // Update difficulties
       for (const difficulty in difficulties) {
-        if (state.totalAnsweredDifficulties.hasOwnProperty(difficulty)) {
+        if (Object.prototype.hasOwnProperty.call(state.totalAnsweredDifficulties, difficulty)) {
           state.totalAnsweredDifficulties[difficulty] += difficulties[difficulty]
         } else {
           state.totalAnsweredDifficulties[difficulty] = difficulties[difficulty]
@@ -61,7 +61,7 @@ const statsSlice = createSlice({
 
       // Update types
       for (const type in types) {
-        if (state.totalAnsweredTypes.hasOwnProperty(type)) {
+        if (Object.prototype.hasOwnProperty.call(state.totalAnsweredTypes, type)) {
           state.totalAnsweredTypes[type] += types[type]
         } else {
           state.totalAnsweredTypes[type] = types[type]

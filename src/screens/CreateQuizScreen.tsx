@@ -32,7 +32,7 @@ export function CreateQuizScreen() {
   const [categories, setCategories] = useState<Category[]>([])
   const [modalMessage, setModalMessage] = useState('Server is not responding')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const {data} = useFetchCategoriesQuery()
+  const { data } = useFetchCategoriesQuery()
 
   useEffect(() => {
     data && setCategories(data)
