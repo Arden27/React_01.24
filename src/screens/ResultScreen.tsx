@@ -37,6 +37,8 @@ export function ResultScreen() {
   const [fetchQuestions] = useLazyFetchQuestionsQuery()
 
   const handleRestart = async () => {
+    dispatch(resetCorrectAnswers())
+    
     if (!navigator.onLine) {
       setModalMessage('No Internet Connection')
       toggleModal()
