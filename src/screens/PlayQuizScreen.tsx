@@ -7,7 +7,7 @@ import { Modal } from '@/components/Modal'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCorrectAnswer } from '@/redux/slices/game'
-import { addAnsweredCategories } from '@/redux/slices/stats'
+import { updateStats } from '@/redux/slices/stats'
 import { RootState } from '@/redux/store'
 
 export function PlayQuizScreen() {
@@ -63,8 +63,6 @@ export function PlayQuizScreen() {
       const answer = target.textContent || ''
       const decodedAnswer = he.decode(answer)
 
-      dispatch(addAnsweredCategories(questions[currentQuestion].category))
-
       if (decodedAnswer === currentCorrectAnswer) {
         dispatch(addCorrectAnswer())
       }
@@ -74,6 +72,7 @@ export function PlayQuizScreen() {
       setTimeout(() => {
         setSelectedAnswer(null)
         if (currentQuestion === numberOfQuestions - 1) {
+          dispatch(updateStats() as any) // TODO fix any
           navigate(ROUTES.result, { replace: true })
         } else {
           setCurrentQuestion((prev) => prev + 1)
@@ -104,7 +103,7 @@ export function PlayQuizScreen() {
   }
 
   if (questions.length === 0) {
-    return null // TODO add some fallback UI
+    return null
   }
 
   return (

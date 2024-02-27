@@ -14,7 +14,15 @@ export interface Game {
 }
 
 export interface Stats {
-  answeredCategories: {
-    [category: string]: number;
-  };
+  totalAnsweredCategories: {
+    [category: string]: number
+  }
+  totalAnsweredDifficulties: {
+    [category: string]: number
+  }
+  totalAnsweredTypes: {
+    [category: string]: number
+  }
+  totalAnswered: number
+  totalCorrectAnswers: number
 }
