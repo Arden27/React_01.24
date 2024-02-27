@@ -37,8 +37,6 @@ export function ResultScreen() {
   const [fetchQuestions] = useLazyFetchQuestionsQuery()
 
   const handleRestart = async () => {
-    dispatch(resetCorrectAnswers())
-    
     if (!navigator.onLine) {
       setModalMessage('No Internet Connection')
       toggleModal()
@@ -62,6 +60,7 @@ export function ResultScreen() {
       if (data.results) {
         dispatch(setQuestions(data.results))
         navigate(ROUTES.play)
+        dispatch(resetCorrectAnswers())
       }
     } catch (error) {
       // Handle any errors here
@@ -139,7 +138,7 @@ export function ResultScreen() {
             <Button format="sm border" onClick={handleRestart} className="relative ">
               <div className="relative flex h-full w-full flex-row items-center justify-center gap-3xs">
                 <RestartIcon className="h-md w-md" />
-                {showLoading ? "" : 'Restart'}
+                {showLoading ? '' : 'Restart'}
               </div>
             </Button>
             <Button
