@@ -12,3 +12,9 @@ export interface Game {
   correctAnswers: number
   timeSpent: number
 }
+
+export interface Stats {
+  answeredCategories: {
+    [category: string]: number;
+  };
+}

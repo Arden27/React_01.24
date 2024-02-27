@@ -7,6 +7,7 @@ import { Modal } from '@/components/Modal'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCorrectAnswer } from '@/redux/slices/game'
+import { addAnsweredCategories } from '@/redux/slices/stats'
 import { RootState } from '@/redux/store'
 
 export function PlayQuizScreen() {
@@ -62,6 +63,8 @@ export function PlayQuizScreen() {
       const answer = target.textContent || ''
       const decodedAnswer = he.decode(answer)
 
+      dispatch(addAnsweredCategories(questions[currentQuestion].category))
+
       if (decodedAnswer === currentCorrectAnswer) {
         dispatch(addCorrectAnswer())
       }
@@ -109,17 +112,18 @@ export function PlayQuizScreen() {
       <div
         className={` flex h-screen w-screen items-center justify-center ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
         <div
-          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl
-    `}>
+          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
           <CountdownTimer
             className="slide-in-bottom absolute -top-lg right-xl -z-20 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
             initialTime={time * 60}
           />
-          <div className="flex flex-col gap-2xs text-center">
+          <div className="flex flex-col gap-3xs text-center">
             <h3>
               Question {currentQuestion + 1} of {numberOfQuestions}
             </h3>
+            <h4>{questions[currentQuestion].category}</h4>
           </div>
+
           <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
 
           <div className="flex flex-col gap-2" onClick={handleAnswerClick}>
