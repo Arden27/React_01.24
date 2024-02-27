@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { Game } from '../types'
+import { resetSettings } from './settings'
 
 const initialState: Game = {
   questions: [],
@@ -23,6 +24,9 @@ const gameSlice = createSlice({
     resetCorrectAnswers: (state) => {
       state.correctAnswers = 0
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(resetSettings, () => initialState);
   }
 })
 
