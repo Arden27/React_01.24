@@ -6,12 +6,14 @@ import { Button } from '@/components/Button'
 import { Modal } from '@/components/Modal'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState, addCorrectAnswer } from '@/redux/store'
+import { addCorrectAnswer } from '@/redux/slices/game'
+import { updateStats } from '@/redux/slices/stats'
+import { RootState } from '@/redux/store'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
-  const questions = useSelector((state: RootState) => state.quiz.questions)
-  const time = useSelector((state: RootState) => state.quiz.time)
+  const questions = useSelector((state: RootState) => state.game.questions)
+  const time = useSelector((state: RootState) => state.settings.time)
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([])
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
 
@@ -70,6 +72,8 @@ export function PlayQuizScreen() {
       setTimeout(() => {
         setSelectedAnswer(null)
         if (currentQuestion === numberOfQuestions - 1) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          dispatch(updateStats() as any) // TODO fix any
           navigate(ROUTES.result, { replace: true })
         } else {
           setCurrentQuestion((prev) => prev + 1)
@@ -100,7 +104,7 @@ export function PlayQuizScreen() {
   }
 
   if (questions.length === 0) {
-    return null // TODO add some fallback UI
+    return null
   }
 
   return (
@@ -108,17 +112,18 @@ export function PlayQuizScreen() {
       <div
         className={` flex h-screen w-screen items-center justify-center ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
         <div
-          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl
-    `}>
+          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
           <CountdownTimer
             className="slide-in-bottom absolute -top-lg right-xl -z-20 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
             initialTime={time * 60}
           />
-          <div className="flex flex-col gap-2xs text-center">
+          <div className="flex flex-col gap-3xs text-center">
             <h3>
               Question {currentQuestion + 1} of {numberOfQuestions}
             </h3>
+            <h4>{questions[currentQuestion].category}</h4>
           </div>
+
           <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
 
           <div className="flex flex-col gap-2" onClick={handleAnswerClick}>

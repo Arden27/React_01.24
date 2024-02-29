@@ -5,17 +5,20 @@ import { Modal } from '@/components/Modal'
 import RestartIcon from '@/assets/svg/restart.svg?react'
 import { ROUTES } from '@/navigation/router'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState, setQuestions, resetCorrectAnswers, resetSettings } from '@/redux/store'
-import { fetchQuestions } from '@/utils/fetchQuestions'
+import { setQuestions, resetCorrectAnswers } from '@/redux/slices/game'
+import { resetSettings } from '@/redux/slices/settings'
+import { RootState } from '@/redux/store'
+import { useLazyFetchQuestionsQuery } from '@/redux/api/questionsApi'
 import mockQuestions from '@/data/mockQuestions'
 import { formatTime } from '@/utils/formatTime'
 
 export function ResultScreen() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const currentQuizSettings = useSelector((state: RootState) => state.quiz)
-  const correctAnswers = useSelector((state: RootState) => state.quiz.correctAnswers)
-  const numberOfQuestions = useSelector((state: RootState) => state.quiz.numberOfQuestions)
+  const currentQuizSettings = useSelector((state: RootState) => state.settings)
+  const timeSpent = useSelector((state: RootState) => state.game.timeSpent)
+  const correctAnswers = useSelector((state: RootState) => state.game.correctAnswers)
+  const numberOfQuestions = useSelector((state: RootState) => state.settings.numberOfQuestions)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('Server is not responding')
@@ -30,33 +33,42 @@ export function ResultScreen() {
     navigate(ROUTES.play)
   }
 
+  const [showLoading, setShowLoading] = useState(false)
+  const [fetchQuestions] = useLazyFetchQuestionsQuery()
+
   const handleRestart = async () => {
-    // Check for network connectivity
     if (!navigator.onLine) {
-      setModalMessage('No Internet')
-      toggleModal() // Show dialog immediately if offline
+      setModalMessage('No Internet Connection')
+      toggleModal()
       return
     }
 
-    let responseReceived = false
+    setShowLoading(true)
+    try {
+      let responseReceived = false
+      const timer = setTimeout(() => {
+        if (!responseReceived) {
+          toggleModal()
+        }
+      }, 2000)
 
-    // Start a timer for 2 seconds
-    const timer = setTimeout(() => {
-      if (!responseReceived) {
-        toggleModal()
+      const data = await fetchQuestions(currentQuizSettings).unwrap()
+
+      responseReceived = true
+      clearTimeout(timer)
+
+      if (data.results) {
+        dispatch(setQuestions(data.results))
+        navigate(ROUTES.play)
+        dispatch(resetCorrectAnswers())
       }
-    }, 2000)
-
-    const success = await fetchQuestions(currentQuizSettings, dispatch)
-    responseReceived = true
-
-    // Clear the timer as we received the response
-    clearTimeout(timer)
-
-    dispatch(resetCorrectAnswers())
-
-    if (success) {
-      navigate(ROUTES.play)
+    } catch (error) {
+      // Handle any errors here
+      console.error('Failed to fetch questions:', error)
+      setModalMessage('Error fetching questions')
+      toggleModal()
+    } finally {
+      setShowLoading(false)
     }
   }
 
@@ -77,7 +89,7 @@ export function ResultScreen() {
             className="!hover:text-header relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
       text-text ">
             <h2>Time</h2>
-            <h3>{formatTime(currentQuizSettings.timeSpent)}</h3>
+            <h3>{formatTime(timeSpent)}</h3>
           </div>
           <div
             className="relative flex flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-text p-md text-center font-btn text-sm uppercase
@@ -126,7 +138,7 @@ export function ResultScreen() {
             <Button format="sm border" onClick={handleRestart} className="relative ">
               <div className="relative flex h-full w-full flex-row items-center justify-center gap-3xs">
                 <RestartIcon className="h-md w-md" />
-                Restart
+                {showLoading ? '' : 'Restart'}
               </div>
             </Button>
             <Button

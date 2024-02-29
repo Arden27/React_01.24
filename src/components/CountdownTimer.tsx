@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
-import { setTimeSpent } from '@/redux/store'
+import { setTimeSpent } from '@/redux/slices/game'
 import { useDispatch } from 'react-redux'
 import { formatTime } from '@/utils/formatTime'
 
