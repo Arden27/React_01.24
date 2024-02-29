@@ -1,9 +1,9 @@
 export interface QuizSettings {
   numberOfQuestions: number
-  category: { option: string; id: string } | null
-  difficulty: { option: string; id: string } | null
-  type: { option: string; id: string } | null
-  time: number
+  category: { text: string; value: string } | null
+  difficulty: { text: string; value: string } | null
+  type: { text: string; value: string } | null
+  time: { text: string; value: string }
 }
 
 export interface Game {

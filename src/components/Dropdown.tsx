@@ -5,17 +5,15 @@ import ChevronUp from '@/assets/svg/chevron-up.svg?react'
 import ChevronDown from '@/assets/svg/chevron-down.svg?react'
 import { twMerge } from 'tailwind-merge'
 
-// Define a type for your payload
 export interface PayloadType {
   label: string
   items: OptionItemType[]
 }
 type OptionItemType = {
-  id: string
-  option: string
+  text: string
+  value: string
 }
 
-// Define a type for your props
 interface DropdownProps {
   payload: PayloadType
   placeholder: string
@@ -54,12 +52,12 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
       {isOpen && (
         <ul className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
           {payload.items.map((item, index) => (
-            <li key={item.option}>
+            <li key={item.text}>
               <Button
                 className="w-full justify-end border-transparent hover:text-bar"
                 format="sm"
-                onClick={handleSelect(item.option, index, payload)}>
-                {item.option}
+                onClick={handleSelect(item.text, index, payload)}>
+                {item.text}
               </Button>
             </li>
           ))}

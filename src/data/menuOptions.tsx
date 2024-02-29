@@ -1,29 +1,29 @@
-const menuOptions = [
+const menutexts = [
   {
     label: 'difficulty',
     items: [
-      { option: 'Any Difficulty', id: 'any' },
-      { option: 'Easy', id: 'easy' },
-      { option: 'Medium', id: 'medium' },
-      { option: 'Hard', id: 'hard' }
+      { text: 'Any Difficulty', value: 'any' },
+      { text: 'Easy', value: 'easy' },
+      { text: 'Medium', value: 'medium' },
+      { text: 'Hard', value: 'hard' }
     ]
   },
   {
     label: 'type',
     items: [
-      { option: 'Any Type', id: 'any' },
-      { option: 'Multiple Choice', id: 'multiple' },
-      { option: 'True / False', id: 'boolean' }
+      { text: 'Any Type', value: 'any' },
+      { text: 'Multiple Choice', value: 'multiple' },
+      { text: 'True / False', value: 'boolean' }
     ]
   },
   {
     label: 'time',
     items: [
-      { option: '1m', id: '1' },
-      { option: '2m', id: '2' },
-      { option: '5m', id: '5' }
+      { text: '1m', value: '1' },
+      { text: '2m', value: '2' },
+      { text: '5m', value: '5' }
     ]
   }
 ]
 
-export default menuOptions
+export default menutexts

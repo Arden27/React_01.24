@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { ROUTES } from '@/navigation/router'
 import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
@@ -8,15 +8,8 @@ import { Modal } from '@/components/Modal'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 import mockQuestions from '@/data/mockQuestions'
 import { PayloadType } from '@/components/Dropdown'
-import {
-  setCategory,
-  setDifficulty,
-  setType,
-  setTime,
-  setNumberOfQuestions
-} from '@/redux/slices/settings'
+import { setSettings } from '@/redux/slices/settings'
 import { setQuestions } from '@/redux/slices/game'
-import { RootState } from '@/redux/store'
 import { QuizSettings } from '@/redux/types'
 import { useLazyFetchQuestionsQuery, useFetchCategoriesQuery } from '@/redux/api/questionsApi'
 import { Dropdown } from '@/components/Dropdown'
@@ -29,15 +22,23 @@ interface Category {
 export function CreateQuizScreen() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const quizSettings = useSelector((state: RootState) => state.settings as QuizSettings)
+
   const [categories, setCategories] = useState<Category[]>([])
   const [modalMessage, setModalMessage] = useState('Server is not responding')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { data } = useFetchCategoriesQuery()
+  const { data: fetchedCategories } = useFetchCategoriesQuery()
+
+  const settingsRef = useRef<QuizSettings>({
+    numberOfQuestions: 5,
+    category: null,
+    difficulty: null,
+    type: null,
+    time: { text: '', value: '1' }
+  })
 
   useEffect(() => {
-    data && setCategories(data)
-  }, [data])
+    fetchedCategories && setCategories(fetchedCategories)
+  }, [fetchedCategories])
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev)
@@ -53,8 +54,8 @@ export function CreateQuizScreen() {
       label: 'category',
       items: categories.map((category) => {
         return {
-          option: category.name,
-          id: category.id
+          text: category.name,
+          value: category.id
         }
       })
     },
@@ -62,7 +63,7 @@ export function CreateQuizScreen() {
   ]
 
   const handleSetQuantity = (quantity: number) => {
-    dispatch(setNumberOfQuestions(quantity))
+    settingsRef.current.numberOfQuestions = quantity
   }
 
   const [showLoading, setShowLoading] = useState(false)
@@ -84,7 +85,8 @@ export function CreateQuizScreen() {
         }
       }, 2000)
 
-      const data = await fetchQuestions(quizSettings).unwrap()
+      dispatch(setSettings(settingsRef.current))
+      const data = await fetchQuestions(settingsRef.current).unwrap()
 
       responseReceived = true
       clearTimeout(timer)
@@ -94,7 +96,6 @@ export function CreateQuizScreen() {
         navigate(ROUTES.play)
       }
     } catch (error) {
-      // Handle any errors here
       console.error('Failed to fetch questions:', error)
       setModalMessage('Error fetching questions')
       toggleModal()
@@ -104,26 +105,9 @@ export function CreateQuizScreen() {
   }
 
   const handleSelect = (index: number, payload: PayloadType) => {
-    switch (payload.label) {
-      case 'category': {
-        dispatch(setCategory(payload.items[index]))
-        break
-      }
-      case 'difficulty': {
-        dispatch(setDifficulty(payload.items[index]))
-        break
-      }
-      case 'type': {
-        dispatch(setType(payload.items[index]))
-        break
-      }
-      case 'time': {
-        dispatch(setTime(payload.items[index].id))
-        break
-      }
-      default:
-        break
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const settings = settingsRef.current as any
+    settings[payload.label] = payload.items[index]
   }
 
   return (
@@ -136,7 +120,6 @@ export function CreateQuizScreen() {
           <SetQuantityGroup
             min={5}
             max={15}
-            value={quizSettings.numberOfQuestions}
             onChange={handleSetQuantity}
             className="rounded-[2rem] border-2 border-text bg-bg3"
             classNameButtons="text-md"

@@ -115,21 +115,21 @@ export function ResultScreen() {
               <li>
                 Category:{' '}
                 <span>
-                  {currentQuizSettings.category ? currentQuizSettings.category.option : 'Any'}
+                  {currentQuizSettings.category ? currentQuizSettings.category.text : 'Any'}
                 </span>
               </li>
               <li>
                 Difficulty:{' '}
                 <span>
-                  {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.option : 'Any'}
+                  {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.text : 'Any'}
                 </span>
               </li>
               <li>
                 Type:{' '}
-                <span>{currentQuizSettings.type ? currentQuizSettings.type.option : 'Any'}</span>
+                <span>{currentQuizSettings.type ? currentQuizSettings.type.text : 'Any'}</span>
               </li>
               <li>
-                Time: <span>{currentQuizSettings.time} min</span>
+                Time: <span>{currentQuizSettings.time.value} min</span>
               </li>
             </ul>
           </div>
