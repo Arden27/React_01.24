@@ -5,9 +5,9 @@ import { ROUTES } from '@/navigation/router'
 import menuOptions from '@/data/menuOptions'
 import { Button } from '@/components/Button'
 import { Modal } from '@/components/Modal'
-import { DropdownMenu } from '@/components/DropdownMenu'
 import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 import mockQuestions from '@/data/mockQuestions'
+import { PayloadType } from '@/components/Dropdown'
 import {
   setCategory,
   setDifficulty,
@@ -19,9 +19,10 @@ import { setQuestions } from '@/redux/slices/game'
 import { RootState } from '@/redux/store'
 import { QuizSettings } from '@/redux/types'
 import { useLazyFetchQuestionsQuery, useFetchCategoriesQuery } from '@/redux/api/questionsApi'
+import { Dropdown } from '@/components/Dropdown'
 
 interface Category {
-  id: number
+  id: string
   name: string
 }
 
@@ -52,52 +53,13 @@ export function CreateQuizScreen() {
       label: 'category',
       items: categories.map((category) => {
         return {
-          name: category.name,
+          option: category.name,
           id: category.id
         }
       })
     },
     ...menuOptions
   ]
-
-  // temporary workaround function to find according to the selected option id for API call, TODO - upgrade DropdownMenu function to be able to return additional data
-  const findID = (category: string, name: string) => {
-    for (const optionsObject of menuOptionsWithCategories) {
-      if (optionsObject.label === category) {
-        for (const item of optionsObject.items) {
-          if (item.name === name) {
-            return item.id
-          }
-        }
-      }
-    }
-  }
-
-  const handleSelect = (label: string, selectedItem: string) => {
-    switch (label) {
-      case 'category': {
-        const category = findID(label, selectedItem)
-        dispatch(setCategory({ name: selectedItem, id: category }))
-        break
-      }
-      case 'difficulty': {
-        const difficulty = findID(label, selectedItem)
-        dispatch(setDifficulty({ name: selectedItem, id: difficulty }))
-        break
-      }
-      case 'type': {
-        const type = findID(label, selectedItem)
-        dispatch(setType({ name: selectedItem, id: type }))
-        break
-      }
-      case 'time': {
-        dispatch(setTime(parseInt(selectedItem)))
-        break
-      }
-      default:
-        break
-    }
-  }
 
   const handleSetQuantity = (quantity: number) => {
     dispatch(setNumberOfQuestions(quantity))
@@ -141,6 +103,29 @@ export function CreateQuizScreen() {
     }
   }
 
+  const handleSelect = (index: number, payload: PayloadType) => {
+    switch (payload.label) {
+      case 'category': {
+        dispatch(setCategory(payload.items[index]))
+        break
+      }
+      case 'difficulty': {
+        dispatch(setDifficulty(payload.items[index]))
+        break
+      }
+      case 'type': {
+        dispatch(setType(payload.items[index]))
+        break
+      }
+      case 'time': {
+        dispatch(setTime(payload.items[index].id))
+        break
+      }
+      default:
+        break
+    }
+  }
+
   return (
     <>
       <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -160,22 +145,12 @@ export function CreateQuizScreen() {
           <h3 className="text-lg">questions</h3>
         </div>
 
-        {menuOptionsWithCategories.map((option, index) => (
-          <DropdownMenu
-            onSelect={(selectedItem) => handleSelect(option.label, selectedItem)}
+        {menuOptionsWithCategories.map((menuOption, index) => (
+          <Dropdown
             key={`dropdown-${index}`}
-            selected={quizSettings[option.label as keyof QuizSettings]}>
-            <DropdownMenu.Placeholder>Choose {option.label}</DropdownMenu.Placeholder>
-            <DropdownMenu.List className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
-              {option.items.map((item, itemIndex) => (
-                <DropdownMenu.Item
-                  key={`${option.label}-${item}-${itemIndex}`}
-                  className="w-full justify-end border-transparent hover:text-bar">
-                  {item.name}
-                </DropdownMenu.Item>
-              ))}
-            </DropdownMenu.List>
-          </DropdownMenu>
+            payload={menuOption}
+            placeholder={`Choose ${menuOption.label}`}
+            onSelect={handleSelect}></Dropdown>
         ))}
 
         <Button format="border fill lg" className="" onClick={handleStartQuiz}>
