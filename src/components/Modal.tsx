@@ -25,7 +25,9 @@ export function Modal({
 
   const handleConfirm = () => {
     confirmAction()
-    toggleDialog()
+    if (isOpen) {
+      toggleDialog()
+    }
   }
   useOutsideClick([modalRef], () => {
     if (isOpen) {
