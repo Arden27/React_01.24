@@ -24,13 +24,13 @@ export function StatisticsScreen() {
     storage.removeItem('persist:stats')
   }
 
-  const answeredCategories = useSelector((state: RootState) => state.stats.totalAnsweredCategories)
-  const answeredDifficulties = useSelector(
-    (state: RootState) => state.stats.totalAnsweredDifficulties
-  )
-  const answeredTypes = useSelector((state: RootState) => state.stats.totalAnsweredTypes)
-  const totalAnswered = useSelector((state: RootState) => state.stats.totalAnswered)
-  const correctAnswered = useSelector((state: RootState) => state.stats.totalCorrectAnswers)
+  const {
+    totalAnswered,
+    totalCorrectAnswers,
+    totalAnsweredCategories,
+    totalAnsweredDifficulties,
+    totalAnsweredTypes
+  } = useSelector((state: RootState) => state.stats)
   return (
     <>
       <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -43,24 +43,40 @@ export function StatisticsScreen() {
             <h3
               className="relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-xs font-btn text-xl uppercase
       text-text">
-              {correctAnswered} / {totalAnswered}
+              {totalCorrectAnswers} / {totalAnswered}
             </h3>
             <div className="p-xs text-md">
-              {calculatePercentage(correctAnswered, totalAnswered)}%
+              {calculatePercentage(totalCorrectAnswers, totalAnswered)}%
             </div>
           </div>
         </div>
-        {JSON.stringify(totalAnswered)}
-        <br></br>
-        {JSON.stringify(correctAnswered)}
-        <br></br>
-        {JSON.stringify(answeredCategories)}
-        <br></br>
-        {JSON.stringify(answeredDifficulties)}
-        <br></br>
-        {JSON.stringify(answeredTypes)}
+
+        <div className="flex flex-col gap-sm">
+          <div>
+            <h2>Answered Categories</h2>
+            {Object.entries(totalAnsweredCategories).map(([category, count]) => (
+              <div key={category}>{`${category}: ${count}`}</div>
+            ))}
+          </div>
+
+          <div className='flex gap-sm'>
+            <div>
+              <h2>Difficulties</h2>
+              {Object.entries(totalAnsweredDifficulties).map(([difficulty, count]) => (
+                <div key={difficulty}>{`${difficulty}: ${count}`}</div>
+              ))}
+            </div>
+
+            <div>
+              <h2>Types</h2>
+              {Object.entries(totalAnsweredTypes).map(([type, count]) => (
+                <div key={type}>{`${type}: ${count}`}</div>
+              ))}
+            </div>
+          </div>
+        </div>
         <Button format="lg border" className="bg-bg" onClick={() => navigate(ROUTES.root)}>
-          Choose another quiz
+          Play
         </Button>
         <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleModal}>
           CLear Statistics
