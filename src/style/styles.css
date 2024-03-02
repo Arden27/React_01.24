@@ -39,6 +39,19 @@
     --fontSize--xxxl: clamp(2.07rem, 1.52rem + 2.79vw, 3.75rem);
   }
 
+  /* --- SCROLLBAR --- */
+
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(30, 70%, 18%);
+    border-radius: 6px;
+  }
+
+  /* --- FOCUS --- */
+
   :focus-visible {
     @apply rounded-[2rem] outline outline-2 outline-offset-2 outline-accent;
   }
