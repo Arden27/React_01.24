@@ -11,6 +11,7 @@ import { RootState } from '@/redux/store'
 import { useLazyFetchQuestionsQuery } from '@/redux/api/questionsApi'
 import mockQuestions from '@/data/mockQuestions'
 import { formatTime } from '@/utils/formatTime'
+import { calculatePercentage } from '@/utils/calculatePercentage'
 
 export function ResultScreen() {
   const dispatch = useDispatch()
@@ -72,13 +73,6 @@ export function ResultScreen() {
     }
   }
 
-  const calculatePercentage = (correctAnswers: number, totalQuestions: number) => {
-    if (totalQuestions === 0) {
-      return 0 // Return 0% if there are no questions
-    }
-    return Math.round((correctAnswers / totalQuestions) * 100)
-  }
-
   return (
     <>
       <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
@@ -86,7 +80,7 @@ export function ResultScreen() {
         <h2 className="text-center">Thank you for completing this quiz. Here are your results</h2>
         <div className="flex flex-row gap-sm">
           <div
-            className="!hover:text-header relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
+            className="relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
       text-text ">
             <h2>Time</h2>
             <h3>{formatTime(timeSpent)}</h3>
@@ -97,7 +91,7 @@ export function ResultScreen() {
             <h2>Correct Answers</h2>
             <div className="flex flex-row items-center">
               <h3
-                className="!hover:text-header  relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-xs font-btn text-xl uppercase
+                className="relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-xs font-btn text-xl uppercase
       text-text">
                 {correctAnswers} / {numberOfQuestions}
               </h3>
@@ -115,21 +109,21 @@ export function ResultScreen() {
               <li>
                 Category:{' '}
                 <span>
-                  {currentQuizSettings.category ? currentQuizSettings.category.name : 'Any'}
+                  {currentQuizSettings.category ? currentQuizSettings.category.text : 'Any'}
                 </span>
               </li>
               <li>
                 Difficulty:{' '}
                 <span>
-                  {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.name : 'Any'}
+                  {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.text : 'Any'}
                 </span>
               </li>
               <li>
                 Type:{' '}
-                <span>{currentQuizSettings.type ? currentQuizSettings.type.name : 'Any'}</span>
+                <span>{currentQuizSettings.type ? currentQuizSettings.type.text : 'Any'}</span>
               </li>
               <li>
-                Time: <span>{currentQuizSettings.time} min</span>
+                Time: <span>{currentQuizSettings.time.value} min</span>
               </li>
             </ul>
           </div>

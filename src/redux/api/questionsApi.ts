@@ -16,7 +16,7 @@ interface QuizApiResponse {
 }
 
 interface Category {
-  id: number
+  id: string
   name: string
 }
 
@@ -27,10 +27,10 @@ export const questionsApi = createApi({
     fetchQuestions: builder.query<QuizApiResponse, QuizSettings>({
       query: (settings) => {
         const query = new URLSearchParams({ amount: settings.numberOfQuestions.toString() })
-        if (settings.category) query.set('category', settings.category.id.toString())
-        if (settings.difficulty && settings.difficulty.id !== 'any')
-          query.set('difficulty', settings.difficulty.id)
-        if (settings.type && settings.type.id !== 'any') query.set('type', settings.type.id)
+        if (settings.category) query.set('category', settings.category.value.toString())
+        if (settings.difficulty && settings.difficulty.value !== 'any')
+          query.set('difficulty', settings.difficulty.value)
+        if (settings.type && settings.type.value !== 'any') query.set('type', settings.type.value)
 
         return `api.php?${query.toString()}`
       }

@@ -5,7 +5,6 @@ import { twMerge } from 'tailwind-merge'
 interface SetQuantityGroupProps {
   min: number
   max: number
-  value?: number
   onChange?: (quantity: number) => void
   className?: string
   classNameInput?: string
@@ -15,16 +14,17 @@ interface SetQuantityGroupProps {
 export function SetQuantityGroup({
   min,
   max,
-  value,
   onChange,
   className,
   classNameInput,
   classNameButtons
 }: SetQuantityGroupProps) {
-  const [internalQuantity, setInternalQuantity] = useState(5)
-  const isControlled = value !== undefined && onChange !== undefined
-  const quantity = isControlled ? value : internalQuantity
-  const setQuantity = isControlled ? onChange : setInternalQuantity
+  const [quantity, setInternalQuantity] = useState(min)
+
+  const setQuantity = (newQuantity: number) => {
+    setInternalQuantity(newQuantity)
+    onChange?.(newQuantity)
+  }
 
   return (
     <div
@@ -39,7 +39,6 @@ export function SetQuantityGroup({
         limit={min}
         className={classNameButtons}
       />
-
       <InputQuantity
         quantity={quantity}
         setQuantity={setQuantity}
@@ -47,7 +46,6 @@ export function SetQuantityGroup({
         max={max}
         className={classNameInput}
       />
-
       <SetQuantityButton
         quantity={quantity}
         setQuantity={setQuantity}

@@ -16,7 +16,6 @@ export function PlayQuizScreen() {
   const time = useSelector((state: RootState) => state.settings.time)
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([])
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
-
   const numberOfQuestions = questions.length
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const currentCorrectAnswer =
@@ -115,7 +114,7 @@ export function PlayQuizScreen() {
           className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
           <CountdownTimer
             className="slide-in-bottom absolute -top-lg right-xl -z-20 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
-            initialTime={time * 60}
+            initialTime={Number(time.value) * 60}
           />
           <div className="flex flex-col gap-3xs text-center">
             <h3>

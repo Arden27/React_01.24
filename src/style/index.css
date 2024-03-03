@@ -1,8 +1,29 @@
 @import './styles' layer(base);
 @import './fonts' layer(base);
 @import './typography' layer(components);
-@import "./animations" layer(base);
+@import './animations' layer(base);
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .rotate-left-180 {
+    transform: rotateY(180deg);
+  }
+  .rotate-left-360 {
+    transform: rotateY(360deg);
+  }
+  .rotate-right-180 {
+    transform: rotateY(-180deg);
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  .rotate-x-180 {
+    transform: rotateX(180deg);
+  }
+  .rotate-reset {
+    transform: rotateY(0deg);
+  }
+}
