@@ -50,18 +50,20 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
         <span className="ml-3xs">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
       </Button>
       {isOpen && (
-        <ul className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
-          {payload.items.map((item, index) => (
-            <li key={item.text}>
-              <Button
-                className="w-full justify-end border-transparent hover:text-bar"
-                format="sm"
-                onClick={handleSelect(item.text, index, payload)}>
-                {item.text}
-              </Button>
-            </li>
-          ))}
-        </ul>
+        <div className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs  whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
+          <ul className='overflow-y-auto'>
+            {payload.items.map((item, index) => (
+              <li key={item.text}>
+                <Button
+                  className="w-full justify-end border-transparent hover:text-bar"
+                  format="sm"
+                  onClick={handleSelect(item.text, index, payload)}>
+                  {item.text}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   )
