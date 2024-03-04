@@ -3,7 +3,7 @@ import { DynamicBackground } from './components/DynamicBackground'
 
 export function Layout() {
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
+    <main className="grid h-screen w-screen place-items-center gap-2">
       <DynamicBackground />
       <Outlet />
     </main>

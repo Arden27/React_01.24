@@ -112,10 +112,10 @@ export function CreateQuizScreen() {
 
   return (
     <>
-      <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
+      <div className="relative m-lg grid grid-rows-8 max-w-xl place-items-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
         <h1 className="text-2xl font-bold">Create Quiz</h1>
 
-        <div className="flex items-center space-x-2">
+        <div className="grid grid-flow-col auto-cols-max gap-2 items-center">
           <h3 className="text-lg">with</h3>
           <SetQuantityGroup
             min={5}

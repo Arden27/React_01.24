@@ -111,12 +111,12 @@ export function PlayQuizScreen() {
       <div
         className={`z-0 flex h-screen w-screen items-center justify-center ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
         <div
-          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
+          className={`relative m-lg grid max-w-xl grid-cols-1 items-center justify-items-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
           <CountdownTimer
             className="slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
             initialTime={Number(time.value) * 60}
           />
-          <div className="flex flex-col gap-3xs text-center">
+          <div className="grid gap-3xs text-center">
             <h3>
               Question {currentQuestion + 1} of {numberOfQuestions}
             </h3>
@@ -125,37 +125,25 @@ export function PlayQuizScreen() {
 
           <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
 
-          <div className="flex flex-col gap-2" onClick={handleAnswerClick}>
+          <div className="grid gap-2" onClick={handleAnswerClick}>
             {shuffledAnswers.length === 2 && (
-              <div className="flex flex-row gap-2">
-                {shuffledAnswers.map((answer, index) => {
-                  answer = he.decode(answer)
-                  return (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  )
-                })}
+              <div className="grid grid-cols-2 gap-2">
+                {shuffledAnswers.map((answer, index) => (
+                  <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
+                    {he.decode(answer)}
+                  </Button>
+                ))}
               </div>
             )}
 
             {shuffledAnswers.length === 4 && (
-              <>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(0, 2).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(2, 4).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-              </>
+              <div className="grid grid-cols-2 gap-2">
+                {shuffledAnswers.map((answer, index) => (
+                  <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
+                    {he.decode(answer)}
+                  </Button>
+                ))}
+              </div>
             )}
           </div>
 
