@@ -74,7 +74,8 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
             <li className={twMerge('transition-transform duration-500')} key={item.text}>
               <Button
                 className={twMerge(
-                  'w-full justify-end border-transparent transition-transform duration-500 hover:text-bar'
+                  'w-full justify-end border-transparent transition duration-500 hover:text-bar',
+                  !isOpen ? 'opacity-0' : 'duration-0'
                 )}
                 format="sm"
                 onClick={handleSelect(item.text, index, payload)}>
