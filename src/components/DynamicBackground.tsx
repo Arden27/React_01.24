@@ -74,7 +74,7 @@ export function DynamicBackground() {
     transition: `opacity ${transitionTime / 1000}s ease-in`,
     backgroundImage: `linear-gradient(${foregroundAngle}deg, ${foregroundGradientFrom}, ${foregroundGradientTo})`,
     backgroundSize: '100% 100%',
-    position: 'absolute',
+    position: 'fixed',
     inset: 0,
     zIndex: 1
   }
@@ -83,7 +83,7 @@ export function DynamicBackground() {
     opacity: 1,
     backgroundImage: `linear-gradient(${backgroundAngle}deg, ${backgroundGradientFrom}, ${backgroundGradientTo})`,
     backgroundSize: '100% 100%',
-    position: 'absolute',
+    position: 'fixed',
     inset: 0,
     zIndex: 0
   }
