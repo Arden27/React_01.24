@@ -75,14 +75,14 @@ export function ResultScreen() {
 
   return (
     <>
-      <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
+      <div className="relative m-lg grid max-w-xl grid-cols-1 place-items-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
         <h1>Results</h1>
         <h2 className="text-center">Thank you for completing this quiz. Here are your results</h2>
-        <div className="flex flex-row gap-sm">
+        <div className="grid grid-cols-[1fr_3fr] gap-sm">
           <div
             className="relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
-      text-text ">
-            <h2>Time</h2>
+text-text">
+            <h2 className="text-center">Time</h2>
             <h3>{formatTime(timeSpent)}</h3>
           </div>
           <div
@@ -102,7 +102,7 @@ export function ResultScreen() {
           </div>
         </div>
 
-        <div className="flex w-full flex-row justify-between">
+        <div className="grid w-full grid-cols-2 justify-between">
           <div className="self-start text-start">
             <h3 className="text-lg">Quiz Settings</h3>
             <ul className="ml-sm [&>*>span]:font-btn [&>*]:p-3xs">
@@ -129,8 +129,8 @@ export function ResultScreen() {
           </div>
 
           <div className="flex h-full flex-col items-end justify-end gap-xs">
-            <Button format="sm border" onClick={handleRestart} className="relative ">
-              <div className="relative flex h-full w-full flex-row items-center justify-center gap-3xs">
+            <Button format="sm border" onClick={handleRestart} className={`${showLoading ? "hover:bg-transparent hover:text-text" : ""}`}>
+              <div className="relative grid auto-cols-max grid-flow-col place-items-center gap-3xs">
                 <RestartIcon className="h-md w-md" />
                 {showLoading ? '' : 'Restart'}
               </div>
