@@ -112,10 +112,10 @@ export function CreateQuizScreen() {
 
   return (
     <>
-      <div className="relative m-lg grid grid-rows-8 max-w-xl place-items-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
+      <div className="relative col-start-2 row-start-2 grid place-items-center gap-sm overflow-hidden rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
         <h1 className="text-2xl font-bold">Create Quiz</h1>
 
-        <div className="grid grid-flow-col auto-cols-max gap-2 items-center">
+        <div className="grid auto-cols-max grid-flow-col items-center gap-xs">
           <h3 className="text-lg">with</h3>
           <SetQuantityGroup
             min={5}
@@ -136,13 +136,14 @@ export function CreateQuizScreen() {
             onSelect={handleSelect}></Dropdown>
         ))}
 
-        <Button format="border fill lg" className="" onClick={handleStartQuiz}>
-          {showLoading ? 'loading...' : 'Start Quiz'}
-        </Button>
-
-        <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
-          See my statistics
-        </Button>
+        <div className="grid auto-cols-max grid-flow-col items-center gap-xs">
+          <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
+            See my statistics
+          </Button>
+          <Button format="border fill lg" className="" onClick={handleStartQuiz}>
+            {showLoading ? 'loading...' : 'Start Quiz'}
+          </Button>
+        </div>
       </div>
 
       <Modal
