@@ -42,12 +42,19 @@
   /* --- SCROLLBAR --- */
 
   ::-webkit-scrollbar {
-    width: 3px;
+    @apply w-[8px];
+  }
+
+  ::-webkit-scrollbar-track {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: hsl(30, 70%, 18%);
-    border-radius: 6px;
+    @apply rounded-[2rem]  bg-text;
+  }
+
+  /* --- MODAL --- */
+  ::backdrop {
+    @apply bg-red-800;
   }
 
   /* --- FOCUS --- */
@@ -66,4 +73,8 @@
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+:disabled {
+  @apply pointer-events-none  !border-gray-600 !text-gray-600 opacity-75;
 }

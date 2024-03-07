@@ -74,7 +74,7 @@ export function DynamicBackground() {
     transition: `opacity ${transitionTime / 1000}s ease-in`,
     backgroundImage: `linear-gradient(${foregroundAngle}deg, ${foregroundGradientFrom}, ${foregroundGradientTo})`,
     backgroundSize: '100% 100%',
-    position: 'absolute',
+    position: 'fixed',
     inset: 0,
     zIndex: 1
   }
@@ -83,15 +83,15 @@ export function DynamicBackground() {
     opacity: 1,
     backgroundImage: `linear-gradient(${backgroundAngle}deg, ${backgroundGradientFrom}, ${backgroundGradientTo})`,
     backgroundSize: '100% 100%',
-    position: 'absolute',
+    position: 'fixed',
     inset: 0,
     zIndex: 0
   }
 
   return (
     <div
-      className={`opacity-0 ${
-        rendered ? '-z-50 opacity-50' : ''
+      className={`-z-50 opacity-0 ${
+        rendered ? 'opacity-50' : ''
       } absolute inset-0 min-h-screen transition-opacity duration-[3000ms] ease-in-out`}>
       <div style={backgroundStyle}></div>
       <div style={foregroundStyle}></div>

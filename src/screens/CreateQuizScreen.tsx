@@ -130,7 +130,7 @@ export function CreateQuizScreen() {
           <h2 className="text-lg">questions</h2>
         </div>
 
-        <div className="grid h-full place-items-center gap-sm text-center">
+        <div className="grid h-full  place-items-center gap-sm text-center">
           {menuOptionsWithCategories.map((menuOption, index) => (
             <Dropdown
               key={`dropdown-${index}`}
