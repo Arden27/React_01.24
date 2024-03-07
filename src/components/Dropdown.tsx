@@ -49,9 +49,9 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
   useOutsideClick([buttonRef, node], handleOutsideClick)
 
   return (
-    <div className="relative cursor-pointer text-end" ref={node}>
+    <div className="relative  cursor-pointer text-end" ref={node}>
       <Button
-        className={twMerge('whitespace-nowrap hover:text-bg2', isOpen ? 'bg-text text-bg2' : '')}
+        className={twMerge(' hover:text-bg2', isOpen ? 'bg-text text-bg2' : '')}
         format="sm"
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}>
@@ -61,20 +61,20 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
 
       <div
         className={twMerge(
-          'absolute left-1/2 z-50 mt-3xs flex max-h-64 origin-top -translate-x-[50%] flex-col  gap-3xs overflow-hidden whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow transition-transform duration-500',
+          'fixed left-1/2 z-50  flex max-h-64  origin-top -translate-x-[50%] flex-col  gap-3xs overflow-hidden rounded-[2rem] bg-bar p-xs text-end  font-btn text-sm shadow transition-transform duration-500',
           !isOpen ? 'scale-y-0' : ''
         )}
         style={{ zIndex: zIndex }}>
         <ul
           className={twMerge(
-            'origin-bottom flex-col-reverse overflow-y-auto transition duration-500',
+            'justify-right flex origin-bottom flex-col place-items-end overflow-y-auto text-right transition duration-500',
             !isOpen ? 'scale-y-[2]' : ''
           )}>
           {payload.items.map((item, index) => (
             <li className={twMerge('transition-transform duration-500')} key={item.text}>
               <Button
                 className={twMerge(
-                  'w-full justify-end border-transparent transition duration-500 hover:text-bar',
+                  'h-fit min-h-[calc(theme(spacing.lg)+theme(spacing.3xs))] w-full justify-end border-transparent text-end transition duration-500 hover:text-bar',
                   !isOpen ? 'opacity-0' : 'duration-0'
                 )}
                 format="sm"
