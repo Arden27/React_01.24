@@ -67,7 +67,7 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
         style={{ zIndex: zIndex }}>
         <ul
           className={twMerge(
-            'justify-right flex origin-bottom flex-col place-items-end overflow-y-auto p-xs text-right transition duration-500',
+            'justify-right flex origin-bottom flex-col place-items-end overflow-y-auto px-xs text-right transition duration-500',
             !isOpen ? 'scale-y-[2]' : ''
           )}>
           {payload.items.map((item, index) => (
