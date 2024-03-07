@@ -1,5 +1,5 @@
 import he from 'he'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
 import { Button } from '@/components/Button'
@@ -25,32 +25,10 @@ export function PlayQuizScreen() {
 
   const dispatch = useDispatch()
 
-  const maxWidthRef = useRef('100px')
-
-  const getTextWidth = (text: string, font: string) => {
-    // Create a canvas element
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-    if (!context) {
-      return 0
-    }
-    context.font = font
-    return context.measureText(text).width
-  }
-
   useEffect(() => {
     if (questions.length > 0 && currentQuestion < questions.length) {
       const currentAnswers = [...questions[currentQuestion].incorrect_answers, currentCorrectAnswer]
       const shuffled = shuffleArray(currentAnswers)
-
-      // Calculate width for answers buttons based on the longest answer
-      const maxWidth = shuffled.reduce((max, answer) => {
-        const decodedAnswer = he.decode(answer)
-        const width = getTextWidth(decodedAnswer, 'bold 16px Satoshi')
-        return Math.max(max, width)
-      }, 0)
-
-      maxWidthRef.current = `${maxWidth}px`
       setShuffledAnswers(shuffled)
     }
   }, [questions, currentQuestion, currentCorrectAnswer])
@@ -139,14 +117,11 @@ export function PlayQuizScreen() {
             <Button
               key={answer}
               format="lg border"
-              // className={`${getAnswerButtonClass(he.decode(answer))} w-[${maxColumnWidth}] ${index % 2 === 0 ? 'justify-self-end' : 'justify-self-start'}`}
               className={twMerge(
                 getAnswerButtonClass(he.decode(answer)),
                 index % 2 === 0 ? 'justify-self-end' : 'justify-self-start',
                 'sffede w-full '
-              )}
-              // style={{ width: maxWidthRef.current }}
-            >
+              )}>
               {he.decode(answer)}
             </Button>
           ))}

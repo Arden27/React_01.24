@@ -140,7 +140,7 @@ export function CreateQuizScreen() {
           ))}
         </div>
 
-        <div className=" grid grid-cols-2 gap-2xs items-center">
+        <div className=" grid grid-cols-2 items-center gap-2xs">
           <Button format="border fill lg" className="" onClick={handleStartQuiz}>
             {showLoading ? 'loading...' : 'Start Quiz'}
           </Button>

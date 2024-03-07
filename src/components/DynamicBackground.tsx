@@ -67,7 +67,7 @@ export function DynamicBackground() {
     return () => {
       clearTimeout(timer)
     }
-  }, [opacity])
+  }, [opacity, transitionTime])
 
   const foregroundStyle: CSSProperties = {
     opacity: opacity,
