@@ -1,5 +1,5 @@
 import he from 'he'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/navigation/router'
 import { Button } from '@/components/Button'
@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addCorrectAnswer } from '@/redux/slices/game'
 import { updateStats } from '@/redux/slices/stats'
 import { RootState } from '@/redux/store'
+import { twMerge } from 'tailwind-merge'
+import { shuffleArray } from '@/utils/shuffleArray'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
@@ -23,10 +25,33 @@ export function PlayQuizScreen() {
 
   const dispatch = useDispatch()
 
+  const maxWidthRef = useRef('100px')
+
+  const getTextWidth = (text: string, font: string) => {
+    // Create a canvas element
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    if (!context) {
+      return 0
+    }
+    context.font = font
+    return context.measureText(text).width
+  }
+
   useEffect(() => {
     if (questions.length > 0 && currentQuestion < questions.length) {
       const currentAnswers = [...questions[currentQuestion].incorrect_answers, currentCorrectAnswer]
-      setShuffledAnswers(shuffleArray(currentAnswers))
+      const shuffled = shuffleArray(currentAnswers)
+
+      // Calculate width for answers buttons based on the longest answer
+      const maxWidth = shuffled.reduce((max, answer) => {
+        const decodedAnswer = he.decode(answer)
+        const width = getTextWidth(decodedAnswer, 'bold 16px Satoshi')
+        return Math.max(max, width)
+      }, 0)
+
+      maxWidthRef.current = `${maxWidth}px`
+      setShuffledAnswers(shuffled)
     }
   }, [questions, currentQuestion, currentCorrectAnswer])
 
@@ -35,26 +60,6 @@ export function PlayQuizScreen() {
       navigate(ROUTES.root, { replace: true })
     }
   }, [questions, navigate])
-
-  const shuffleArray = (array: string[]): string[] => {
-    let currentIndex = array.length
-    let temporaryValue
-    let randomIndex
-
-    // While there remain elements to shuffle...
-    while (currentIndex !== 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex -= 1
-
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex]
-      array[currentIndex] = array[randomIndex]
-      array[randomIndex] = temporaryValue
-    }
-
-    return array
-  }
 
   const handleAnswerClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
@@ -109,63 +114,46 @@ export function PlayQuizScreen() {
   return (
     <>
       <div
-        className={`z-0 flex h-screen w-screen items-center justify-center ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
+        className={`relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-md  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
+        <CountdownTimer
+          className="slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
+          initialTime={Number(time.value) * 60}
+        />
+
+        <h1 className="flex justify-center text-xl font-bold">
+          Question&nbsp;<span className="text-2xl">{currentQuestion + 1}</span>
+          &nbsp;of&nbsp;<span className="text-2xl">{numberOfQuestions}</span>
+        </h1>
+        <h2 className=" flex h-xl items-center justify-center text-center text-md italic">
+          {questions[currentQuestion].category}
+        </h2>
+
+        <p className="text-center text-lg font-bold">
+          {he.decode(questions[currentQuestion].question)}
+        </p>
+
         <div
-          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
-          <CountdownTimer
-            className="slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
-            initialTime={Number(time.value) * 60}
-          />
-          <div className="flex flex-col gap-3xs text-center">
-            <h3>
-              Question {currentQuestion + 1} of {numberOfQuestions}
-            </h3>
-            <h4>{questions[currentQuestion].category}</h4>
-          </div>
-
-          <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
-
-          <div className="flex flex-col gap-2" onClick={handleAnswerClick}>
-            {shuffledAnswers.length === 2 && (
-              <div className="flex flex-row gap-2">
-                {shuffledAnswers.map((answer, index) => {
-                  answer = he.decode(answer)
-                  return (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  )
-                })}
-              </div>
-            )}
-
-            {shuffledAnswers.length === 4 && (
-              <>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(0, 2).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(2, 4).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          <Button
-            format="sm border"
-            className="opacity-80 hover:opacity-100"
-            onClick={toggleDialog}>
-            End Quiz
-          </Button>
+          className="grid w-full grid-cols-1 place-items-center gap-sm overflow-hidden sm:grid-cols-2"
+          onClick={handleAnswerClick}>
+          {shuffledAnswers.map((answer, index) => (
+            <Button
+              key={answer}
+              format="lg border"
+              // className={`${getAnswerButtonClass(he.decode(answer))} w-[${maxColumnWidth}] ${index % 2 === 0 ? 'justify-self-end' : 'justify-self-start'}`}
+              className={twMerge(
+                getAnswerButtonClass(he.decode(answer)),
+                index % 2 === 0 ? 'justify-self-end' : 'justify-self-start',
+                'sffede w-full '
+              )}
+              // style={{ width: maxWidthRef.current }}
+            >
+              {he.decode(answer)}
+            </Button>
+          ))}
         </div>
+        <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleDialog}>
+          End Quiz
+        </Button>
       </div>
 
       <Modal

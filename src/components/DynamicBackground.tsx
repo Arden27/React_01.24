@@ -22,8 +22,8 @@ const getRandomAngle = (): number => {
 }
 
 export function DynamicBackground() {
-  
-  const transitionTime = Math.floor(Math.random() * (MAX_TRANSITION_TIME - MIN_TRANSITION_TIME)) + MIN_TRANSITION_TIME;
+  const transitionTime =
+    Math.floor(Math.random() * (MAX_TRANSITION_TIME - MIN_TRANSITION_TIME)) + MIN_TRANSITION_TIME
 
   // Gradient colors
   const [backgroundGradientFrom, setBackgroundGradientFrom] = useState<string>(getRandomColor())
@@ -91,7 +91,7 @@ export function DynamicBackground() {
   return (
     <div
       className={`opacity-0 ${
-        rendered ? 'opacity-50' : ''
+        rendered ? '-z-50 opacity-50' : ''
       } absolute inset-0 min-h-screen transition-opacity duration-[3000ms] ease-in-out`}>
       <div style={backgroundStyle}></div>
       <div style={foregroundStyle}></div>

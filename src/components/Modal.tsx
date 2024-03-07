@@ -46,11 +46,11 @@ export function Modal({
           <h3>{additionalMessage}</h3>
         </div>
         <div className="flex w-full flex-row items-center justify-around gap-4">
-          <Button format="lg fill" onClick={handleConfirm}>
-            {confirmButtonMessage}
-          </Button>
-          <Button format="sm " onClick={toggleDialog}>
+          <Button format="lg fill" onClick={toggleDialog}>
             {cancelButtonMessage}
+          </Button>
+          <Button format="sm " onClick={handleConfirm}>
+            {confirmButtonMessage}
           </Button>
         </div>
       </div>
