@@ -61,13 +61,13 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
 
       <div
         className={twMerge(
-          'fixed left-1/2 z-50  flex max-h-64  origin-top -translate-x-[50%] flex-col  gap-3xs overflow-hidden rounded-[2rem] bg-bar p-xs text-end  font-btn text-sm shadow transition-transform duration-500',
+          'fixed left-1/2 z-50  m-2xs flex  max-h-64 origin-top -translate-x-[50%]  flex-col gap-3xs overflow-hidden rounded-[2rem] bg-bar p-xs  text-end font-btn text-sm shadow transition-transform duration-500',
           !isOpen ? 'scale-y-0' : ''
         )}
         style={{ zIndex: zIndex }}>
         <ul
           className={twMerge(
-            'justify-right flex origin-bottom flex-col place-items-end overflow-y-auto text-right transition duration-500',
+            'justify-right flex origin-bottom flex-col place-items-end overflow-y-auto p-xs text-right transition duration-500',
             !isOpen ? 'scale-y-[2]' : ''
           )}>
           {payload.items.map((item, index) => (

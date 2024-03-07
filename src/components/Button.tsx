@@ -7,12 +7,11 @@ function getButtonStyles(format: string): string {
   let styles = ''
 
   if (types.includes('sm')) {
-    styles += 'h-[calc(theme(spacing.lg)+theme(spacing.3xs))] w-fit p-xs '
+    styles += 'h-[calc(theme(spacing.lg)+theme(spacing.3xs))] p-xs '
   }
 
   if (types.includes('lg')) {
-    styles +=
-      'h-[calc(theme(spacing.lg)+theme(spacing.xs))] w-fit min-w-[calc(theme(spacing.3xl)+theme(spacing.2xl))] p-sm px-md '
+    styles += 'h-[calc(theme(spacing.lg)+theme(spacing.xs))]  px-sm '
   }
 
   if (types.includes('fill')) {
@@ -21,7 +20,7 @@ function getButtonStyles(format: string): string {
 
   if (types.includes('round')) {
     styles +=
-      'h-md w-md justify-center rounded-[2rem] text-center font-btn leading-none hover:bg-text hover:text-bg3 '
+      'h-md w-sm justify-center rounded-[2rem] text-center font-btn leading-none hover:bg-text hover:text-bg3 '
   }
 
   if (types.includes('border')) {
