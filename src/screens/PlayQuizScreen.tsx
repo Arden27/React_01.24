@@ -10,6 +10,8 @@ import { addCorrectAnswer } from '@/redux/slices/game'
 import { updateStats } from '@/redux/slices/stats'
 import { RootState } from '@/redux/store'
 
+import { motion, AnimatePresence } from 'framer-motion'
+
 export function PlayQuizScreen() {
   const navigate = useNavigate()
   const questions = useSelector((state: RootState) => state.game.questions)
@@ -23,8 +25,36 @@ export function PlayQuizScreen() {
 
   const dispatch = useDispatch()
 
+  const [isAnswersVisible, setIsAnswersVisible] = useState(true)
+  const [value, setValue] = useState(0)
+
+  const toggleAnimation = () => {
+    setIsAnswersVisible(false)
+    setTimeout(() => {
+      setValue((prev) => prev + 1)
+      setIsAnswersVisible(true)
+    }, 100)
+  }
+
+  useEffect(() => {
+    setIsAnswersVisible(true)
+  }, [])
+
+  const containerVariants = {
+    visible: {
+      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
+    },
+    hidden: {}
+  }
+
+  const itemVariants = {
+    visible: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, scale: 0 }
+  }
+
   useEffect(() => {
     if (questions.length > 0 && currentQuestion < questions.length) {
+      toggleAnimation()
       const currentAnswers = [...questions[currentQuestion].incorrect_answers, currentCorrectAnswer]
       setShuffledAnswers(shuffleArray(currentAnswers))
     }
@@ -125,38 +155,47 @@ export function PlayQuizScreen() {
 
           <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
 
-          <div className="flex flex-col gap-2" onClick={handleAnswerClick}>
-            {shuffledAnswers.length === 2 && (
-              <div className="flex flex-row gap-2">
+          <div className="grid grid-cols-2" onClick={handleAnswerClick}>
+            {isAnswersVisible && (
+              <motion.div
+                //key={value} // Key changes on every button click
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="grid grid-cols-2 place-items-center"
+                variants={containerVariants}>
                 {shuffledAnswers.map((answer, index) => {
                   answer = he.decode(answer)
                   return (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
+                    <motion.div key={answer} variants={itemVariants}>
+                      <Button
+                        key={index}
+                        format="lg border"
+                        className={getAnswerButtonClass(answer)}>
+                        {answer}
+                      </Button>
+                    </motion.div>
                   )
                 })}
-              </div>
+              </motion.div>
             )}
-
-            {shuffledAnswers.length === 4 && (
-              <>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(0, 2).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
+            {/* <AnimatePresence>
+              {isAnswersVisible && (
+                <motion.div
+                  key={value} // Key changes on every button click
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="grid grid-cols-2"
+                  variants={containerVariants}>
+                  {[...Array(4)].map((_, i) => (
+                    <motion.div key={i} variants={itemVariants}>
+                      Div {value}
+                    </motion.div>
                   ))}
-                </div>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(2, 4).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-              </>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence> */}
           </div>
 
           <Button
