@@ -92,7 +92,7 @@ export function PlayQuizScreen() {
   return (
     <>
       <div
-        className={`relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
+        className={`relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg ${isModalOpen ? 'pointer-events-none ' : ''}`}>
         <CountdownTimer
           className="slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
           initialTime={Number(time.value) * 60}
@@ -105,7 +105,7 @@ export function PlayQuizScreen() {
           <span className="relative -top-3xs  text-2xl">{numberOfQuestions}</span>
         </h1>
         <h2 className=" flex  items-center justify-center text-center text-md italic">
-          {questions[currentQuestion].category}
+          {he.decode(questions[currentQuestion].category)}
         </h2>
 
         <p className="text-center text-lg font-bold">
