@@ -115,7 +115,7 @@ export function CreateQuizScreen() {
 
   return (
     <>
-      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto__auto_1fr_auto] place-items-center gap-md  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
+      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto__auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
         <h1 className="flex justify-center text-xl font-bold">Create Quiz</h1>
         <div className="flex h-xl items-center gap-2xs">
           <h2 className="text-lg ">with</h2>

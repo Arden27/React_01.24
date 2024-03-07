@@ -75,7 +75,7 @@ export function ResultScreen() {
 
   return (
     <>
-      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-md  rounded-[2rem] border-2 border-solid border-text  bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
+      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text  bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
         <h1 className="  flex justify-center text-xl font-bold">Results</h1>
         <h2 className=" text-center font-serif text-lg font-bold ">
           Thank you for completing this quiz. Here are your results
@@ -93,14 +93,12 @@ export function ResultScreen() {
               <h3 className="text-nowrap rounded-[2rem]  bg-bg3 p-2xs font-btn text-xl text-text">
                 {correctAnswers} / {numberOfQuestions}
               </h3>
-              <h3 className=" text-md">
-                {calculatePercentage(correctAnswers, numberOfQuestions)}%
-              </h3>
+              <h3 className="text-md">{calculatePercentage(correctAnswers, numberOfQuestions)}%</h3>
             </div>
           </div>
         </div>
 
-        <ul className="place-self-start pb-[calc(theme(spacing.lg)+theme(spacing.xs))] min-[400px]:pb-0 [&>li>span]:font-btn [&>li]:ml-sm [&>li]:pt-3xs">
+        <ul className="place-self-start pb-[calc(theme(spacing.lg)+theme(spacing.xs))] min-[400px]:pb-0 [&>li>span]:font-btn [&>li]:ml-sm [&>li]:pt-2xs">
           <h3 className="text-lg">Quiz Settings</h3>
           <li className="">
             Category:{' '}
