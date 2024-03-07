@@ -157,8 +157,7 @@ export function PlayQuizScreen() {
                       getAnswerButtonClass(decodedAnswer),
                       index % 2 === 0 ? 'justify-self-end' : 'justify-self-start',
                       'w-full '
-                    )}
-                  >
+                    )}>
                     {decodedAnswer}
                   </Button>
                 </motion.div>
