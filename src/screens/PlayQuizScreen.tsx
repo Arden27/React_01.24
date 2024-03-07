@@ -29,13 +29,6 @@ export function PlayQuizScreen() {
   // animation
   const [isAnswersVisible, setIsAnswersVisible] = useState(true)
 
-  const toggleAnimation = () => {
-    setIsAnswersVisible(false)
-    setTimeout(() => {
-      setIsAnswersVisible(true)
-    }, 100)
-  }
-
   useEffect(() => {
     setIsAnswersVisible(true)
   }, [])
