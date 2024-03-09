@@ -11,6 +11,7 @@ import { updateStats } from '@/redux/slices/stats'
 import { RootState } from '@/redux/store'
 import { twMerge } from 'tailwind-merge'
 import { shuffleArray } from '@/utils/shuffleArray'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
@@ -24,6 +25,25 @@ export function PlayQuizScreen() {
     questions.length > 0 && he.decode(questions[currentQuestion].correct_answer)
 
   const dispatch = useDispatch()
+
+  // animation
+  const [isAnswersVisible, setIsAnswersVisible] = useState(true)
+
+  useEffect(() => {
+    setIsAnswersVisible(true)
+  }, [])
+
+  const containerVariants = {
+    visible: {
+      transition: { staggerChildren: 0.05, delayChildren: 0.1 }
+    },
+    hidden: {}
+  }
+
+  const itemVariants = {
+    visible: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, scale: 0 }
+  }
 
   useEffect(() => {
     if (questions.length > 0 && currentQuestion < questions.length) {
@@ -111,23 +131,36 @@ export function PlayQuizScreen() {
         <p className="text-center text-lg font-bold">
           {he.decode(questions[currentQuestion].question)}
         </p>
+        <AnimatePresence>
+          {isAnswersVisible && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="grid w-full grid-cols-1 place-items-center gap-sm overflow-hidden sm:grid-cols-2"
+              variants={containerVariants}
+              onClick={handleAnswerClick}>
+              {shuffledAnswers.map((answer, index) => {
+                const decodedAnswer = he.decode(answer)
+                return (
+                  <motion.div className="w-full" key={answer} variants={itemVariants}>
+                    <Button
+                      key={answer}
+                      format="lg border"
+                      className={twMerge(
+                        getAnswerButtonClass(decodedAnswer),
+                        index % 2 === 0 ? 'justify-self-end' : 'justify-self-start',
+                        'w-full '
+                      )}>
+                      {decodedAnswer}
+                    </Button>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div
-          className="grid w-full grid-cols-1 place-items-center gap-sm overflow-hidden sm:grid-cols-2"
-          onClick={handleAnswerClick}>
-          {shuffledAnswers.map((answer, index) => (
-            <Button
-              key={answer}
-              format="lg border"
-              className={twMerge(
-                getAnswerButtonClass(he.decode(answer)),
-                index % 2 === 0 ? 'justify-self-end' : 'justify-self-start',
-                'sffede w-full '
-              )}>
-              {he.decode(answer)}
-            </Button>
-          ))}
-        </div>
         <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleDialog}>
           End Quiz
         </Button>
