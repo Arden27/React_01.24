@@ -39,18 +39,17 @@ export function Modal({
     <dialog
       open={isOpen}
       ref={modalRef}
-      className="fixed inset-x-0 inset-y-0 mx-auto my-auto items-center justify-center bg-transparent transition">
-      <div className="flex max-w-lg flex-col items-center justify-center gap-4 rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl">
-        <div className="flex flex-col gap-2 text-center">
-          <h2>{message}</h2>
-          <h3>{additionalMessage}</h3>
-        </div>
-        <div className="flex w-full flex-row items-center justify-around gap-4">
-          <Button format="lg fill" onClick={handleConfirm}>
-            {confirmButtonMessage}
-          </Button>
-          <Button format="sm " onClick={toggleDialog}>
+      className="inset-x-0 inset-y-0 mx-auto my-auto items-center justify-center bg-transparent transition">
+      <div className="grid place-items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-md shadow-2xl">
+        <h2>{message}</h2>
+        <h3>{additionalMessage}</h3>
+
+        <div className="flex items-center justify-around gap-xs">
+          <Button format="lg fill" onClick={toggleDialog}>
             {cancelButtonMessage}
+          </Button>
+          <Button format="sm " onClick={handleConfirm}>
+            {confirmButtonMessage}
           </Button>
         </div>
       </div>

@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addCorrectAnswer } from '@/redux/slices/game'
 import { updateStats } from '@/redux/slices/stats'
 import { RootState } from '@/redux/store'
+import { twMerge } from 'tailwind-merge'
+import { shuffleArray } from '@/utils/shuffleArray'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function PlayQuizScreen() {
   const navigate = useNavigate()
@@ -23,10 +26,30 @@ export function PlayQuizScreen() {
 
   const dispatch = useDispatch()
 
+  // animation
+  const [isAnswersVisible, setIsAnswersVisible] = useState(true)
+
+  useEffect(() => {
+    setIsAnswersVisible(true)
+  }, [])
+
+  const containerVariants = {
+    visible: {
+      transition: { staggerChildren: 0.05, delayChildren: 0.1 }
+    },
+    hidden: {}
+  }
+
+  const itemVariants = {
+    visible: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, scale: 0 }
+  }
+
   useEffect(() => {
     if (questions.length > 0 && currentQuestion < questions.length) {
       const currentAnswers = [...questions[currentQuestion].incorrect_answers, currentCorrectAnswer]
-      setShuffledAnswers(shuffleArray(currentAnswers))
+      const shuffled = shuffleArray(currentAnswers)
+      setShuffledAnswers(shuffled)
     }
   }, [questions, currentQuestion, currentCorrectAnswer])
 
@@ -35,26 +58,6 @@ export function PlayQuizScreen() {
       navigate(ROUTES.root, { replace: true })
     }
   }, [questions, navigate])
-
-  const shuffleArray = (array: string[]): string[] => {
-    let currentIndex = array.length
-    let temporaryValue
-    let randomIndex
-
-    // While there remain elements to shuffle...
-    while (currentIndex !== 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex -= 1
-
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex]
-      array[currentIndex] = array[randomIndex]
-      array[randomIndex] = temporaryValue
-    }
-
-    return array
-  }
 
   const handleAnswerClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
@@ -109,63 +112,58 @@ export function PlayQuizScreen() {
   return (
     <>
       <div
-        className={` flex h-screen w-screen items-center justify-center ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}>
-        <div
-          className={`relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg3 to-bg2 p-lg shadow-2xl`}>
-          <CountdownTimer
-            className="slide-in-bottom absolute -top-lg right-xl -z-20 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
-            initialTime={Number(time.value) * 60}
-          />
-          <div className="flex flex-col gap-3xs text-center">
-            <h3>
-              Question {currentQuestion + 1} of {numberOfQuestions}
-            </h3>
-            <h4>{questions[currentQuestion].category}</h4>
-          </div>
+        className={`relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg ${isModalOpen ? 'pointer-events-none ' : ''}`}>
+        <CountdownTimer
+          className="slide-in-bottom absolute -top-lg right-xl -z-10 flex rounded-tl-[1rem] rounded-tr-[1rem] border-2 border-solid border-text bg-gradient-to-b from-bg2 to-bg p-xs pt-3xs text-lg shadow-2xl"
+          initialTime={Number(time.value) * 60}
+        />
 
-          <h2 className="text-center">{he.decode(questions[currentQuestion].question)}</h2>
+        <h1 className="flex text-xl font-bold">
+          Question&nbsp;
+          <span className="relative -top-3xs text-2xl">{currentQuestion + 1}</span>
+          &nbsp;of&nbsp;
+          <span className="relative -top-3xs  text-2xl">{numberOfQuestions}</span>
+        </h1>
+        <h2 className=" flex  items-center justify-center text-center text-md italic">
+          {he.decode(questions[currentQuestion].category)}
+        </h2>
 
-          <div className="flex flex-col gap-2" onClick={handleAnswerClick}>
-            {shuffledAnswers.length === 2 && (
-              <div className="flex flex-row gap-2">
-                {shuffledAnswers.map((answer, index) => {
-                  answer = he.decode(answer)
-                  return (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
+        <p className="text-center text-lg font-bold">
+          {he.decode(questions[currentQuestion].question)}
+        </p>
+        <AnimatePresence>
+          {isAnswersVisible && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="grid w-full grid-cols-1 place-items-center gap-sm overflow-hidden sm:grid-cols-2"
+              variants={containerVariants}
+              onClick={handleAnswerClick}>
+              {shuffledAnswers.map((answer, index) => {
+                const decodedAnswer = he.decode(answer)
+                return (
+                  <motion.div className="w-full" key={answer} variants={itemVariants}>
+                    <Button
+                      key={answer}
+                      format="lg border"
+                      className={twMerge(
+                        getAnswerButtonClass(decodedAnswer),
+                        index % 2 === 0 ? 'justify-self-end' : 'justify-self-start',
+                        'w-full '
+                      )}>
+                      {decodedAnswer}
                     </Button>
-                  )
-                })}
-              </div>
-            )}
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            {shuffledAnswers.length === 4 && (
-              <>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(0, 2).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-                <div className="flex flex-row gap-2">
-                  {shuffledAnswers.slice(2, 4).map((answer, index) => (
-                    <Button key={index} format="lg border" className={getAnswerButtonClass(answer)}>
-                      {answer}
-                    </Button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          <Button
-            format="sm border"
-            className="opacity-80 hover:opacity-100"
-            onClick={toggleDialog}>
-            End Quiz
-          </Button>
-        </div>
+        <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleDialog}>
+          End Quiz
+        </Button>
       </div>
 
       <Modal

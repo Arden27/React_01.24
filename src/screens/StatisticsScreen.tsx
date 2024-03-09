@@ -21,6 +21,7 @@ export function StatisticsScreen() {
   }
 
   const handleReset = () => {
+    navigate(ROUTES.root)
     dispatch(resetStats())
     storage.removeItem('persist:stats')
   }
@@ -38,18 +39,15 @@ export function StatisticsScreen() {
   } = useSelector((state: RootState) => state.stats)
   return (
     <>
-      <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
-        <h1>Statistics</h1>
+      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto]  place-items-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
+        <h1 className="text-xl font-bold">Statistics</h1>
+
         {totalAnswered ? (
           <>
-            <div
-              className="relative flex flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-text p-md text-center font-btn text-sm uppercase
-       text-bg3 shadow-lg">
+            <div className="relative flex flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-text p-xs text-center font-btn text-sm uppercase text-bg3 shadow-lg">
               <h2>Correct Answers</h2>
               <div className="flex flex-row items-center">
-                <h3
-                  className="relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-xs font-btn text-xl uppercase
-      text-text">
+                <h3 className="relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-2xs font-btn text-xl uppercase text-text">
                   {totalCorrectAnswers} / {totalAnswered}
                 </h3>
                 <div className="p-xs text-md">
@@ -58,37 +56,33 @@ export function StatisticsScreen() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-sm">
-              <div>
-                <h2>Categories</h2>
-                <ul className="max-h-32 overflow-y-scroll pb-xs pr-xs">
+            <div className="h-full w-full overflow-hidden rounded-[2rem] border-2  border-solid border-text p-sm">
+              <div className=" h-full overflow-y-scroll [&>ul>li>span]:px-2xs [&>ul>li>span]:font-btn [&>ul>li]:ml-sm [&>ul>li]:flex [&>ul>li]:items-end [&>ul>li]:justify-between [&>ul>li]:p-3xs">
+                <ul className="">
+                  <h2>Categories</h2>
                   {Object.entries(totalAnsweredCategories).map(([category, count]) => (
-                    <li key={category}>
-                      {he.decode(category)}: <span className="font-btn">{count}</span>
+                    <li className="" key={category}>
+                      {he.decode(category)}: <span>{count}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              <div className="flex justify-between gap-sm">
-                <div>
+                <ul>
                   <h2>Difficulties</h2>
                   {Object.entries(totalAnsweredDifficulties).map(([difficulty, count]) => (
-                    <div key={difficulty}>
-                      {capitalizeFirstLetter(difficulty)}: <span className="font-btn">{count}</span>
-                    </div>
+                    <li key={difficulty}>
+                      {capitalizeFirstLetter(difficulty)}: <span>{count}</span>
+                    </li>
                   ))}
-                </div>
-
-                <div>
+                </ul>
+                <ul>
                   <h2>Types</h2>
                   {Object.entries(totalAnsweredTypes).map(([type, count]) => (
-                    <div key={type}>
+                    <li key={type}>
                       {type === 'multiple' ? 'Multiple choice' : 'True / False'}:{' '}
-                      <span className="font-btn">{count}</span>
-                    </div>
+                      <span>{count}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           </>
@@ -96,15 +90,20 @@ export function StatisticsScreen() {
           <p>Nothing here yet</p>
         )}
 
-        <Button format="lg border" className="bg-bg" onClick={() => navigate(ROUTES.root)}>
-          Back
-        </Button>
-
-        {totalAnswered !== 0 && (
-          <Button format="sm border" className="opacity-80 hover:opacity-100" onClick={toggleModal}>
-            CLear Statistics
+        <div className="flex place-items-center gap-xs">
+          <Button format="lg border" className="bg-bg" onClick={() => navigate(ROUTES.root)}>
+            Back
           </Button>
-        )}
+
+          {totalAnswered !== 0 && (
+            <Button
+              format="sm border"
+              className="opacity-80 hover:opacity-100"
+              onClick={toggleModal}>
+              CLear Statistics
+            </Button>
+          )}
+        </div>
       </div>
 
       <Modal
@@ -113,7 +112,7 @@ export function StatisticsScreen() {
         confirmAction={handleReset}
         message="Are you sure?"
         additionalMessage="This will delete all statistics"
-        confirmButtonMessage="Delete statistics"
+        confirmButtonMessage="Delete"
         cancelButtonMessage="Cancel"
       />
     </>

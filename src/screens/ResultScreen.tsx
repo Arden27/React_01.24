@@ -75,76 +75,68 @@ export function ResultScreen() {
 
   return (
     <>
-      <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-md rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
-        <h1>Results</h1>
-        <h2 className="text-center">Thank you for completing this quiz. Here are your results</h2>
-        <div className="flex flex-row gap-sm">
-          <div
-            className="relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-sm font-btn text-sm uppercase
-      text-text ">
-            <h2>Time</h2>
-            <h3>{formatTime(timeSpent)}</h3>
+      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto_auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text  bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
+        <h1 className="  flex justify-center text-xl font-bold">Results</h1>
+        <h2 className=" text-center font-serif text-lg font-bold ">
+          Thank you for completing this quiz. Here are your results
+        </h2>
+
+        <div className="[&>*]:shadow-l grid h-full grid-cols-[1fr_3fr] grid-rows-2 gap-x-2xs text-center text-sm text-text [&>*]:row-span-2 [&>*]:grid [&>*]:grid-rows-subgrid [&>*]:place-items-center [&>*]:rounded-[2rem] [&>*]:p-xs [&>*]:uppercase [&>*]:shadow-lg">
+          <div className="border-2 border-solid border-text bg-bg3  ">
+            <h2 className="">Time</h2>
+            <h3 className=" text-md">{formatTime(timeSpent)}</h3>
           </div>
-          <div
-            className="relative flex flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-text p-md text-center font-btn text-sm uppercase
-       text-bg3 shadow-lg">
-            <h2>Correct Answers</h2>
-            <div className="flex flex-row items-center">
-              <h3
-                className="relative flex items-center justify-center rounded-[2rem] border-2 border-solid border-text bg-bg3 p-xs font-btn text-xl uppercase
-      text-text">
+
+          <div className="bg-text text-bg3">
+            <h2 className="">Correct Answers</h2>
+            <div className="flex place-items-center gap-2xs ">
+              <h3 className="text-nowrap rounded-[2rem]  bg-bg3 p-2xs font-btn text-xl text-text">
                 {correctAnswers} / {numberOfQuestions}
               </h3>
-              <div className="p-xs text-md">
-                {calculatePercentage(correctAnswers, numberOfQuestions)}%
-              </div>
+              <h3 className="text-md">{calculatePercentage(correctAnswers, numberOfQuestions)}%</h3>
             </div>
           </div>
         </div>
 
-        <div className="flex w-full flex-row justify-between">
-          <div className="self-start text-start">
-            <h3 className="text-lg">Quiz Settings</h3>
-            <ul className="ml-sm [&>*>span]:font-btn [&>*]:p-3xs">
-              <li>
-                Category:{' '}
-                <span>
-                  {currentQuizSettings.category ? currentQuizSettings.category.text : 'Any'}
-                </span>
-              </li>
-              <li>
-                Difficulty:{' '}
-                <span>
-                  {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.text : 'Any'}
-                </span>
-              </li>
-              <li>
-                Type:{' '}
-                <span>{currentQuizSettings.type ? currentQuizSettings.type.text : 'Any'}</span>
-              </li>
-              <li>
-                Time: <span>{currentQuizSettings.time.value} min</span>
-              </li>
-            </ul>
-          </div>
+        <ul className="place-self-start pb-[calc(theme(spacing.lg)+theme(spacing.xs))] min-[400px]:pb-0 [&>li>span]:font-btn [&>li]:ml-sm [&>li]:pt-2xs">
+          <h3 className="text-lg">Quiz Settings</h3>
+          <li className="">
+            Category:{' '}
+            <span>{currentQuizSettings.category ? currentQuizSettings.category.text : 'Any'}</span>
+          </li>
+          <li>
+            Difficulty:{' '}
+            <span>
+              {currentQuizSettings.difficulty ? currentQuizSettings.difficulty.text : 'Any'}
+            </span>
+          </li>
+          <li>
+            Type: <span>{currentQuizSettings.type ? currentQuizSettings.type.text : 'Any'}</span>
+          </li>
+          <li>
+            Time: <span>{currentQuizSettings.time.value} min</span>
+          </li>
+        </ul>
 
-          <div className="flex h-full flex-col items-end justify-end gap-xs">
-            <Button format="sm border" onClick={handleRestart} className="relative ">
-              <div className="relative flex h-full w-full flex-row items-center justify-center gap-3xs">
-                <RestartIcon className="h-md w-md" />
-                {showLoading ? '' : 'Restart'}
-              </div>
-            </Button>
-            <Button
-              format="lg border"
-              className="bg-bg"
-              onClick={() => {
-                dispatch(resetSettings())
-                navigate(ROUTES.root)
-              }}>
-              Choose another quiz
-            </Button>
-          </div>
+        <div className="absolute bottom-xs  right-md flex h-full flex-col items-end justify-end gap-2xs">
+          <Button
+            format="sm border"
+            onClick={handleRestart}
+            className={`${showLoading ? 'hover:bg-transparent hover:text-text' : ''}`}>
+            <div className="relative grid auto-cols-max grid-flow-col place-items-center gap-3xs">
+              <RestartIcon className="h-md w-md" />
+              {showLoading ? '' : 'Restart'}
+            </div>
+          </Button>
+          <Button
+            format="lg border"
+            className="bg-bg"
+            onClick={() => {
+              dispatch(resetSettings())
+              navigate(ROUTES.root)
+            }}>
+            Choose another quiz
+          </Button>
         </div>
       </div>
 

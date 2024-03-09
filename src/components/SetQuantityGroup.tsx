@@ -124,7 +124,7 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
 
   return (
     <input
-      className={twMerge(`h-lg w-lg rounded-[2rem] bg-transparent text-center font-btn`, className)}
+      className={twMerge(`h-lg w-xs rounded-[2rem] bg-transparent text-center font-btn`, className)}
       type="number"
       value={inputValue}
       min={min}

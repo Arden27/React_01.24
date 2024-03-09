@@ -13,6 +13,8 @@ import { setQuestions } from '@/redux/slices/game'
 import { QuizSettings } from '@/redux/types'
 import { useLazyFetchQuestionsQuery, useFetchCategoriesQuery } from '@/redux/api/questionsApi'
 import { Dropdown } from '@/components/Dropdown'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
 
 interface Category {
   id: string
@@ -27,6 +29,7 @@ export function CreateQuizScreen() {
   const [modalMessage, setModalMessage] = useState('Server is not responding')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { data: fetchedCategories } = useFetchCategoriesQuery()
+  const totalAnswered = useSelector((state: RootState) => state.stats.totalAnswered)
 
   const settingsRef = useRef<QuizSettings>({
     numberOfQuestions: 5,
@@ -112,11 +115,10 @@ export function CreateQuizScreen() {
 
   return (
     <>
-      <div className="relative m-lg flex max-w-xl flex-col items-center justify-center gap-xs rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 p-lg shadow-lg">
-        <h1 className="text-2xl font-bold">Create Quiz</h1>
-
-        <div className="flex items-center space-x-2">
-          <h3 className="text-lg">with</h3>
+      <div className="relative col-start-2 row-start-2 grid grid-rows-[auto__auto_1fr_auto] place-items-center gap-sm  rounded-[2rem] border-2 border-solid border-text bg-gradient-to-r from-bg2 to-bg3 shadow-lg">
+        <h1 className="flex justify-center text-xl font-bold">Create Quiz</h1>
+        <div className="flex h-xl items-center gap-2xs">
+          <h2 className="text-lg ">with</h2>
           <SetQuantityGroup
             min={5}
             max={15}
@@ -125,24 +127,31 @@ export function CreateQuizScreen() {
             classNameButtons="text-md"
             classNameInput="text-lg"
           />
-          <h3 className="text-lg">questions</h3>
+          <h2 className="text-lg">questions</h2>
         </div>
 
-        {menuOptionsWithCategories.map((menuOption, index) => (
-          <Dropdown
-            key={`dropdown-${index}`}
-            payload={menuOption}
-            placeholder={`Choose ${menuOption.label}`}
-            onSelect={handleSelect}></Dropdown>
-        ))}
+        <div className="grid h-full  place-items-center gap-sm text-center">
+          {menuOptionsWithCategories.map((menuOption, index) => (
+            <Dropdown
+              key={`dropdown-${index}`}
+              payload={menuOption}
+              placeholder={`Choose ${menuOption.label}`}
+              onSelect={handleSelect}></Dropdown>
+          ))}
+        </div>
 
-        <Button format="border fill lg" className="" onClick={handleStartQuiz}>
-          {showLoading ? 'loading...' : 'Start Quiz'}
-        </Button>
-
-        <Button format="sm border" onClick={() => navigate(ROUTES.statistics)}>
-          See my statistics
-        </Button>
+        <div className=" grid grid-cols-2 items-center gap-2xs">
+          <Button format="border fill lg" className="" onClick={handleStartQuiz}>
+            {showLoading ? 'loading...' : 'Start Quiz'}
+          </Button>
+          <Button
+            format="sm border"
+            disabled={!totalAnswered}
+            className={`${totalAnswered ? '' : ''}`}
+            onClick={() => navigate(ROUTES.statistics)}>
+            See my statistics
+          </Button>
+        </div>
       </div>
 
       <Modal

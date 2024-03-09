@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from './Button'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import ChevronUp from '@/assets/svg/chevron-up.svg?react'
@@ -26,6 +26,15 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
 
   const [isOpen, setIsOpen] = useState(false)
   const [currentSelected, setCurrentSelected] = useState(placeholder)
+  const [zIndex, setZIndex] = useState(0)
+
+  useEffect(() => {
+    if (isOpen) {
+      setZIndex(1000)
+    } else {
+      setZIndex(50)
+    }
+  }, [isOpen])
 
   const handleSelect = (optionText: string, index: number, payload: PayloadType) => () => {
     setIsOpen(false)
@@ -40,21 +49,34 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
   useOutsideClick([buttonRef, node], handleOutsideClick)
 
   return (
-    <div className="relative cursor-pointer text-end" ref={node}>
+    <div className="relative  cursor-pointer text-end" ref={node}>
       <Button
-        className={twMerge('whitespace-nowrap hover:text-bg2', isOpen ? 'bg-text text-bg2' : '')}
+        className={twMerge(' hover:text-bg2', isOpen ? 'bg-text text-bg2' : '')}
         format="sm"
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}>
         {currentSelected}
         <span className="ml-3xs">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
       </Button>
-      {isOpen && (
-        <ul className="absolute -right-2xs z-50 mt-3xs flex max-h-64 flex-col gap-3xs overflow-y-auto whitespace-nowrap rounded-[2rem] bg-bar p-xs text-end font-btn text-sm shadow">
+
+      <div
+        className={twMerge(
+          'fixed left-1/2 z-50  m-2xs flex  max-h-64 origin-top -translate-x-[50%]  flex-col gap-3xs overflow-hidden rounded-[2rem] bg-bar p-xs  text-end font-btn text-sm shadow transition-transform duration-500',
+          !isOpen ? 'scale-y-0' : ''
+        )}
+        style={{ zIndex: zIndex }}>
+        <ul
+          className={twMerge(
+            'justify-right flex origin-bottom flex-col place-items-end overflow-y-auto px-xs text-right transition duration-500',
+            !isOpen ? 'scale-y-[2]' : ''
+          )}>
           {payload.items.map((item, index) => (
-            <li key={item.text}>
+            <li className={twMerge('transition-transform duration-500')} key={item.text}>
               <Button
-                className="w-full justify-end border-transparent hover:text-bar"
+                className={twMerge(
+                  'h-fit min-h-[calc(theme(spacing.lg)+theme(spacing.3xs))] w-full justify-end border-transparent text-end transition duration-500 hover:text-bar',
+                  !isOpen ? 'opacity-0' : 'duration-0'
+                )}
                 format="sm"
                 onClick={handleSelect(item.text, index, payload)}>
                 {item.text}
@@ -62,7 +84,7 @@ export function Dropdown({ payload, placeholder, onSelect }: DropdownProps) {
             </li>
           ))}
         </ul>
-      )}
+      </div>
     </div>
   )
 }
