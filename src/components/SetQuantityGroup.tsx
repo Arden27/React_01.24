@@ -21,6 +21,8 @@ export function SetQuantityGroup({
 }: SetQuantityGroupProps) {
   const [quantity, setInternalQuantity] = useState(min)
 
+  // useEffect()
+
   const setQuantity = (newQuantity: number) => {
     setInternalQuantity(newQuantity)
     onChange?.(newQuantity)
@@ -102,6 +104,10 @@ interface InputQuantityProps {
 
 function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuantityProps) {
   const [inputValue, setInputValue] = useState(quantity.toString())
+  const inputValueToDisplay = String(Number(inputValue) - 1)
+
+  console.log('inputValue: ', inputValue)
+  console.log('inputValueToDisplay: ', inputValueToDisplay)
 
   const handleBlur = () => {
     let value = parseFloat(inputValue) || 0
@@ -126,7 +132,7 @@ function InputQuantity({ quantity, setQuantity, min, max, className }: InputQuan
     <input
       className={twMerge(`h-lg w-lg rounded-[2rem] bg-transparent text-center font-btn`, className)}
       type="number"
-      value={inputValue}
+      value={inputValueToDisplay}
       min={min}
       max={max}
       step="1"

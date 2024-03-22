@@ -5,13 +5,15 @@ import { ResultScreen } from '@/screens/ResultScreen'
 import { PlayQuizScreen } from '@/screens/PlayQuizScreen'
 import { StatisticsScreen } from '@/screens/StatisticsScreen'
 import { Test } from '@/screens/Test'
+import { Test2 } from '@/screens/Test2'
 
 export enum ROUTES {
   root = '/',
   play = '/play',
   result = '/result',
   statistics = '/statistics',
-  test = '/test'
+  test = '/test',
+  test2 = '/test2'
 }
 
 export const router = createBrowserRouter([
@@ -38,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.test,
         element: <Test />
+      },
+      {
+        path: ROUTES.test2,
+        element: <Test2 />
       }
     ]
   }

@@ -1,56 +1,72 @@
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import { Button } from '@/components/Button'
+import { SetQuantityGroup } from '@/components/SetQuantityGroup'
 
 export function Test() {
-  const [isVisible, setIsVisible] = useState(true)
-  const [value, setValue] = useState(0)
+  const [oneStartRow, setOneStartRow] = useState(1)
+  const [oneStartCol, setOneStartCol] = useState(1)
+  const [oneEndRow, setOneEndRow] = useState(1)
+  const [oneEndCol, setOneEndCol] = useState(1)
 
-  const toggleAnimation = () => {
-    setIsVisible(false) // First hide
-    setTimeout(() => {
-      setValue((prev) => prev + 1) // Then change value
-      setIsVisible(true) // Show again to trigger animation
-    }, 100) // The delay ensures that the component is fully hidden before restarting the animation
+  const [twoStartRow, setTwoStartRow] = useState(0)
+  const [twoStartCol, setTwoStartCol] = useState(0)
+  const [twoEndRow, setTwoEndRow] = useState(0)
+  const [twoEndCol, setTwoEndCol] = useState(0)
+
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: '100px 100px 100px 100px',
+    gridTemplateRows: '100px 100px 100px 100px'
+    // transform: 'rotateX(180deg)'
   }
 
-  useEffect(() => {
-    // Trigger the animation on initial render
-    setIsVisible(true)
-  }, [])
-
-  const containerVariants = {
-    visible: {
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
-    },
-    hidden: {}
+  const oneStyle = {
+    gridArea: `${oneStartRow} / ${oneStartCol} / ${oneEndRow} / ${oneEndCol}`
   }
 
-  const itemVariants = {
-    visible: { opacity: 1, scale: 1 },
-    hidden: { opacity: 0, scale: 0 }
+  const twoStyle = {
+    gridArea: `${twoStartRow} / ${twoStartCol} / ${twoEndRow} / ${twoEndCol}`
   }
+
 
   return (
     <>
-      <Button format='lg border fill' onClick={toggleAnimation}>Change</Button>
-      <AnimatePresence>
-        {isVisible && (
-          <motion.div
-            key={value} // Key changes on every button click
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className='grid grid-cols-2'
-            variants={containerVariants}>
-            {[...Array(4)].map((_, i) => (
-              <motion.div key={i} variants={itemVariants}>
-                Div {value}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="grid grid-cols-2">
+        <div>
+          <div className="text-xl">X start</div>
+          <SetQuantityGroup min={1} max={10} onChange={setOneStartRow} />
+          <div className="text-xl">X end</div>
+          <SetQuantityGroup min={1} max={10} onChange={setOneEndRow} />
+        </div>
+        <div>
+          <div className="text-xl">Y start</div>
+          <SetQuantityGroup min={1} max={10} onChange={setOneStartCol} />
+          <div className="text-xl">Y end</div>
+          <SetQuantityGroup min={1} max={10} onChange={setOneEndCol} />
+        </div>
+        <div className='grid col-span-2 col-'></div>
+        <div>
+          <div className="text-xl">X start</div>
+          <SetQuantityGroup min={1} max={100} onChange={setTwoStartRow} />
+          <div className="text-xl">X end</div>
+          <SetQuantityGroup min={1} max={100} onChange={setTwoEndRow} />
+        </div>
+        <div>
+          <div className="text-xl">Y start</div>
+          <SetQuantityGroup min={1} max={100} onChange={setTwoStartCol} />
+          <div className="text-xl">Y end</div>
+          <SetQuantityGroup min={1} max={100} onChange={setTwoEndCol} />
+        </div>
+      </div>
+      <div style={gridStyle} className="bg-red-300 transition duration-500 ">
+        <div style={oneStyle} className="bg-blue-300">
+          Dupa
+        </div>
+
+        <div style={twoStyle} className="bg-green-300">
+          b
+        </div>
+      </div>
     </>
   )
 }
